@@ -13,6 +13,7 @@ import java.util.List;
  * @create 2018-12-03 16:42
  */
 public interface BaseStandardMapper<T> extends BaseMapper<T> {
+    int insertSelective(T entity);
     /**
      * <p>
      * 根据查询条件获取继承BaseEntity的实体列表数据
@@ -25,10 +26,10 @@ public interface BaseStandardMapper<T> extends BaseMapper<T> {
      */
     <Query extends BaseQuery> List<T> listByQuery(@Param(value = "query") Query query);
 
-    /**
+   /**
      * <p>
      * 根据查询条件获取id列表
-     * </p>
+     * </p>dm
      *
      * @param query
      * @return java.manager.List<T>

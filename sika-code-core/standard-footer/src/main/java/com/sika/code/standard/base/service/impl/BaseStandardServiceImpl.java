@@ -38,7 +38,7 @@ public abstract class BaseStandardServiceImpl<M extends BaseStandardMapper<Entit
     @Transactional(rollbackFor = Exception.class)
     public DTO saveAndRet(DTO dto) {
         Entity entity = convertToEntity(dto);
-        boolean success = super.save(entity);
+        boolean success = save(entity);
         if (!success) {
             return null;
         }
@@ -48,7 +48,7 @@ public abstract class BaseStandardServiceImpl<M extends BaseStandardMapper<Entit
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(DTO dto) {
-        return super.save(convertToEntity(dto));
+        return baseMapper.insertSelective(convertToEntity(dto)) >= 1;
     }
 
     @Override

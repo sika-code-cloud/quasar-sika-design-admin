@@ -14,11 +14,11 @@ import java.util.Date;
 public class BaseDTO<BY> implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * 创建人的id
+     * 创建人标志
      */
     private BY createBy;
     /**
-     * 最后更新人标识，记录用户的id
+     * 最后更新人标识
      */
     private BY updateBy;
     /**
