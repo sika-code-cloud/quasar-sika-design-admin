@@ -3,7 +3,6 @@ package ${package.ServiceImpl};
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.DTO}.${table.classBodyName}DTO;
-import ${package.Query}.${table.classBodyName}Query;
 import ${package.Service}.${table.serviceName};
 import ${table.modulePackage}.business.${package.ModuleName}.convert.${table.classBodyName}Convert;
 
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service(value = "${table.serviceName?uncap_first}")
 public class ${table.classBodyName}ServiceImpl extends BaseStandardServiceImpl<${table.classBodyName}Mapper, ${table.classBodyName}Entity, ${table.classBodyName}DTO> implements ${table.classBodyName}Service {
     @Autowired
-    private ${table.classBodyName}Mapper creditQuotaUsageTemplateMapper;
+    private ${table.classBodyName}Mapper ${table.classBodyName?uncap_first}Mapper;
 
 
     @Override

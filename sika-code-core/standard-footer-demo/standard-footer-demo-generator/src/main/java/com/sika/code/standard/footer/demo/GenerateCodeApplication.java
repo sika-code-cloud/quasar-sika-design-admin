@@ -11,7 +11,7 @@ import com.sika.code.GeneratorCodeDTO;
  * @create 2019-05-09 15:32
  */
 public class GenerateCodeApplication {
-    private static String tableName = "risk_system_access_rule_type";
+    private static String tableName = "sika_demo";
     private static String author = "daiqi";
 
     public static void main(String[] args) {

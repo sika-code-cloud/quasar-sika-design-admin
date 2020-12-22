@@ -165,31 +165,32 @@ public class GenerateCodeHandler {
     }
 
     protected void generateToCore() {
-        generateConvert();
         generateService();
         generateServiceImpl();
-        generateLogic();
-        generateLogicImpl();
-
-        generateBasePojo();
-        generateCommonQueryRequestBO();
-        generateUpdateByIdRequest();
-        generateModifyRequest();
-        generateModifyResponse();
-        generatePageQueryRequest();
-        generatePageQueryResponse();
-        generateQueryRequest();
-        generateQueryResponse();
-        generateListQueryRequest();
-        generateListQueryResponse();
-        generateSaveBatchRequest();
-        generateSaveRequest();
-        generateSaveResponse();
-        generateUpdateResponse();
+        generateConvertSample();
+//        generateLogic();
+//        generateLogicImpl();
+//
+//        generateBasePojo();
+//        generateCommonQueryRequestBO();
+//        generateUpdateByIdRequest();
+//        generateModifyRequest();
+//        generateModifyResponse();
+//        generatePageQueryRequest();
+//        generatePageQueryResponse();
+//        generateQueryRequest();
+//        generateQueryResponse();
+//        generateListQueryRequest();
+//        generateListQueryResponse();
+//        generateSaveBatchRequest();
+//        generateSaveRequest();
+//        generateSaveResponse();
+//        generateUpdateResponse();
     }
 
     protected void generateToWeb() {
-        generateController();
+//        generateController();
+        generateControllerSample();
     }
 
 
@@ -249,6 +250,16 @@ public class GenerateCodeHandler {
         generateCodeCoreForCustomer(templatePath, filePath, classBodySuffix, packageKey, subPackage);
     }
 
+    public void generateControllerSample() {
+        String templatePath = "/templates/controller_sample.java.ftl";
+        String filePath = pathForWeb + "/" + moduleName + "/controller/";
+        String classBodySuffix = "Controller";
+        String packageKey = "Controller";
+        String subPackage = "controller";
+
+        generateCodeCoreForCustomer(templatePath, filePath, classBodySuffix, packageKey, subPackage);
+    }
+
     public void generateLogic() {
         String templatePath = "/templates/logic.java.ftl";
         String filePath = pathForCore + "/" + moduleName + "/logic/";
@@ -294,6 +305,17 @@ public class GenerateCodeHandler {
     public void generateConvert() {
         // 自定义配置
         String templatePath = "/templates/convert.java.ftl";
+        String filePath = pathForCore + "/" + moduleName + "/convert/";
+        String classBodySuffix = "Convert";
+        String packageKey = "Convert";
+        String subPackage = "convert";
+
+        generateCodeCoreForCustomer(templatePath, filePath, classBodySuffix, packageKey, subPackage);
+    }
+
+    public void generateConvertSample() {
+        // 自定义配置
+        String templatePath = "/templates/convert_sample.java.ftl";
         String filePath = pathForCore + "/" + moduleName + "/convert/";
         String classBodySuffix = "Convert";
         String packageKey = "Convert";

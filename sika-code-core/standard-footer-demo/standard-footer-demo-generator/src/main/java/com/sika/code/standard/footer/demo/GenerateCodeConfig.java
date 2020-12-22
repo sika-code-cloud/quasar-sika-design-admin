@@ -18,9 +18,9 @@ public class GenerateCodeConfig {
     private static String modulePackage = "com.sika.code.standard.footer.demo";
 
     /** 数据库配置 */
-    private static String tablePrefix = "risk_system_";
+    private static String tablePrefix = "sika_";
     private static String dataBaseUrl = "localhost";
-    private static String dataBaseName = "log-center";
+    private static String dataBaseName = "sika-design-admin";
     private static String dataBasePort = "3306";
     private static String username = "root";
     private static String password = "123456";

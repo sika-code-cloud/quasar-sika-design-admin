@@ -24,11 +24,11 @@ public class ${table.classBodyName}ListQueryResponseBO implements BaseStandardRe
     /**
     * 返回给页面的响应对象
     */
-    private List<${table.classBodyName}ListQueryResponse> creditQuotaUsageTemplates;
+    private List<${table.classBodyName}ListQueryResponse> queryResponse;
 
     @Override
-    public void build(List<${table.classBodyName}DTO> creditQuotaUsageTemplates) {
-        this.creditQuotaUsageTemplates = convert().convertToListQueryResponses(creditQuotaUsageTemplates);
+    public void build(List<${table.classBodyName}DTO> queryResponse) {
+        this.queryResponse = convert().convertToListQueryResponses(queryResponse);
     }
 
     /**
