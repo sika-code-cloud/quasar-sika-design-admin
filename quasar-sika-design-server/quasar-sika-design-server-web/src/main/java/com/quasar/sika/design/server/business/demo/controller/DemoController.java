@@ -1,12 +1,12 @@
-package com.sika.code.standard.footer.demo.business.demo.controller;
+package com.quasar.sika.design.server.business.demo.controller;
 
 
 import java.util.List;
 import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
-import com.sika.code.standard.footer.demo.business.demo.service.DemoService;
-import com.sika.code.standard.footer.demo.business.demo.pojo.dto.DemoDTO;
-import com.sika.code.standard.footer.demo.business.demo.pojo.query.DemoQuery;
+import com.quasar.sika.design.server.business.demo.service.DemoService;
+import com.quasar.sika.design.server.business.demo.pojo.dto.DemoDTO;
+import com.quasar.sika.design.server.business.demo.pojo.query.DemoQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author daiqi
- * @since 2020-12-22 12:11:47
+ * @since 2020-12-22 23:55:45
  */
 @RestController(value = "demoController")
 @RequestMapping("demo")
