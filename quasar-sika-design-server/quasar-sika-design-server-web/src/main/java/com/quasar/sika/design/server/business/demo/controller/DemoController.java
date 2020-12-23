@@ -37,7 +37,7 @@ public class DemoController extends BaseStandardController {
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody DemoDTO demoDto) {
-        return super.generateResult(demoService.update(demoDto));
+        return super.generateResult(demoService.updateById(demoDto));
     }
 
     @RequestMapping(value = "page")

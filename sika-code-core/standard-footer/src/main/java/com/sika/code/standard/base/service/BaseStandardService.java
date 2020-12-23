@@ -93,7 +93,7 @@ public interface BaseStandardService<DTO extends BaseStandardDTO> {
      * @author daiqi
      * @date 2019/6/16 13:42
      */
-    boolean update(DTO dto);
+    boolean updateById(DTO dto);
 
     /**
      * <p>

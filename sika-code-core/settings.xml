@@ -155,15 +155,13 @@ under the License.
       <name>Human Readable Name for this Mirror.</name>
       <url>http://my.repository.com/repo/path</url>
     </mirror>
-     -->
 	<mirror>
 		<id>nexus</id>
 		<name>internal nexus repository</name>
-		<!-- <url>http://192.168.1.100:8081/nexus/content/groups/public/</url>-->
 		<url>http://repo.maven.apache.org/maven2</url>
 		<mirrorOf>central</mirrorOf>
 	</mirror>
-  
+    -->
   </mirrors>
 
   <!-- profiles

@@ -45,7 +45,7 @@
         <org.yaml.snakeyaml>1.17</org.yaml.snakeyaml>
         <junit.version>4.12</junit.version>
         <lombok.version>1.18.4</lombok.version>
-        <mybatisplus.version>3.1.2</mybatisplus.version>
+        <mybatisplus.version>3.4.1</mybatisplus.version>
         <guava.version>28.1-jre</guava.version>
         <guava-retrying.version>2.0.0</guava-retrying.version>
 

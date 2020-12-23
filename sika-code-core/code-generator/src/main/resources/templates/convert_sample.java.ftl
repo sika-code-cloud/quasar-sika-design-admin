@@ -2,8 +2,6 @@ package ${package.Convert};
 
 import com.sika.code.standard.base.convert.BaseConvert;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ${package.Entity}.${entity};
@@ -25,32 +23,5 @@ public interface ${table.classBodyName}Convert extends BaseConvert<${table.entit
      * </p>
      */
     ${table.classBodyName}Convert INSTANCE = Mappers.getMapper(${table.classBodyName}Convert.class);
-    /**
-     * <p>
-     * 将实体对象转化为DTO对象
-     * </p>
-     *
-     * @param ${table.entityName?uncap_first} : 实体对象
-     * @return ${table.classBodyName?uncap_first}DTO : 数据传输对象
-     * @author ${author}
-     * @date ${cfg.date}
-     */
-    @Override
-    @Mappings({@Mapping(source = "id", target = "${table.classBodyName?uncap_first}Id")})
-    ${table.classBodyName}DTO convertToDTO(${table.entityName} ${table.entityName?uncap_first});
-
-    /**
-     * <p>
-     * 将DTO对象转化为实体对象
-     * </p>
-     *
-     * @param ${table.classBodyName?uncap_first}DTO : 数据传输对象
-     * @return ${table.entityName?uncap_first} : 实体对象
-     * @author ${author}
-     * @date ${cfg.date}
-     */
-    @Override
-    @Mappings({@Mapping(source = "${table.classBodyName?uncap_first}Id", target = "id")})
-    ${table.entityName} convertToEntity(${table.classBodyName}DTO ${table.classBodyName?uncap_first}DTO);
 
 }

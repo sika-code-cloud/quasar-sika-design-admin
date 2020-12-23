@@ -16,13 +16,9 @@ import java.util.Date;
 public class BaseEntity<PRIMARY extends Serializable, BY> {
     @TableId(type = IdType.AUTO)
     private PRIMARY id;
-    @TableField(fill = FieldFill.INSERT)
     private BY createBy;
-    @TableField(fill = FieldFill.INSERT)
     private Date createDate;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private BY updateBy;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateDate;
     @Version
     private Integer version;
