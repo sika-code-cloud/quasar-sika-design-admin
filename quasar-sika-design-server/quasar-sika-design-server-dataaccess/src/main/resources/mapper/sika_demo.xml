@@ -128,38 +128,4 @@
             </otherwise>
         </choose>
     </sql>
-    <insert id="insertSelective">
-        insert into sika_demo
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">name,</if>
-            <if test="age != null">age,</if>
-            <if test="nickname != null">nickname,</if>
-            <if test="priority != null">priority,</if>
-            <if test="id != null">id,</if>
-            <if test="createBy != null">createBy,</if>
-            <if test="createDate != null">createDate,</if>
-            <if test="updateBy != null">updateBy,</if>
-            <if test="updateDate != null">updateDate,</if>
-            <if test="version != null">version,</if>
-            <if test="isDeleted != null">isDeleted,</if>
-            <if test="available != null">available,</if>
-            <if test="remark != null">remark,</if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
-            <if test="age != null">#{age,jdbcType=NUMERIC},</if>
-            <if test="nickname != null">#{nickname,jdbcType=VARCHAR},</if>
-            <if test="priority != null">#{priority,jdbcType=NUMERIC},</if>
-            <if test="id != null">#{id},</if>
-            <if test="createBy != null">#{createBy},</if>
-            <if test="createDate != null">#{createDate,jdbcType=TIMESTAMP},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateDate != null">#{updateDate,jdbcType=TIMESTAMP},</if>
-            <if test="version != null">#{version,jdbcType=NUMERIC},</if>
-            <if test="isDeleted != null">#{isDeleted,jdbcType=NUMERIC},</if>
-            <if test="available != null">#{available,jdbcType=NUMERIC},</if>
-            <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
-        </trim>
-    </insert>
 </mapper>
