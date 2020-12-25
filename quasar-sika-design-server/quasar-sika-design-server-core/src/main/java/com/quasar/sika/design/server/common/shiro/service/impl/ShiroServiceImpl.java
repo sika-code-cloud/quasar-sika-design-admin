@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 @Slf4j
-@Service
+//@Service
 public class ShiroServiceImpl implements ShiroService {
 
     @Autowired

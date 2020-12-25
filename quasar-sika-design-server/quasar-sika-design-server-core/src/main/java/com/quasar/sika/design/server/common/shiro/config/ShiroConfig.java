@@ -32,7 +32,7 @@ import java.util.Map;
  * @author : zhengqing
  * @date : 2019/8/23 15:52
  */
-@Configuration
+//@Configuration
 public class ShiroConfig {
 
     private final String CACHE_KEY = "shiro:cache:";
