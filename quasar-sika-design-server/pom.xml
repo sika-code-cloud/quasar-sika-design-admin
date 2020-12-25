@@ -15,7 +15,6 @@
         <module>quasar-sika-design-server-web</module>
         <module>quasar-sika-design-server-generator</module>
     </modules>
-
     <properties>
         <!-- 项目构建属性 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,7 +27,8 @@
         <!-- spring-boot依赖版本号 -->
         <spring-boot-dependencies.version>2.1.7.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
-
+        <shiro-spring.version>1.4.0</shiro-spring.version>
+        <shiro-redis.version>3.1.0</shiro-redis.version>
     </properties>
 
 
@@ -39,15 +39,22 @@
             <version>${com.sika.code.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sika.code.core</groupId>
-            <artifactId>mq-rabbit</artifactId>
-            <version>${com.sika.code.core.version}</version>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
         </dependency>
+        <!-- Shiro 核心依赖 -->
         <dependency>
-            <groupId>com.sika.code.core</groupId>
-            <artifactId>lock-redis</artifactId>
-            <version>${com.sika.code.core.version}</version>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro-spring.version}</version>
         </dependency>
+        <!-- Shiro-redis插件 -->
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>${shiro-redis.version}</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -60,14 +67,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!-- 集成spring-cloud -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-dependencies</artifactId>-->
+<!--                <version>${spring-cloud-dependencies.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
             <!--<dependency>-->
             <!--<groupId>org.springframework.cloud</groupId>-->
             <!--<artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
