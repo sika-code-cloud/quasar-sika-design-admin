@@ -24,7 +24,7 @@ public class BaseStandardController extends BaseController {
     @Autowired
     protected HttpSession httpSession;
     @Autowired
-    private ResultGenerator resultGenerator;
+    protected ResultGenerator resultGenerator;
 
     protected Result generateResult(Object object) {
         return resultGenerator.generateResult(object);

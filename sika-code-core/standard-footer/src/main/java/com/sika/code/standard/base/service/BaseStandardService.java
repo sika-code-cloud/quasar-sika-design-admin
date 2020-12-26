@@ -22,6 +22,10 @@ import java.util.List;
  * @date 2018/8/30
  */
 public interface BaseStandardService<DTO extends BaseStandardDTO> {
+    /**
+     * 根据主键查询数据
+     */
+    DTO findByPrimaryKey(Long primaryKey);
 
     /**
      * <p>

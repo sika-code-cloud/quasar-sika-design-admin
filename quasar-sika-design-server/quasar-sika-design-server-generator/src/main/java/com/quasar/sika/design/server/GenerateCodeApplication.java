@@ -11,11 +11,13 @@ import com.sika.code.GeneratorCodeDTO;
  * @create 2019-05-09 15:32
  */
 public class GenerateCodeApplication {
-    private static String tableName = "sika_demo";
     private static String author = "daiqi";
 
     public static void main(String[] args) {
-        GeneratorCodeDTO generatorCodeDTO = GenerateCodeConfig.buildGeneratorCodeDTO(tableName, author);
-        new GenerateCodeHandler().generateCode(generatorCodeDTO);
+        String [] tableNames = {"sika_user", "sika_role", "sika_menu", "sika_user_role", "sika_role_menu"};
+        for (String tableName : tableNames) {
+            GeneratorCodeDTO generatorCodeDTO = GenerateCodeConfig.buildGeneratorCodeDTO(tableName, author);
+            new GenerateCodeHandler().generateCode(generatorCodeDTO);
+        }
     }
 }

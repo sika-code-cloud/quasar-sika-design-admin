@@ -1,12 +1,16 @@
 package com.quasar.sika.design.server.common.shiro.realm;
 
-import com.quasar.sika.design.server.common.shiro.system.entity.Menu;
-import com.quasar.sika.design.server.common.shiro.system.entity.Role;
-import com.quasar.sika.design.server.common.shiro.system.entity.User;
-import com.quasar.sika.design.server.common.shiro.system.mapper.MenuMapper;
-import com.quasar.sika.design.server.common.shiro.system.mapper.RoleMapper;
-import com.quasar.sika.design.server.common.shiro.system.mapper.UserMapper;
+import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
+import com.quasar.sika.design.server.business.menu.service.MenuService;
+import com.quasar.sika.design.server.business.role.pojo.dto.RoleDTO;
+import com.quasar.sika.design.server.business.role.service.RoleService;
+import com.quasar.sika.design.server.business.user.entity.UserEntity;
+import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
+import com.quasar.sika.design.server.business.user.service.UserService;
+import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
+import com.sika.code.basic.constant.BaseConstant;
+import com.sika.code.basic.util.BaseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -24,11 +28,11 @@ import java.util.Set;
 public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
     @Autowired
-    private MenuMapper menuMapper;
+    private MenuService menuService;
     @Autowired
-    private RoleMapper roleMapper;
+    private RoleService roleService;
 
     @Override
     public String getName() {
@@ -42,18 +46,18 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         // 获取用户
-        User user = (User) principalCollection.getPrimaryPrincipal();
-        Integer userId =user.getId();
+        UserEntity user = (UserEntity) principalCollection.getPrimaryPrincipal();
+        Long userId = user.getId();
         // 这里可以进行授权和处理
         Set<String> rolesSet = new HashSet<>();
         Set<String> permsSet = new HashSet<>();
         // 获取当前用户对应的权限(这里根据业务自行查询)
-        List<Role> roleList = roleMapper.selectRoleByUserId( userId );
-        for (Role role:roleList) {
-            rolesSet.add( role.getCode() );
-            List<Menu> menuList = menuMapper.selectMenuByRoleId( role.getId() );
-            for (Menu menu :menuList) {
-                permsSet.add( menu.getResources() );
+        List<RoleDTO> roleList = roleService.listRoleByMenuId(userId);
+        for (RoleDTO role : roleList) {
+            rolesSet.add(role.getCode());
+            List<MenuDTO> menuList = menuService.listMenuByRoleId(role.getId());
+            for (MenuDTO menu : menuList) {
+                permsSet.add(menu.getResources());
             }
         }
         //将查到的权限和角色分别传入authorizationInfo中
@@ -68,28 +72,27 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        UsernamePasswordToken tokenInfo = (UsernamePasswordToken)authenticationToken;
+        UsernamePasswordToken tokenInfo = (UsernamePasswordToken) authenticationToken;
         // 获取用户输入的账号
         String username = tokenInfo.getUsername();
         // 获取用户输入的密码
-        String password = String.valueOf( tokenInfo.getPassword() );
+        String password = String.valueOf(tokenInfo.getPassword());
 
         // 通过username从数据库中查找 User对象，如果找到进行验证
         // 实际项目中,这里可以根据实际情况做缓存,如果不做,Shiro自己也是有时间间隔机制,2分钟内不会重复执行该方法
-        User user = userMapper.selectUserByUsername(username);
+        UserDTO user = userService.findByUsername(username);
         // 判断账号是否存在
-        if (user == null) {
+        if (BaseUtil.isNull(user)) {
             //返回null -> shiro就会知道这是用户不存在的异常
             return null;
         }
         // 验证密码 【注：这里不采用shiro自身密码验证 ， 采用的话会导致用户登录密码错误时，已登录的账号也会自动下线！  如果采用，移除下面的清除缓存到登录处 处理】
-        if ( !password.equals( user.getPwd() ) ){
+        if (BaseUtil.notEquals(SHA256Util.sha256(password, username), user.getPassword())) {
             throw new IncorrectCredentialsException("用户名或者密码错误");
         }
-
         // 判断账号是否被冻结
-        if (user.getFlag()==null|| "0".equals(user.getFlag())){
-            throw new LockedAccountException();
+        if (user.getAvailable() == null || BaseConstant.AvailableEnum.notAvailable(user.getAvailable())) {
+            throw new LockedAccountException("当前账号已被冻结");
         }
         /**
          * 进行验证 -> 注：shiro会自动验证密码
@@ -98,15 +101,19 @@ public class ShiroRealm extends AuthorizingRealm {
          * 参数3：credentialsSalt -> 设置盐值
          * 参数4：realmName -> 自定义的Realm
          */
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getUsername()), getName());
         // 验证成功开始踢人(清除缓存和Session)
-        ShiroUtils.deleteCache(username,true);
-
+        ShiroUtils.deleteCache(username, true);
         // 认证成功后更新token
-        String token = ShiroUtils.getSession().getId().toString();
-        user.setToken( token );
-        userMapper.updateById(user);
+        updateToken(user);
         return authenticationInfo;
     }
 
+    private void updateToken(UserDTO userFromDB) {
+        // 认证成功后更新token
+        UserDTO userForUpdate = new UserDTO();
+        userForUpdate.setId(userFromDB.getId());
+        userForUpdate.setToken(ShiroUtils.getSessionId());
+        userService.updateById(userForUpdate);
+    }
 }

@@ -1,14 +1,14 @@
 package com.quasar.sika.design.server.common.shiro.service.impl;
 
+import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
+import com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery;
+import com.quasar.sika.design.server.business.menu.service.MenuService;
+import com.quasar.sika.design.server.business.role.pojo.dto.RoleDTO;
+import com.quasar.sika.design.server.business.role.service.RoleService;
+import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
+import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.shiro.service.ShiroService;
-import com.quasar.sika.design.server.common.shiro.system.entity.Menu;
-import com.quasar.sika.design.server.common.shiro.system.entity.Role;
-import com.quasar.sika.design.server.common.shiro.system.entity.User;
-import com.quasar.sika.design.server.common.shiro.system.mapper.MenuMapper;
-import com.quasar.sika.design.server.common.shiro.system.mapper.RoleMapper;
-import com.quasar.sika.design.server.common.shiro.system.mapper.UserMapper;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
-import com.sika.code.basic.errorcode.BaseErrorCode;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,65 +27,58 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 @Slf4j
-//@Service
+@Service
 public class ShiroServiceImpl implements ShiroService {
 
     @Autowired
-    private MenuMapper menuMapper;
+    private MenuService menuService;
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
     @Autowired
-    private RoleMapper roleMapper;
+    private RoleService roleService;
 
     @Override
     public Map<String, String> loadFilterChainDefinitionMap() {
         // 权限控制map
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置过滤:不会被拦截的链接 -> 放行 start ----------------------------------------------------------
-        // 放行Swagger2页面，需要放行这些
-        filterChainDefinitionMap.put("/swagger-ui.html","anon");
-        filterChainDefinitionMap.put("/swagger/**","anon");
-        filterChainDefinitionMap.put("/webjars/**", "anon");
-        filterChainDefinitionMap.put("/swagger-resources/**","anon");
-        filterChainDefinitionMap.put("/v2/**","anon");
-        filterChainDefinitionMap.put("/static/**", "anon");
 
+        filterChainDefinitionMap.put("/auth/unLogin", "anon");
         // 登陆
-        filterChainDefinitionMap.put("/api/auth/login/**", "anon");
+        filterChainDefinitionMap.put("/auth/login/**", "anon");
         // 三方登录
-        filterChainDefinitionMap.put("/api/auth/loginByQQ", "anon");
-        filterChainDefinitionMap.put("/api/auth/afterlogin.do", "anon");
+        filterChainDefinitionMap.put("/**/anon", "anon");
         // 退出
-        filterChainDefinitionMap.put("/api/auth/logout", "anon");
+        filterChainDefinitionMap.put("/auth/logout", "anon");
         // 放行未授权接口，重定向使用
-        filterChainDefinitionMap.put("/api/auth/unauth", "anon");
+        filterChainDefinitionMap.put("/auth/unauth", "anon");
         // token过期接口
-        filterChainDefinitionMap.put("/api/auth/tokenExpired", "anon");
+        filterChainDefinitionMap.put("/auth/tokenExpired", "anon");
         // 被挤下线
-        filterChainDefinitionMap.put("/api/auth/downline", "anon");
+        filterChainDefinitionMap.put("/auth/downline", "anon");
         // 放行 end ----------------------------------------------------------
 
         // 从数据库或缓存中查取出来的url与resources对应则不会被拦截 放行
-        List<Menu> permissionList = menuMapper.selectList( null );
-        if ( !CollectionUtils.isEmpty( permissionList ) ) {
-            permissionList.forEach( e -> {
-                if ( StringUtils.isNotBlank( e.getUrl() ) ) {
+        List<MenuDTO> permissionList = menuService.list(new MenuQuery());
+        if (!CollectionUtils.isEmpty(permissionList)) {
+            permissionList.forEach(e -> {
+                if (StringUtils.isNotBlank(e.getPath())) {
                     // 根据url查询相关联的角色名,拼接自定义的角色权限
-                    List<Role> roleList = roleMapper.selectRoleByMenuId( e.getId() );
-                    StringJoiner zqRoles = new StringJoiner(",", "zqRoles[", "]");
-                    if ( !CollectionUtils.isEmpty( roleList ) ){
-                        roleList.forEach( f -> {
-                            zqRoles.add( f.getCode() );
+                    List<RoleDTO> roleList = roleService.listRoleByMenuId(e.getId());
+                    StringJoiner scRoles = new StringJoiner(",", "scRoles[", "]");
+                    if (!CollectionUtils.isEmpty(roleList)) {
+                        roleList.forEach(f -> {
+                            scRoles.add(f.getCode());
                         });
                     }
 
                     // 注意过滤器配置顺序不能颠倒
                     // ① 认证登录
                     // ② 认证自定义的token过滤器 - 判断token是否有效
-                    // ③ 角色权限 zqRoles：自定义的只需要满足其中一个角色即可访问  ;  roles[admin,guest] : 默认需要每个参数满足才算通过，相当于hasAllRoles()方法
+                    // ③ 角色权限 scRoles：自定义的只需要满足其中一个角色即可访问  ;  roles[admin,guest] : 默认需要每个参数满足才算通过，相当于hasAllRoles()方法
                     // ④ zqPerms:认证自定义的url过滤器拦截权限  【注：多个过滤器用 , 分割】
 //                    filterChainDefinitionMap.put( "/api" + e.getUrl(),"authc,token,roles[admin,guest],zqPerms[" + e.getResources() + "]" );
-                    filterChainDefinitionMap.put( "/api" + e.getUrl(),"authc,token,"+ zqRoles.toString() +",zqPerms[" + e.getResources() + "]" );
+                    filterChainDefinitionMap.put(e.getPath(), "authc,token," + scRoles.toString() + ",scPerms[" + e.getResources() + "]");
 //                        filterChainDefinitionMap.put("/api/system/user/listPage", "authc,token,zqPerms[user1]"); // 写死的一种用法
                 }
             });
@@ -96,7 +89,7 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public void updatePermission(ShiroFilterFactoryBean shiroFilterFactoryBean, Integer roleId, Boolean isRemoveSession) {
+    public void updatePermission(ShiroFilterFactoryBean shiroFilterFactoryBean, Long roleId, Boolean isRemoveSession) {
         synchronized (this) {
             AbstractShiroFilter shiroFilter;
             try {
@@ -122,19 +115,19 @@ public class ShiroServiceImpl implements ShiroService {
             log.info("--------------- 动态生成url权限成功！ ---------------");
 
             // 动态更新该角色相关联的用户shiro权限
-            if(roleId != null){
-                updatePermissionByRoleId(roleId,isRemoveSession);
+            if (roleId != null) {
+                updatePermissionByRoleId(roleId, isRemoveSession);
             }
         }
     }
 
     @Override
-    public void updatePermissionByRoleId(Integer roleId, Boolean isRemoveSession) {
+    public void updatePermissionByRoleId(Long roleId, Boolean isRemoveSession) {
         // 查询当前角色的用户shiro缓存信息 -> 实现动态权限
-        List<User> userList = userMapper.selectUserByRoleId(roleId);
+        List<UserDTO> userList = userService.listUserByRoleId(roleId);
         // 删除当前角色关联的用户缓存信息,用户再次访问接口时会重新授权 ; isRemoveSession为true时删除Session -> 即强制用户退出
-        if ( !CollectionUtils.isEmpty( userList ) ) {
-            for (User user : userList) {
+        if (!CollectionUtils.isEmpty(userList)) {
+            for (UserDTO user : userList) {
                 ShiroUtils.deleteCache(user.getUsername(), isRemoveSession);
             }
         }

@@ -19,11 +19,11 @@ public class GenerateCodeConfig {
 
     /** 数据库配置 */
     private static String tablePrefix = "sika_";
-    private static String dataBaseUrl = "localhost";
+    private static String dataBaseUrl = "121.89.202.68";
     private static String dataBaseName = "sika-design-admin";
     private static String dataBasePort = "3306";
     private static String username = "root";
-    private static String password = "123456";
+    private static String password = "SikaDesignAdmin20201225";
 
     public static GeneratorCodeDTO buildGeneratorCodeDTO(String tableName, String author) {
         GeneratorCodeDTO generatorCodeDTO = new GeneratorCodeDTO();

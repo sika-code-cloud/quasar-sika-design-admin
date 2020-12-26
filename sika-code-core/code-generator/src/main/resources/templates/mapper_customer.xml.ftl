@@ -98,12 +98,19 @@
 
     <!-- 根据查询条件SQL -->
     <sql id="query_sql" >
+        <if test="query.id != null">AND id = ${r"#{"}query.id${r"}"}</if>
         <if test="query.${table.classBodyName?uncap_first}Id != null">AND id = ${r"#{"}query.${table.classBodyName?uncap_first}Id${r"}"}</if>
         <#list table.fields as field>
         <#if !field.keyFlag>
         <if test="query.${field.propertyName ? uncap_first} != null">AND ${field.name} = ${r"#{"}query.${field.propertyName ? uncap_first}${r"}"}</if>
         </#if>
         </#list>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                ${r"#{"}item${r"}"}
+            </foreach>
+        </if>
     </sql>
 
     <!-- 排序的sql -->

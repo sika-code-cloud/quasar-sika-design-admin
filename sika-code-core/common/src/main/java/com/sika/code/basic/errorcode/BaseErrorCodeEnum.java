@@ -48,6 +48,7 @@ public enum BaseErrorCodeEnum implements BaseErrorCode {
 	DATA_ERROR("BASE_000017", "[%s]有误"),
 	NOT_HAVE_PERMISSION("AUTHORITY_000005", "没有足够的权限"),
 	PARAM_ERROR("BASE_000018", "参数错误"),
+	BUSINESS_EXCEPTION("BASE_100001", "业务一场"),
 	;
 
 	private String code;

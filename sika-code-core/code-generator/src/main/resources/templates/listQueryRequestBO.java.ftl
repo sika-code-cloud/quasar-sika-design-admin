@@ -5,6 +5,7 @@ import ${table.modulePackage}.business.${package.ModuleName}.pojo.bo.response.qu
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import java.util.Set;
 
 /**
  * <p>

@@ -49,10 +49,21 @@ public class ResultGenerator {
 
     public Result generateResult(Object object) {
         Result result = Result.newInstance(object);
-        if (BaseUtil.isNotNull(noGenerator)) {
-            result.setMsgNo(noGenerator.generateNoCore(noConfig.getPrefix(), noConfig.getSuffixCount()));
-        }
+        result.setMsgNo(getResultNo());
         return result;
+    }
+
+    public Result generateResultError(String message) {
+        Result result = Result.newError(message);
+        result.setMsgNo(getResultNo());
+        return result;
+    }
+
+    private String getResultNo() {
+        if (BaseUtil.isNull(noGenerator)) {
+            return null;
+        }
+        return noGenerator.generateNoCore(noConfig.getPrefix(), noConfig.getSuffixCount());
     }
 
 

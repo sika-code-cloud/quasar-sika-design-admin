@@ -2,6 +2,7 @@ package com.sika.code.result;
 
 
 import com.sika.code.basic.errorcode.BaseErrorCode;
+import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.pojo.dto.BaseMsgDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -52,6 +53,14 @@ public class Result extends BaseMsgDTO implements Serializable {
      */
     public static Result newInstance(Object data) {
         return new Result(data);
+    }
+
+    public static Result newError(String message) {
+        Result result = new Result();
+        result.setCode(BaseErrorCodeEnum.SYS_ERROR.getCode());
+        result.setMessage(message);
+        result.setSuccess(false);
+        return result;
     }
 
 }

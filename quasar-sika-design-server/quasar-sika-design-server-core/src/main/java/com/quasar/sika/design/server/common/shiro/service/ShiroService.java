@@ -22,7 +22,7 @@ public interface ShiroService {
      * @param isRemoveSession:
      * @return: void
      */
-    void updatePermission(ShiroFilterFactoryBean shiroFilterFactoryBean, Integer roleId, Boolean isRemoveSession);
+    void updatePermission(ShiroFilterFactoryBean shiroFilterFactoryBean, Long roleId, Boolean isRemoveSession);
 
     /**
      * shiro动态权限加载 -> 原理：删除shiro缓存，重新执行doGetAuthorizationInfo方法授权角色和权限
@@ -31,6 +31,6 @@ public interface ShiroService {
      * @param isRemoveSession:
      * @return: void
      */
-    void updatePermissionByRoleId(Integer roleId, Boolean isRemoveSession);
+    void updatePermissionByRoleId(Long roleId, Boolean isRemoveSession);
 
 }

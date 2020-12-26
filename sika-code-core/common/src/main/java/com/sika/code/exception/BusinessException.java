@@ -2,6 +2,7 @@ package com.sika.code.exception;
 
 import cn.hutool.core.collection.CollUtil;
 import com.sika.code.basic.errorcode.BaseErrorCode;
+import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.pojo.dto.ServiceResult;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.common.array.ArrayUtil;
@@ -59,6 +60,10 @@ public class BusinessException extends RuntimeException {
         super();
     }
 
+    public BusinessException(String message) {
+        this.code = BaseErrorCodeEnum.BUSINESS_EXCEPTION.getCode();
+        this.message = message;
+    }
     public BusinessException(String code, String message) {
         this.code = code;
         this.message = message;

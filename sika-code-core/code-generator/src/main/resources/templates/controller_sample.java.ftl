@@ -37,7 +37,7 @@ public class ${table.controllerName} extends BaseStandardController {
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody ${table.classBodyName}DTO ${table.classBodyName?uncap_first}Dto) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.update(${table.classBodyName?uncap_first}Dto));
+        return super.generateResult(${table.classBodyName?uncap_first}Service.updateById(${table.classBodyName?uncap_first}Dto));
     }
 
     @RequestMapping(value = "page")

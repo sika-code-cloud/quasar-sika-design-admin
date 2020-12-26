@@ -29,6 +29,10 @@ public class ${table.classBodyName}Query extends BaseStandardQuery implements Se
      */
     protected ${field.propertyType} ${field.propertyName};
 </#list>
+    /**
+     * id列表
+     */
+    protected Set${r"<"}Long${r">"} ids;
 <#------------  END 字段循环遍历  ---------->
 
 }
