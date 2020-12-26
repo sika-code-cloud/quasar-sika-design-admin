@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.shiro.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
 import com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery;
 import com.quasar.sika.design.server.business.menu.service.MenuService;
@@ -126,10 +127,11 @@ public class ShiroServiceImpl implements ShiroService {
         // 查询当前角色的用户shiro缓存信息 -> 实现动态权限
         List<UserDTO> userList = userService.listUserByRoleId(roleId);
         // 删除当前角色关联的用户缓存信息,用户再次访问接口时会重新授权 ; isRemoveSession为true时删除Session -> 即强制用户退出
-        if (!CollectionUtils.isEmpty(userList)) {
-            for (UserDTO user : userList) {
-                ShiroUtils.deleteCache(user.getUsername(), isRemoveSession);
-            }
+        if (CollUtil.isEmpty(userList)) {
+           return;
+        }
+        for (UserDTO user : userList) {
+            ShiroUtils.deleteCache(user.getUsername(), isRemoveSession);
         }
         log.info("--------------- 动态修改用户权限成功！ ---------------");
     }

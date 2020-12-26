@@ -39,6 +39,7 @@ public class ShiroConfig {
     private RedisProperties redisProperties;
     @Autowired
     private ShiroService shiroService;
+
     /**
      * 开启Shiro-aop注解支持：使用代理方式所以需要开启代码支持
      */
@@ -131,8 +132,7 @@ public class ShiroConfig {
     @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(redisProperties.getHost());
-        redisManager.setPort(redisProperties.getPort());
+        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
         redisManager.setTimeout((int) (redisProperties.getTimeout().getSeconds() / 1000));
         redisManager.setPassword(redisProperties.getPassword());
         return redisManager;
