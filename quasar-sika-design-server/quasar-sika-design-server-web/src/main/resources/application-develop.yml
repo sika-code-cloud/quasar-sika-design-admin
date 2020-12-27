@@ -3,7 +3,7 @@ server:
   tomcat:
     accept-count: 1024
     max-threads: 1024
-debug: false
+debug: true
 sika:
   code:
     workspace:
