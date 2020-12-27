@@ -44,6 +44,7 @@ public class ShiroServiceImpl implements ShiroService {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置过滤:不会被拦截的链接 -> 放行 start ----------------------------------------------------------
 
+        filterChainDefinitionMap.put("/error", "anon");
         filterChainDefinitionMap.put("/auth/unLogin", "anon");
         // 登陆
         filterChainDefinitionMap.put("/auth/login/**", "anon");
@@ -52,7 +53,7 @@ public class ShiroServiceImpl implements ShiroService {
         // 退出
         filterChainDefinitionMap.put("/auth/logout", "anon");
         // 放行未授权接口，重定向使用
-        filterChainDefinitionMap.put("/auth/unauth", "anon");
+        filterChainDefinitionMap.put("/auth/unAuth", "anon");
         // token过期接口
         filterChainDefinitionMap.put("/auth/tokenExpired", "anon");
         // 被挤下线

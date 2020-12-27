@@ -28,9 +28,8 @@
         <spring-boot-dependencies.version>2.1.7.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
         <shiro-spring.version>1.6.0</shiro-spring.version>
-        <shiro-redis.version>3.2.3</shiro-redis.version>
+        <shiro-redis.version>3.2.0</shiro-redis.version>
     </properties>
-
 
     <dependencies>
         <dependency>

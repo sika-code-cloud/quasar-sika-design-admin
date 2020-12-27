@@ -10,19 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.UserFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class TokenCheckFilter extends UserFilter {
     @Autowired
     ResultGenerator resultGenerator;
-    /**
-     * token过期、失效
-     */
-    private static final String TOKEN_EXPIRED_URL = "/api/auth/tokenExpired";
 
     /**
      * 判断是否拥有权限 true:认证成功  false:认证失败

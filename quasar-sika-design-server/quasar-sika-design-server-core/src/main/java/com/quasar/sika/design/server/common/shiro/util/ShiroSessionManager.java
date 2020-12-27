@@ -28,13 +28,14 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
      */
     @Override
     public Serializable getSessionId(ServletRequest request, ServletResponse response) {
-        String token = WebUtils.toHttp(request).getHeader(ShiroConstant.REQUEST_HEADER);
+        Serializable token = WebUtils.toHttp(request).getHeader(ShiroConstant.REQUEST_HEADER);
         // 如果请求头中存在token 则从请求头中获取token
-        if ( StringUtils.isNotBlank( token ) ) {
-            return token;
+        if (token != null && StringUtils.isNotBlank(token.toString())) {
+             return token;
         } else {
             // 否则按默认规则从cookie取token
-            return super.getSessionId(request, response);
+            token = super.getSessionId(request, response);
         }
+        return token;
     }
 }

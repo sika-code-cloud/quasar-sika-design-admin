@@ -1,21 +1,15 @@
 package com.quasar.sika.design.server.common.auth;
 
 
-import com.quasar.sika.design.server.business.user.mapper.UserMapper;
-import com.quasar.sika.design.server.business.userrole.mapper.UserRoleMapper;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
-import com.quasar.sika.design.server.common.shiro.service.ShiroService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,15 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController extends BaseStandardController {
     @Autowired
     private AuthService authService;
-    @Autowired
-    private ShiroService shiroService;
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    UserRoleMapper userRoleMapper;
 
     @PostMapping("/register/anon")
-    public Result login(@RequestBody AuthRegisterRequest request) {
+    public Result register(@RequestBody AuthRegisterRequest request) {
         return super.generateResult(authService.register(request));
     }
 
@@ -51,7 +39,7 @@ public class AuthController extends BaseStandardController {
     }
 
     @PostMapping("/update_current_password")
-    public Result login(@RequestBody AuthUpdatePasswordRequest request) {
+    public Result updateCurrentPassword(@RequestBody AuthUpdatePasswordRequest request) {
         return super.generateResult(authService.updateCurrentPassword(request));
     }
 
@@ -110,7 +98,7 @@ public class AuthController extends BaseStandardController {
 //        return result;
 //    }
 
-    @PostMapping("/logout")
+    @RequestMapping("/logout")
     public Result logout(HttpServletRequest request, HttpServletResponse response) {
         // 更新token
 //        User user = ShiroUtils.getUserInfo();
@@ -126,16 +114,17 @@ public class AuthController extends BaseStandardController {
      * 未登录
      */
     @RequestMapping("/unLogin")
+    @ResponseBody
     public Result unLogin() {
-        return resultGenerator.generateResultError("未登录");
+        return resultGenerator.generateResultError("用户尚未登录，请先登录");
     }
 
     /**
      * 未授权
      */
-    @RequestMapping("/unauth")
-    public Result unauth() {
-        return resultGenerator.generateResultError("未授权");
+    @RequestMapping("/unAuth")
+    public Result unAuth() {
+        return resultGenerator.generateResultError("当前用户没有授权");
     }
 
     /**
