@@ -1,12 +1,12 @@
 package com.sika.code.common.http.util;
 
 import cn.hutool.http.HttpUtil;
+import com.google.common.collect.Maps;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.common.json.util.JSONUtil;
+import com.sika.code.common.string.constant.StringConstant;
 import com.sika.code.common.string.util.StringUtil;
 import com.sika.code.common.util.MapUtil;
-import com.google.common.collect.Maps;
-import com.sika.code.common.string.constant.StringConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -233,4 +233,13 @@ public class RequestUtil extends HttpUtil {
         }
         return XFor;
     }
+
+    public static String getReferer(HttpServletRequest request) {
+        return getHeader(request, "Referer");
+    }
+
+    public static String getUa(HttpServletRequest request) {
+        return getHeader(request, "User-Agent");
+    }
+
 }

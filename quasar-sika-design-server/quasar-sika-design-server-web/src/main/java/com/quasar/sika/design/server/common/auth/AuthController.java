@@ -30,22 +30,22 @@ public class AuthController extends BaseStandardController {
 
     @PostMapping("/register/anon")
     public Result register(@RequestBody AuthRegisterRequest request) {
-        return super.generateResult(authService.register(request));
+        return super.success(authService.register(request));
     }
 
     @PostMapping("/login")
     public Result login(@RequestBody AuthLoginRequest request) {
-        return super.generateResult(authService.login(request));
+        return super.success(authService.login(request));
     }
 
     @PostMapping("/update_current_password")
     public Result updateCurrentPassword(@RequestBody AuthUpdatePasswordRequest request) {
-        return super.generateResult(authService.updateCurrentPassword(request));
+        return super.success(authService.updateCurrentPassword(request));
     }
 
     @PostMapping("/update_password")
     public Result updatePassword(@RequestBody AuthUpdatePasswordRequest request) {
-        return super.generateResult(authService.updatePassword(request));
+        return super.success(authService.updatePassword(request));
     }
 
 //    /**
@@ -107,7 +107,7 @@ public class AuthController extends BaseStandardController {
 //        userMapper.updateById( userNew );
         // 用户登出
         ShiroUtils.logout();
-        return generateResult("退出系统成功");
+        return success("退出系统成功");
     }
 
     /**

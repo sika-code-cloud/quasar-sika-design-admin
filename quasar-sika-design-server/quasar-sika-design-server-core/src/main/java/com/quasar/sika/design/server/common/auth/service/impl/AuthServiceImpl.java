@@ -4,16 +4,17 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
-import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
+import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
 import com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse;
+import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserService userService;
@@ -103,4 +105,5 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException("密码修改失败,请稍后重试");
         }
     }
+
 }

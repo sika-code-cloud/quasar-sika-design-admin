@@ -44,7 +44,7 @@ public class ShiroServiceImpl implements ShiroService {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置过滤:不会被拦截的链接 -> 放行 start ----------------------------------------------------------
 
-        filterChainDefinitionMap.put("/error", "anon");
+        filterChainDefinitionMap.put("/oauth/**/**", "anon");
         filterChainDefinitionMap.put("/auth/unLogin", "anon");
         // 登陆
         filterChainDefinitionMap.put("/auth/login/**", "anon");

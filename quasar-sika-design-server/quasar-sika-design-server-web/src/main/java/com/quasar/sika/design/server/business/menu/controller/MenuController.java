@@ -28,31 +28,31 @@ public class MenuController extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody MenuDTO menuDto) {
-        return super.generateResult(menuService.save(menuDto));
+        return super.success(menuService.save(menuDto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<MenuDTO> menuDtos) {
-        return super.generateResult(menuService.saveForBatch(menuDtos));
+        return super.success(menuService.saveForBatch(menuDtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody MenuDTO menuDto) {
-        return super.generateResult(menuService.updateById(menuDto));
+        return super.success(menuService.updateById(menuDto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody MenuQuery menuQuery) {
-        return super.generateResult(menuService.page(menuQuery));
+        return super.success(menuService.page(menuQuery));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody MenuQuery menuQuery) {
-        return super.generateResult(menuService.find(menuQuery));
+        return super.success(menuService.find(menuQuery));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody MenuQuery menuQuery) {
-        return super.generateResult(menuService.list(menuQuery));
+        return super.success(menuService.list(menuQuery));
     }
 }

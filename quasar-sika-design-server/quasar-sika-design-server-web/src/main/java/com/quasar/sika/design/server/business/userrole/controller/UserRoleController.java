@@ -28,31 +28,31 @@ public class UserRoleController extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody UserRoleDTO userRoleDto) {
-        return super.generateResult(userRoleService.save(userRoleDto));
+        return super.success(userRoleService.save(userRoleDto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<UserRoleDTO> userRoleDtos) {
-        return super.generateResult(userRoleService.saveForBatch(userRoleDtos));
+        return super.success(userRoleService.saveForBatch(userRoleDtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody UserRoleDTO userRoleDto) {
-        return super.generateResult(userRoleService.updateById(userRoleDto));
+        return super.success(userRoleService.updateById(userRoleDto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody UserRoleQuery userRoleQuery) {
-        return super.generateResult(userRoleService.page(userRoleQuery));
+        return super.success(userRoleService.page(userRoleQuery));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody UserRoleQuery userRoleQuery) {
-        return super.generateResult(userRoleService.find(userRoleQuery));
+        return super.success(userRoleService.find(userRoleQuery));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody UserRoleQuery userRoleQuery) {
-        return super.generateResult(userRoleService.list(userRoleQuery));
+        return super.success(userRoleService.list(userRoleQuery));
     }
 }

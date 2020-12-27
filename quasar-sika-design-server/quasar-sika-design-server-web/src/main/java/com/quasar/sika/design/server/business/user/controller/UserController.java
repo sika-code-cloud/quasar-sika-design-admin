@@ -28,31 +28,31 @@ public class UserController extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody UserDTO userDto) {
-        return super.generateResult(userService.save(userDto));
+        return super.success(userService.save(userDto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<UserDTO> userDtos) {
-        return super.generateResult(userService.saveForBatch(userDtos));
+        return super.success(userService.saveForBatch(userDtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody UserDTO userDto) {
-        return super.generateResult(userService.updateById(userDto));
+        return super.success(userService.updateById(userDto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody UserQuery userQuery) {
-        return super.generateResult(userService.page(userQuery));
+        return super.success(userService.page(userQuery));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody UserQuery userQuery) {
-        return super.generateResult(userService.find(userQuery));
+        return super.success(userService.find(userQuery));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody UserQuery userQuery) {
-        return super.generateResult(userService.list(userQuery));
+        return super.success(userService.list(userQuery));
     }
 }

@@ -28,31 +28,31 @@ public class RoleMenuController extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody RoleMenuDTO roleMenuDto) {
-        return super.generateResult(roleMenuService.save(roleMenuDto));
+        return super.success(roleMenuService.save(roleMenuDto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<RoleMenuDTO> roleMenuDtos) {
-        return super.generateResult(roleMenuService.saveForBatch(roleMenuDtos));
+        return super.success(roleMenuService.saveForBatch(roleMenuDtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody RoleMenuDTO roleMenuDto) {
-        return super.generateResult(roleMenuService.updateById(roleMenuDto));
+        return super.success(roleMenuService.updateById(roleMenuDto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody RoleMenuQuery roleMenuQuery) {
-        return super.generateResult(roleMenuService.page(roleMenuQuery));
+        return super.success(roleMenuService.page(roleMenuQuery));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody RoleMenuQuery roleMenuQuery) {
-        return super.generateResult(roleMenuService.find(roleMenuQuery));
+        return super.success(roleMenuService.find(roleMenuQuery));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody RoleMenuQuery roleMenuQuery) {
-        return super.generateResult(roleMenuService.list(roleMenuQuery));
+        return super.success(roleMenuService.list(roleMenuQuery));
     }
 }

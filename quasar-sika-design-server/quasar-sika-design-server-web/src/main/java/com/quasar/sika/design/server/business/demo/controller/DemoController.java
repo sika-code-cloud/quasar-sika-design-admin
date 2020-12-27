@@ -27,31 +27,31 @@ public class DemoController extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody DemoDTO demoDto) {
-        return super.generateResult(demoService.save(demoDto));
+        return super.success(demoService.save(demoDto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<DemoDTO> demoDtos) {
-        return super.generateResult(demoService.saveForBatch(demoDtos));
+        return super.success(demoService.saveForBatch(demoDtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody DemoDTO demoDto) {
-        return super.generateResult(demoService.updateById(demoDto));
+        return super.success(demoService.updateById(demoDto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody DemoQuery demoQuery) {
-        return super.generateResult(demoService.page(demoQuery));
+        return super.success(demoService.page(demoQuery));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody DemoQuery demoQuery) {
-        return super.generateResult(demoService.find(demoQuery));
+        return super.success(demoService.find(demoQuery));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody DemoQuery demoQuery) {
-        return super.generateResult(demoService.list(demoQuery));
+        return super.success(demoService.list(demoQuery));
     }
 }

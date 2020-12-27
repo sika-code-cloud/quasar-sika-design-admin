@@ -28,31 +28,31 @@ public class RoleController extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody RoleDTO roleDto) {
-        return super.generateResult(roleService.save(roleDto));
+        return super.success(roleService.save(roleDto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<RoleDTO> roleDtos) {
-        return super.generateResult(roleService.saveForBatch(roleDtos));
+        return super.success(roleService.saveForBatch(roleDtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody RoleDTO roleDto) {
-        return super.generateResult(roleService.updateById(roleDto));
+        return super.success(roleService.updateById(roleDto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody RoleQuery roleQuery) {
-        return super.generateResult(roleService.page(roleQuery));
+        return super.success(roleService.page(roleQuery));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody RoleQuery roleQuery) {
-        return super.generateResult(roleService.find(roleQuery));
+        return super.success(roleService.find(roleQuery));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody RoleQuery roleQuery) {
-        return super.generateResult(roleService.list(roleQuery));
+        return super.success(roleService.list(roleQuery));
     }
 }
