@@ -39,12 +39,6 @@ public class ShiroConfig {
     private RedisProperties redisProperties;
     @Autowired
     private ShiroService shiroService;
-    @Autowired
-    private PermissionsAuthFilter permissionsAuthFilter;
-    @Autowired
-    private RolesAuthFilter rolesAuthFilter;
-    @Autowired
-    private TokenCheckFilter tokenCheckFilter;
 
     /**
      * 开启Shiro-aop注解支持：使用代理方式所以需要开启代码支持
@@ -67,9 +61,9 @@ public class ShiroConfig {
         // 自定义过滤器
         Map<String, Filter> filtersMap = new LinkedHashMap<>();
         // 定义过滤器名称 【注：map里面key值对于的value要为authc才能使用自定义的过滤器】
-        filtersMap.put("scPerms", permissionsAuthFilter);
-        filtersMap.put("scRoles", rolesAuthFilter);
-        filtersMap.put("token", tokenCheckFilter);
+        filtersMap.put("scPerms", new PermissionsAuthFilter());
+        filtersMap.put("scRoles", new RolesAuthFilter());
+        filtersMap.put("token", new TokenCheckFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 登录的路径: 如果你没有登录则会跳到这个页面中 - 如果没有设置值则会默认跳转到工程根目录下的"/login.jsp"页面 或 "/login" 映射

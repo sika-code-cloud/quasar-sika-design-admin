@@ -1,6 +1,7 @@
 package com.quasar.sika.design.server.common.shiro.filter;
 
 import com.quasar.sika.design.server.common.shiro.util.ServletUtils;
+import com.sika.code.common.spring.SpringUtil;
 import com.sika.code.result.generator.ResultGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.subject.Subject;
@@ -16,15 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
-@Component
 public class PermissionsAuthFilter extends PermissionsAuthorizationFilter {
-    @Autowired
-    private ResultGenerator resultGenerator;
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        ResultGenerator resultGenerator = SpringUtil.getBean(ResultGenerator.class);
         String requestUrl = httpRequest.getServletPath();
         log.info("请求的url:  " + requestUrl);
 

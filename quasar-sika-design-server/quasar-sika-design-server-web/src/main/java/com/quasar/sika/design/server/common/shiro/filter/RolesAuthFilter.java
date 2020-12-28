@@ -3,11 +3,9 @@ package com.quasar.sika.design.server.common.shiro.filter;
 import com.sika.code.common.array.ArrayUtil;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-@Component
 public class RolesAuthFilter extends AuthorizationFilter {
 
     @Override
