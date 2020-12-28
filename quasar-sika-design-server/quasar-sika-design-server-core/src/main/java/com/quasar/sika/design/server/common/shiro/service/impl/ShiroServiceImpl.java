@@ -85,6 +85,7 @@ public class ShiroServiceImpl implements ShiroService {
                 }
             });
         }
+        filterChainDefinitionMap.put("/auth/update_current_password", "scPerms,token,scRoles");
         // ⑤ 认证登录  【注：map不能存放相同key】
         filterChainDefinitionMap.put("/**", "authc");
         return filterChainDefinitionMap;

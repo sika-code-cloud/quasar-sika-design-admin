@@ -47,6 +47,10 @@ public class AuthController extends BaseStandardController {
     public Result updatePassword(@RequestBody AuthUpdatePasswordRequest request) {
         return super.success(authService.updatePassword(request));
     }
+    @PostMapping("/currentUser")
+    public Result currentUser() {
+        return super.success(ShiroUtils.getUserInfo());
+    }
 
 //    /**
 //     * QQ 授权登录

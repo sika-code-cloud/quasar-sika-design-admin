@@ -101,6 +101,7 @@ public class ShiroRealm extends AuthorizingRealm {
          * 参数3：credentialsSalt -> 设置盐值
          * 参数4：realmName -> 自定义的Realm
          */
+        user.setToken(ShiroUtils.getSessionId());
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getUsername()), getName());
         // 验证成功开始踢人(清除缓存和Session)
         ShiroUtils.deleteCache(username, true);
@@ -113,7 +114,7 @@ public class ShiroRealm extends AuthorizingRealm {
         // 认证成功后更新token
         UserDTO userForUpdate = new UserDTO();
         userForUpdate.setId(userFromDB.getId());
-        userForUpdate.setToken(ShiroUtils.getSessionId());
+        userForUpdate.setToken(userFromDB.getToken());
         userService.updateById(userForUpdate);
     }
 }

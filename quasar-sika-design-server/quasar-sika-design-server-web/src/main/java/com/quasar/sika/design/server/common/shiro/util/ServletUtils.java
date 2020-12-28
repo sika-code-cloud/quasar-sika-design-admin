@@ -14,6 +14,7 @@ public class ServletUtils {
 
     public static void writeUnPermission(ResultGenerator resultGenerator, HttpServletResponse httpResponse) {
         Result result = resultGenerator.generateResultError("没有权限操作!");
+        httpResponse.setCharacterEncoding("UTF-8");
         cn.hutool.extra.servlet.ServletUtil.write(httpResponse, JSONUtil.toJSONString(result), "text/json,charset=UTF-8");
     }
 

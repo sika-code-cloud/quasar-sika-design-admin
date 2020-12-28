@@ -6,6 +6,7 @@ import com.quasar.sika.design.server.common.shiro.constant.ShiroConstant;
 import com.quasar.sika.design.server.common.shiro.util.ServletUtils;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.common.spring.SpringUtil;
+import com.sika.code.common.string.util.StringUtil;
 import com.sika.code.result.generator.ResultGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.UserFilter;
@@ -28,7 +29,13 @@ public class TokenCheckFilter extends UserFilter {
         // 根据请求头拿到token
         String token = WebUtils.toHttp(request).getHeader(ShiroConstant.REQUEST_HEADER);
         log.info("浏览器token：" + token);
+        if (StringUtil.isBlank(token)) {
+            return false;
+        }
         UserDTO userInfo = ShiroUtils.getUserInfo();
+        if (userInfo == null) {
+            return false;
+        }
         String userToken = userInfo.getToken();
         // 检查token是否过期
         if (ObjectUtil.notEqual(token, userToken)) {
