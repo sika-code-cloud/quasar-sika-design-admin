@@ -7,6 +7,7 @@ import com.quasar.sika.design.server.business.role.service.RoleService;
 import com.quasar.sika.design.server.business.user.entity.UserEntity;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
+import com.quasar.sika.design.server.common.auth.token.OauthLoginToken;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.constant.BaseConstant;
@@ -72,7 +73,20 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        UsernamePasswordToken tokenInfo = (UsernamePasswordToken) authenticationToken;
+        if (authenticationToken instanceof OauthLoginToken) {
+            return oauthLogin((OauthLoginToken) authenticationToken);
+        } else {
+            return usernamePasswordLogin((UsernamePasswordToken) authenticationToken);
+        }
+    }
+
+    private SimpleAuthenticationInfo oauthLogin(OauthLoginToken oauthLoginToken) {
+        String password256 = SHA256Util.sha256(oauthLoginToken.getUsername(), oauthLoginToken.getUsername());
+        UserDTO userDTO = new UserDTO().build(oauthLoginToken.getAuthUser());
+        return new SimpleAuthenticationInfo(userDTO, password256, ByteSource.Util.bytes(oauthLoginToken.getUsername()), getName());
+    }
+
+    private SimpleAuthenticationInfo usernamePasswordLogin(UsernamePasswordToken tokenInfo) {
         // 获取用户输入的账号
         String username = tokenInfo.getUsername();
         // 获取用户输入的密码
@@ -102,19 +116,18 @@ public class ShiroRealm extends AuthorizingRealm {
          * 参数4：realmName -> 自定义的Realm
          */
         user.setToken(ShiroUtils.getSessionId());
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getUsername()), getName());
         // 验证成功开始踢人(清除缓存和Session)
         ShiroUtils.deleteCache(username, true);
         // 认证成功后更新token
         updateToken(user);
-        return authenticationInfo;
+        return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getUsername()), getName());
     }
 
-    private void updateToken(UserDTO userFromDB) {
+    private void updateToken(UserDTO userFromDb) {
         // 认证成功后更新token
         UserDTO userForUpdate = new UserDTO();
-        userForUpdate.setId(userFromDB.getId());
-        userForUpdate.setToken(userFromDB.getToken());
+        userForUpdate.setId(userFromDb.getId());
+        userForUpdate.setToken(userFromDb.getToken());
         userService.updateById(userForUpdate);
     }
 }

@@ -4,6 +4,7 @@ import com.sika.code.standard.base.pojo.dto.BaseStandardDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import me.zhyd.oauth.model.AuthUser;
 
 import java.io.Serializable;
 
@@ -66,5 +67,11 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
      * 用户类型：1：游客，2：系统用户
      */
     private Integer type;
+    private AuthUser authUser;
+
+    public UserDTO build(AuthUser authUser) {
+        this.authUser = authUser;
+        return this;
+    }
 
 }
