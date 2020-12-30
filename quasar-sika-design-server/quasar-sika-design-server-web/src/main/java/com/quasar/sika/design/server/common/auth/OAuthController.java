@@ -1,13 +1,18 @@
 package com.quasar.sika.design.server.common.auth;
 
+import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.auth.cache.AuthStateRedisCache;
+import com.quasar.sika.design.server.common.auth.properties.AuthConfigExp;
+import com.quasar.sika.design.server.common.auth.properties.AuthRequestProperties;
 import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
 import com.xkcoding.http.config.HttpConfig;
+import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
+import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -16,6 +21,7 @@ import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.*;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.reactive.DefaultRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashMap;
@@ -44,7 +51,7 @@ public class OAuthController extends BaseStandardController {
     @Autowired
     private AuthStateRedisCache stateRedisCache;
     @Autowired
-    private UserService userService;
+    private AuthRequestProperties authRequestProperties;
     private Map<String, AuthUser> map = Maps.newConcurrentMap();
 
     @RequestMapping("/render/{source}")
@@ -135,6 +142,16 @@ public class OAuthController extends BaseStandardController {
      */
     private AuthRequest getAuthRequest(String source) {
         AuthRequest authRequest = null;
+        AuthConfigExp configExp = authRequestProperties.getOauthConfig().get(source);
+        try {
+            Constructor<?> defaultRequest = ReflectUtil.getConstructor(Class.forName(configExp.getRequestClassName()), AuthConfig.class, AuthStateCache.class);
+            AuthRequest request = (AuthRequest) defaultRequest.newInstance(configExp, stateRedisCache);
+            if (source.equalsIgnoreCase("gitee")) {
+                return request;
+            }
+        } catch (Exception e) {
+           log.error(e.getMessage(), e);
+        }
         switch (source.toLowerCase()) {
             case "dingtalk":
                 authRequest = new AuthDingTalkRequest(AuthConfig.builder()
@@ -159,11 +176,7 @@ public class OAuthController extends BaseStandardController {
                         .build(), stateRedisCache);
                 break;
             case "gitee":
-                authRequest = new AuthGiteeRequest(AuthConfig.builder()
-                        .clientId("427f193cd6a3319e8f84570a21cecc563ed80c4cd4d46e647312306fa7d74329")
-                        .clientSecret("4ec7e3ab06fbda68414bc250a28858ec51f6e6e888f692760db3c1cc578e0900")
-                        .redirectUri("http://127.0.0.1:8101/oauth/callback/gitee")
-                        .build(), stateRedisCache);
+                authRequest = new AuthGiteeRequest(configExp, stateRedisCache);
                 break;
             case "weibo":
                 authRequest = new AuthWeiboRequest(AuthConfig.builder()

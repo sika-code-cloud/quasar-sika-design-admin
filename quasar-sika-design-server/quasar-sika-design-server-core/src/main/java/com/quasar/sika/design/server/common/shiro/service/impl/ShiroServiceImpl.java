@@ -44,7 +44,7 @@ public class ShiroServiceImpl implements ShiroService {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置过滤:不会被拦截的链接 -> 放行 start ----------------------------------------------------------
 
-        filterChainDefinitionMap.put("/oauth/**/**", "anon");
+        filterChainDefinitionMap.put("/oauth/**", "anon");
         filterChainDefinitionMap.put("/auth/unLogin", "anon");
         // 登陆
         filterChainDefinitionMap.put("/auth/login/**", "anon");
@@ -85,7 +85,6 @@ public class ShiroServiceImpl implements ShiroService {
                 }
             });
         }
-        filterChainDefinitionMap.put("/auth/update_current_password", "scPerms,token,scRoles");
         // ⑤ 认证登录  【注：map不能存放相同key】
         filterChainDefinitionMap.put("/**", "authc");
         return filterChainDefinitionMap;
