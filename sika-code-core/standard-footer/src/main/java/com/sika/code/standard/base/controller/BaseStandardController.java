@@ -1,6 +1,7 @@
 package com.sika.code.standard.base.controller;
 
 import com.sika.code.basic.controller.BaseController;
+import com.sika.code.basic.errorcode.BaseErrorCode;
 import com.sika.code.result.Result;
 import com.sika.code.result.generator.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,12 @@ public class BaseStandardController extends BaseController {
         return resultGenerator.generateResult(object);
     }
 
-    protected Result error(String message) {
+    protected Result fail(String message) {
         return resultGenerator.generateResultError(message);
+    }
+
+    protected Result fail(BaseErrorCode errorCode, String message) {
+        return resultGenerator.generateResultError(errorCode, message);
     }
 
     protected ModelAndView view(String view) {

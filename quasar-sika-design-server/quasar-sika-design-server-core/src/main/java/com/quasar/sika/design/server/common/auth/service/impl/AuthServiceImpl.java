@@ -1,7 +1,11 @@
 package com.quasar.sika.design.server.common.auth.service.impl;
 
+import cn.hutool.captcha.AbstractCaptcha;
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
@@ -128,7 +132,7 @@ public class AuthServiceImpl implements AuthService {
         }
         throw new BusinessException(response.getMsg());
     }
-
+    
     private void updatePasswordCore(String username, String password) {
         UserDTO userDTOFromDb = userService.findByUsername(username);
         if (BaseUtil.isNull(userDTOFromDb)) {

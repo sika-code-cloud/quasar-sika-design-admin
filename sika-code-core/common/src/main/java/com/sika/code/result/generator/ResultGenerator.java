@@ -1,5 +1,6 @@
 package com.sika.code.result.generator;
 
+import com.sika.code.basic.errorcode.BaseErrorCode;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
@@ -55,6 +56,13 @@ public class ResultGenerator {
 
     public Result generateResultError(String message) {
         Result result = Result.newError(message);
+        result.setMsgNo(getResultNo());
+        return result;
+    }
+
+    public Result generateResultError(BaseErrorCode errorCode, String message) {
+        Result result = Result.newError(message);
+        result.setCode(errorCode.getCode());
         result.setMsgNo(getResultNo());
         return result;
     }

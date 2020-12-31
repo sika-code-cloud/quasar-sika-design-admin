@@ -42,7 +42,7 @@ public class OAuthController extends BaseStandardController {
     /**
      * 前端调用接口获取授权URL，并且重定向到该url
      */
-    @RequestMapping("/getAuthorizeUrl/{source}")
+    @RequestMapping("/getAuthorizeUrl/{source}/anon")
     @ResponseBody
     public Result getAuthorizeUrl(@PathVariable("source") String source) {
         return success(authService.getAuthorizeUrl(source));
@@ -51,13 +51,13 @@ public class OAuthController extends BaseStandardController {
     /**
      * 授权登录-配置的授权回调链接为前端-前端再ajax调用该接口 在创建github授权应用时的回调地址应为：http://127.0.0.1:8443/oauth/callback/github
      */
-    @RequestMapping("/oauthLogin/{source}")
+    @RequestMapping("/oauthLogin/{source}/anon")
     @ResponseBody
     public Result oauthLogin(@PathVariable("source") String source, AuthCallback callback) {
         return success(authService.oauthLogin(source, callback));
     }
 
-    @RequestMapping("/render/{source}")
+    @RequestMapping("/render/{source}/anon")
     public void renderAuth(@PathVariable("source") String source) throws IOException {
         response.sendRedirect(authService.getAuthorizeUrl(source));
     }
@@ -65,13 +65,13 @@ public class OAuthController extends BaseStandardController {
     /**
      * oauth平台中配置的授权回调地址，以本项目为例，在创建github授权应用时的回调地址应为：http://127.0.0.1:8443/oauth/callback/github
      */
-    @RequestMapping("/callback/{source}")
+    @RequestMapping("/callback/{source}/anon")
     public ModelAndView login(@PathVariable("source") String source, AuthCallback callback, HttpServletRequest request) {
         OauthResponse authResponse = authService.oauthLogin(source, callback);
-        return new ModelAndView("redirect:/oauth/users");
+        return new ModelAndView("redirect:/oauth/users/anon");
     }
 
-    @RequestMapping("/users")
+    @RequestMapping("/users/anon")
     @ResponseBody
     public Result users() {
         return success(ShiroUtils.getUserInfo());
@@ -116,11 +116,10 @@ public class OAuthController extends BaseStandardController {
                 map.put(user.getUuid(), user);
                 return success("用户 [" + user.getUsername() + "] 的 access token 已刷新！新的 accessToken: " + response.getData().getAccessToken());
             }
-            return error("用户 [" + user.getUsername() + "] 的 access token 刷新失败！" + response.getMsg());
+            return fail("用户 [" + user.getUsername() + "] 的 access token 刷新失败！" + response.getMsg());
         } catch (AuthException e) {
-            return error(e.getErrorMsg());
+            return fail(e.getErrorMsg());
         }
     }
-
 
 }

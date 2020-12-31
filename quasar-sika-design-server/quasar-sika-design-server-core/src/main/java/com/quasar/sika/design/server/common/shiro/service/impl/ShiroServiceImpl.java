@@ -43,21 +43,9 @@ public class ShiroServiceImpl implements ShiroService {
         // 权限控制map
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置过滤:不会被拦截的链接 -> 放行 start ----------------------------------------------------------
-
-        filterChainDefinitionMap.put("/oauth/**", "anon");
-        filterChainDefinitionMap.put("/auth/unLogin", "anon");
-        // 登陆
-        filterChainDefinitionMap.put("/auth/login/**", "anon");
         // 三方登录
         filterChainDefinitionMap.put("/**/anon", "anon");
-        // 退出
-        filterChainDefinitionMap.put("/auth/logout", "anon");
-        // 放行未授权接口，重定向使用
-        filterChainDefinitionMap.put("/auth/unAuth", "anon");
-        // token过期接口
-        filterChainDefinitionMap.put("/auth/tokenExpired", "anon");
-        // 被挤下线
-        filterChainDefinitionMap.put("/auth/downline", "anon");
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
         // 放行 end ----------------------------------------------------------
 
         // 从数据库或缓存中查取出来的url与resources对应则不会被拦截 放行

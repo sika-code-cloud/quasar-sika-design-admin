@@ -11,7 +11,7 @@ public interface ShiroConstant {
     String REDIS_PREFIX_LOGIN = "TOKEN:{}";
     String CACHE_KEY = "SHIRO:CACHE:";
     String SESSION_KEY = "SHIRO:SESSION:";
-    String ID_KEY = "id";
+    String ID_KEY = "username";
     int EXPIRE = 1800;
 
 

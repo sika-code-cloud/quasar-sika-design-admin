@@ -39,6 +39,7 @@ public class ShiroUtils {
     private static RedisSessionDAO getRedisSessionDAO() {
         return SpringUtil.getBean(RedisSessionDAO.class);
     }
+
     /**
      * 用户登出
      */
@@ -98,6 +99,14 @@ public class ShiroUtils {
         DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
         Authenticator authc = securityManager.getAuthenticator();
         ((LogoutAware) authc).onLogout((SimplePrincipalCollection) attribute);
+    }
+
+    public static void setAttrbuteToSession(String name, Object value) {
+        getSession().setAttribute(name, value);
+    }
+
+    public static <T> T getAttrbuteFromSession(String name) {
+        return (T) getSession().getAttribute(name);
     }
 
     /**

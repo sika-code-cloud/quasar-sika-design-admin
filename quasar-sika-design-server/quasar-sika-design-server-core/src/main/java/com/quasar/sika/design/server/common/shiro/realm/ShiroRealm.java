@@ -13,6 +13,7 @@ import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.constant.BaseConstant;
 import com.sika.code.basic.util.BaseUtil;
 import lombok.extern.slf4j.Slf4j;
+import me.zhyd.oauth.model.AuthUser;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -82,7 +83,9 @@ public class ShiroRealm extends AuthorizingRealm {
 
     private SimpleAuthenticationInfo oauthLogin(OauthLoginToken oauthLoginToken) {
         String password256 = SHA256Util.sha256(oauthLoginToken.getUsername(), oauthLoginToken.getUsername());
-        UserDTO userDTO = new UserDTO().build(oauthLoginToken.getAuthUser());
+        UserDTO userDTO = new UserDTO()
+                .setUsername(oauthLoginToken.getUsername())
+                .build(oauthLoginToken.getAuthUser());
         return new SimpleAuthenticationInfo(userDTO, password256, ByteSource.Util.bytes(oauthLoginToken.getUsername()), getName());
     }
 

@@ -67,11 +67,11 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 登录的路径: 如果你没有登录则会跳到这个页面中 - 如果没有设置值则会默认跳转到工程根目录下的"/login.jsp"页面 或 "/login" 映射
-        shiroFilterFactoryBean.setLoginUrl("/auth/unLogin");
+        shiroFilterFactoryBean.setLoginUrl("/auth/unLogin/anon");
         // 登录成功后跳转的主页面 （这里没用，前端vue控制了跳转）
 //        shiroFilterFactoryBean.setSuccessUrl("/index");
         // 设置没有权限时跳转的url
-        shiroFilterFactoryBean.setUnauthorizedUrl("/auth/unAuth");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/auth/unAuth/anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(shiroService.loadFilterChainDefinitionMap());
         return shiroFilterFactoryBean;
