@@ -101,8 +101,9 @@ public class ShiroUtils {
         ((LogoutAware) authc).onLogout((SimplePrincipalCollection) attribute);
     }
 
-    public static void setAttrbuteToSession(String name, Object value) {
+    public static <T> T setAttributeToSession(String name, T value) {
         getSession().setAttribute(name, value);
+        return value;
     }
 
     public static <T> T getAttrbuteFromSession(String name) {

@@ -2,7 +2,6 @@ package com.quasar.sika.design.server.common.auth.pojo.request;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import me.zhyd.oauth.model.AuthUser;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 /**

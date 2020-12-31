@@ -1,6 +1,5 @@
 package com.sika.code.basic.constant;
 
-import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.common.util.EnumUtil;
 
 /**
@@ -23,28 +22,18 @@ public interface TypeEnumInf {
     String getDesc();
 
     /**
-     * 获取类型 空使用默认的type
-     */
-    static Integer nullToDefault(Integer oldType, TypeEnumInf typeEnum) {
-        if (BaseUtil.isNull(oldType)) {
-            oldType = typeEnum.getType();
-        }
-        return oldType;
-    }
-
-    /**
      * <p>
      * 根据类型查找指定枚举类的枚举对象
      * </p>
      *
-     * @param type          : 类型
+     * @param value          : 类型
      * @param typeEnumClass : 类型枚举class
      * @return boolean
      * @author daiqi
      * @date 2019/5/23 17:26
      */
-    static <T extends TypeEnumInf> T find(Integer type, Class<T> typeEnumClass) {
-        return EnumUtil.find(type, GET_TYPE_NAME, typeEnumClass);
+    static <T extends TypeEnumInf> T find(Object value, Class<T> typeEnumClass) {
+        return EnumUtil.find(typeEnumClass, GET_TYPE_NAME, value);
     }
 
     /**
@@ -52,14 +41,14 @@ public interface TypeEnumInf {
      * 判断类型是否存在 存在返回true
      * </p>
      *
-     * @param type
+     * @param value
      * @param typeEnumClass
      * @return boolean
      * @author daiqi
      * @date 2019/5/23 17:25
      */
-    static <T extends TypeEnumInf> boolean exist(Integer type, Class<T> typeEnumClass) {
-        return EnumUtil.exist(type, GET_TYPE_NAME, typeEnumClass);
+    static <T extends TypeEnumInf> boolean exist(Object value, Class<T> typeEnumClass) {
+        return EnumUtil.exist(typeEnumClass, GET_TYPE_NAME, value);
 
     }
 
@@ -68,13 +57,24 @@ public interface TypeEnumInf {
      * 判断类型是否不存在 不存在返回true
      * </p>
      *
-     * @param type
+     * @param value
      * @param typeEnumClass
      * @return boolean
      * @author daiqi
      * @date 2019/5/23 17:25
      */
-    static <T extends TypeEnumInf> boolean notExist(Integer type, Class<T> typeEnumClass) {
-        return !exist(type, typeEnumClass);
+    static <T extends TypeEnumInf> boolean notExist(Object value, Class<T> typeEnumClass) {
+        return !exist(value, typeEnumClass);
+    }
+
+    static <T extends TypeEnumInf> String getDesc(Class<T> tClass, Object value) {
+        if (value == null || tClass == null) {
+            return null;
+        }
+        T baseEnumType = find(value, tClass);
+        if (baseEnumType == null) {
+            return null;
+        }
+        return baseEnumType.getDesc();
     }
 }

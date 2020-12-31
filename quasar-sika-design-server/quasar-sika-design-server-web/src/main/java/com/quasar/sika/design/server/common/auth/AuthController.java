@@ -1,24 +1,19 @@
 package com.quasar.sika.design.server.common.auth;
 
 
-import cn.hutool.captcha.*;
-import cn.hutool.captcha.generator.RandomGenerator;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.RandomUtil;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
-import com.quasar.sika.design.server.common.service.CommonService;
+import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
+import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
+import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletOutputStream;
-import java.io.IOException;
 
 /**
  * <p>
@@ -34,7 +29,7 @@ public class AuthController extends BaseStandardController {
     @Autowired
     private AuthService authService;
     @Autowired
-    private CommonService commonService;
+    private CaptchaService captchaService;
 
     @PostMapping("/register/anon")
     public Result register(@RequestBody AuthRegisterRequest request) {
@@ -62,13 +57,13 @@ public class AuthController extends BaseStandardController {
     }
 
     @RequestMapping("/get_captcha_verify_code/anon")
-    public void getCaptchaVerifyCode() {
-        commonService.generateAndWriteCaptchaVerifyCodeToResponse(response);
+    public void getCaptchaVerifyCode(@RequestBody CaptchaGenerateRequest request) {
+        captchaService.generateAndWriteCaptchaVerifyCodeToResponse(response, request);
     }
 
     @RequestMapping("/check_captcha_verify_code/anon")
-    public Result checkCaptchaVerifyCode(@RequestParam(value = "userCode") String userCode) {
-        commonService.checkCaptchaVerifyCode(userCode);
+    public Result checkCaptchaVerifyCode(@RequestBody CaptchaCheckRequest request) {
+        captchaService.checkCaptchaVerifyCode(request);
         return success("校验成功");
     }
 
