@@ -6,6 +6,7 @@ import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.captcha.generator.MathGenerator;
 import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeGeneratorEnum;
 import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeStyleEnum;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
@@ -18,7 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public class CaptchaFactory {
     private static final Logger log = LoggerFactory.getLogger(CaptchaFactory.class);
-
     public static AbstractCaptcha createCaptchaVerifyCode(CaptchaGenerateRequest captchaGenerateRequest) {
         captchaGenerateRequest.build();
         AbstractCaptcha captcha = createAbstractCaptcha(captchaGenerateRequest);
@@ -38,9 +38,9 @@ public class CaptchaFactory {
         Integer width = captchaGenerateRequest.getWidth();
         Integer height = captchaGenerateRequest.getHeight();
         if (CaptchaCodeStyleEnum.LINE_CAPTCHA.equals(codeStyleEnum)) {
-            captcha = CaptchaUtil.createLineCaptcha(width, height);
+            captcha = CaptchaUtil.createLineCaptcha(width, height, 0, 50);
         } else if (CaptchaCodeStyleEnum.CIRCLE_CAPTCHA.equals(codeStyleEnum)) {
-            captcha = CaptchaUtil.createCircleCaptcha(width, height);
+            captcha = CaptchaUtil.createCircleCaptcha(width, height,0, 6);
         } else if (CaptchaCodeStyleEnum.SHEAR_CAPTCHA.equals(codeStyleEnum)) {
             captcha = CaptchaUtil.createShearCaptcha(width, height);
         } else {
@@ -49,7 +49,7 @@ public class CaptchaFactory {
         return captcha;
     }
 
-    protected static CodeGenerator createCodeGenerator(CaptchaGenerateRequest captchaGenerateRequest) {
+    public static CodeGenerator createCodeGenerator(CaptchaGenerateRequest captchaGenerateRequest) {
         Integer codeGeneratorType = captchaGenerateRequest.getGenerator();
         Integer length = captchaGenerateRequest.getLength();
         return createCodeGenerator(codeGeneratorType, length);
@@ -58,7 +58,7 @@ public class CaptchaFactory {
     public static CodeGenerator createCodeGenerator(Integer codeGeneratorType, Integer length) {
         CaptchaCodeGeneratorEnum codeGeneratorEnum = TypeEnumInf.find(codeGeneratorType, CaptchaCodeGeneratorEnum.class);
         if (codeGeneratorEnum == null) {
-            codeGeneratorEnum = CaptchaCodeGeneratorEnum.RANDOM_GENERATOR;
+            throw new RuntimeException(StrUtil.format("不支持的验证码生产者【{}】", codeGeneratorType));
         }
         CodeGenerator codeGenerator = null;
         if (CaptchaCodeGeneratorEnum.RANDOM_GENERATOR.equals(codeGeneratorEnum)) {

@@ -1,14 +1,10 @@
 package com.quasar.sika.design.server.common.auth.service.impl;
 
-import cn.hutool.captcha.AbstractCaptcha;
-import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
+import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
@@ -35,15 +31,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 @Slf4j
 public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserService userService;
-
-    private Map<String, AuthUser> map = Maps.newConcurrentMap();
+    @Autowired
+    private ThirdOauthUserService thirdOauthUserService;
 
     @Override
     public AuthResponse register(AuthRegisterRequest request) {
@@ -125,14 +119,15 @@ public class AuthServiceImpl implements AuthService {
         if (response.ok()) {
             AuthUser authUser = response.getData();
             // 执行登录
-            map.put(authUser.getUuid(), authUser);
             AuthLoginRequest authLoginRequest = new OauthLoginRequest().build(authUser);
             AuthResponse authResponse = login(authLoginRequest);
+            // 保存或者授权登录数据
+            thirdOauthUserService.modifyByAuthUser(authUser);
             return BeanUtil.toBean(authResponse, OauthResponse.class).setAuthUser(authUser);
         }
         throw new BusinessException(response.getMsg());
     }
-    
+
     private void updatePasswordCore(String username, String password) {
         UserDTO userDTOFromDb = userService.findByUsername(username);
         if (BaseUtil.isNull(userDTOFromDb)) {

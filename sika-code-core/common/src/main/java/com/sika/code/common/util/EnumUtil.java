@@ -77,7 +77,6 @@ public class EnumUtil extends cn.hutool.core.util.EnumUtil {
      */
     public static <T> T find(Class<T> enumClass, String methodName, Object targetData) {
         if (targetData == null || methodName == null || enumClass == null) {
-            log.error("入参存在为空的字段：data：{}，methodName：{}，enumClass：{}", targetData, methodName, enumClass);
             return null;
         }
         if (!isEnum(enumClass)) {

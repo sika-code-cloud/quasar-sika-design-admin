@@ -153,12 +153,12 @@ me:
           requestClassName: me.zhyd.oauth.request.AuthGiteeRequest
           clientId: 427f193cd6a3319e8f84570a21cecc563ed80c4cd4d46e647312306fa7d74329
           clientSecret: 4ec7e3ab06fbda68414bc250a28858ec51f6e6e888f692760db3c1cc578e0900
-          redirectUri: http://127.0.0.1:8101/oauth/callback/gitee/anon
+          redirectUri: http://127.0.0.1:8101/auth/callback/gitee/anon
         github:
           requestClassName: me.zhyd.oauth.request.AuthGithubRequest
           clientId: a60f78e6b3f5dcd39510
           clientSecret: a952fb6de66b6d96fd1719d53d03a6d6b03d0113
-          redirectUri: http://localhost:8101/oauth/callback/github/anon
+          redirectUri: http://localhost:8101/auth/callback/github/anon
         weibo:
           clientId:
           clientSecret:

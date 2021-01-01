@@ -106,8 +106,12 @@ public class ShiroUtils {
         return value;
     }
 
-    public static <T> T getAttrbuteFromSession(String name) {
+    public static <T> T getAttributeFromSession(String name) {
         return (T) getSession().getAttribute(name);
+    }
+
+    public static Object removeAttributeFromSession(String name) {
+        return getSession().removeAttribute(name);
     }
 
     /**

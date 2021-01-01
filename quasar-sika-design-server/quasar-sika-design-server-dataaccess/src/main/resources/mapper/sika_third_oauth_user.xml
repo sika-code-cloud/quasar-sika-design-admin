@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quasar.sika.design.server.business.thirdoauthuser.mapper.ThirdOauthUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="com.quasar.sika.design.server.business.thirdoauthuser.entity.ThirdOauthUserEntity">
+        <result column="id" property="id" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="version" property="version" />
+        <result column="available" property="available" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="remark" property="remark" />
+        <result column="uuid" property="uuid" />
+        <result column="username" property="username" />
+        <result column="nickname" property="nickname" />
+        <result column="avatar" property="avatar" />
+        <result column="blog" property="blog" />
+        <result column="company" property="company" />
+        <result column="location" property="location" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <result column="source" property="source" />
+        <result column="token" property="token" />
+        <result column="raw_user_info" property="rawUserInfo" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="columnList">
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, uuid, username, nickname, avatar, blog, company, location, email, gender, source, token, raw_user_info, user_id
+    </sql>
+
+    <!-- 根据查询条件获取列表信息 -->
+    <select id="listByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_third_oauth_user
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取Id列表信息 -->
+    <select id="listIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery" >
+        SELECT id
+        FROM sika_third_oauth_user
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取实体信息 -->
+    <select id="findByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_third_oauth_user
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取表id -->
+    <select id="findIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery" >
+        SELECT id
+        FROM sika_third_oauth_user
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取分页信息 -->
+    <select id="pageByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_third_oauth_user
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        <include refid="order_by_sql"/>
+    </select>
+
+    <!-- 根据查询条件获取总数量信息 -->
+    <select id="totalCountByQuery" resultType="Integer" parameterType="com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery" >
+        SELECT count(*)
+        FROM sika_third_oauth_user
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件SQL -->
+    <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
+        <if test="query.thirdOauthUserId != null">AND id = #{query.thirdOauthUserId}</if>
+        <if test="query.uuid != null">AND uuid = #{query.uuid}</if>
+        <if test="query.username != null">AND username = #{query.username}</if>
+        <if test="query.nickname != null">AND nickname = #{query.nickname}</if>
+        <if test="query.avatar != null">AND avatar = #{query.avatar}</if>
+        <if test="query.blog != null">AND blog = #{query.blog}</if>
+        <if test="query.company != null">AND company = #{query.company}</if>
+        <if test="query.location != null">AND location = #{query.location}</if>
+        <if test="query.email != null">AND email = #{query.email}</if>
+        <if test="query.gender != null">AND gender = #{query.gender}</if>
+        <if test="query.source != null">AND source = #{query.source}</if>
+        <if test="query.token != null">AND token = #{query.token}</if>
+        <if test="query.rawUserInfo != null">AND raw_user_info = #{query.rawUserInfo}</if>
+        <if test="query.userId != null">AND user_id = #{query.userId}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- 排序的sql -->
+    <sql id="order_by_sql">
+        <if test="query.sortColumn != null and query.sortType != null" >
+            ORDER BY
+            <include refid="order_by_column_sql"/>
+            <include refid="order_by_type_sql"/>
+        </if>
+    </sql>
+
+    <!-- 排序列名的sql -->
+    <sql id="order_by_column_sql">
+        <choose>
+            <when test="query.sortColumn == 'thirdOauthUserId'">
+                id
+            </when>
+            <otherwise>
+                id
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 排序类型的sql -->
+    <sql id="order_by_type_sql">
+        <choose>
+            <when test="query.sortType == 'DESC'">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>

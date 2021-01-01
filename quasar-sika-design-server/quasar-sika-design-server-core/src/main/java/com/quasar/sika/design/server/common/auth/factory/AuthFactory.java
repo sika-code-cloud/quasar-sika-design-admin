@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.auth.factory;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.SimpleCache;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -7,12 +8,16 @@ import cn.hutool.core.util.StrUtil;
 import com.quasar.sika.design.server.common.auth.cache.AuthStateRedisCache;
 import com.quasar.sika.design.server.common.auth.properties.AuthConfigExp;
 import com.quasar.sika.design.server.common.auth.properties.AuthRequestProperties;
+import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeGeneratorEnum;
+import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeStyleEnum;
+import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeTypeEnum;
+import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
+import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.common.spring.SpringUtil;
 import com.sika.code.exception.BusinessException;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.config.AuthDefaultSource;
 import me.zhyd.oauth.request.AuthRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +35,7 @@ public class AuthFactory {
     /**
      * 认证请求对象缓存
      */
-    private static SimpleCache<String, AuthRequest> authRequestSimpleCache = new SimpleCache<>();
+    private static final SimpleCache<String, AuthRequest> AUTH_REQUEST_SIMPLE_CACHE = new SimpleCache<>();
 
     /**
      * 获取保存token的缓存对象
@@ -50,7 +55,7 @@ public class AuthFactory {
      * @return
      */
     public static AuthRequest getAuthRequest(String source) {
-        AuthRequest authRequest = authRequestSimpleCache.get(source);
+        AuthRequest authRequest = AUTH_REQUEST_SIMPLE_CACHE.get(source);
         if (ObjectUtil.isNotNull(authRequest)) {
             return authRequest;
         }
@@ -74,6 +79,19 @@ public class AuthFactory {
         if (ObjectUtil.isNull(authRequest)) {
             throw new BusinessException(StrUtil.format("source【{}】对应的请求配置类不存在【{}】有误，请检查", source, requestClassName));
         }
-        return authRequestSimpleCache.put(source, authRequest);
+        return AUTH_REQUEST_SIMPLE_CACHE.put(source, authRequest);
+    }
+
+    public static CaptchaGenerateRequest loginCaptchaGenerateRequest() {
+        // 算数验证码只需要设置长度为1
+        return new CaptchaGenerateRequest()
+            .setGenerator(CaptchaCodeGeneratorEnum.MATH_GENERATOR.getType())
+            .setStyle(CaptchaCodeStyleEnum.LINE_CAPTCHA.getType())
+            .setType(CaptchaCodeTypeEnum.LOGIN.getType())
+            .setLength(1);
+    }
+
+    public static CaptchaCheckRequest checkLoginCaptchaGenerateRequest() {
+        return BeanUtil.copyProperties(loginCaptchaGenerateRequest(), CaptchaCheckRequest.class);
     }
 }

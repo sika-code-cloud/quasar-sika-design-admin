@@ -5,8 +5,6 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class CaptchaCheckRequest {
-    private String cleatCode;
-    private Integer type;
-    private Integer generator;
+public class CaptchaCheckRequest extends CaptchaGenerateRequest{
+    private String clientCode;
 }

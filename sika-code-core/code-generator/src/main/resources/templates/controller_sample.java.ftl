@@ -27,31 +27,31 @@ public class ${table.controllerName} extends BaseStandardController {
 
     @RequestMapping(value = "save")
     public Result save(@RequestBody ${table.classBodyName}DTO ${table.classBodyName?uncap_first}Dto) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.save(${table.classBodyName?uncap_first}Dto));
+        return super.success(${table.classBodyName?uncap_first}Service.save(${table.classBodyName?uncap_first}Dto));
     }
 
     @RequestMapping(value = "save_batch")
     public Result saveBatch(@RequestBody List<${table.classBodyName}DTO> ${table.classBodyName?uncap_first}Dtos) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.saveForBatch(${table.classBodyName?uncap_first}Dtos));
+        return super.success(${table.classBodyName?uncap_first}Service.saveForBatch(${table.classBodyName?uncap_first}Dtos));
     }
 
     @RequestMapping(value = "update_by_id")
     public Result updateById(@RequestBody ${table.classBodyName}DTO ${table.classBodyName?uncap_first}Dto) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.updateById(${table.classBodyName?uncap_first}Dto));
+        return super.success(${table.classBodyName?uncap_first}Service.updateById(${table.classBodyName?uncap_first}Dto));
     }
 
     @RequestMapping(value = "page")
     public Result page(@RequestBody ${table.classBodyName}Query ${table.classBodyName?uncap_first}Query) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.page(${table.classBodyName?uncap_first}Query));
+        return super.success(${table.classBodyName?uncap_first}Service.page(${table.classBodyName?uncap_first}Query));
     }
 
     @RequestMapping(value = "find")
     public Result find(@RequestBody ${table.classBodyName}Query ${table.classBodyName?uncap_first}Query) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.find(${table.classBodyName?uncap_first}Query));
+        return super.success(${table.classBodyName?uncap_first}Service.find(${table.classBodyName?uncap_first}Query));
     }
 
     @RequestMapping(value = "list")
     public Result list(@RequestBody ${table.classBodyName}Query ${table.classBodyName?uncap_first}Query) {
-        return super.generateResult(${table.classBodyName?uncap_first}Service.list(${table.classBodyName?uncap_first}Query));
+        return super.success(${table.classBodyName?uncap_first}Service.list(${table.classBodyName?uncap_first}Query));
     }
 }

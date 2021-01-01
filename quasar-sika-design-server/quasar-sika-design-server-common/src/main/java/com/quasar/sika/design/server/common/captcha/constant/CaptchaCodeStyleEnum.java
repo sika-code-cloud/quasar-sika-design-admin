@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum CaptchaCodeStyleEnum implements TypeEnumInf {
     CIRCLE_CAPTCHA(10, "圆圈干扰的图片验码"),
     LINE_CAPTCHA(20, "线性干扰的图片验码"),
-    SHEAR_CAPTCHA(30, "扭曲干扰干扰的图片验码"),
+    SHEAR_CAPTCHA(30, "扭曲干扰的图片验码"),
     ;
     private final Integer type;
     private final String desc;
