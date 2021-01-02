@@ -8,13 +8,13 @@ import com.sika.code.common.util.EnumUtil;
  * @author daiqi
  * @create 2019-05-23 14:58
  */
-public interface TypeEnumInf {
+public interface TypeEnumInf<T> {
     String GET_TYPE_NAME = "getType";
 
     /**
      * 获取类型
      */
-    Integer getType();
+    T getType();
 
     /**
      * 获取描述

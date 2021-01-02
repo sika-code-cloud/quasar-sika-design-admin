@@ -15,7 +15,25 @@ import java.util.List;
  */
 public interface UserService extends BaseStandardService<UserDTO> {
 
+    /**
+     * 更用菜单id获取用户列表数据
+     *
+     * @param menuId : 菜单id
+     * @return
+     */
     List<UserDTO> listUserByRoleId(Long menuId);
 
+    /**
+     * 根据username获取用户数据
+     * @param username : 用户名
+     * @return
+     */
     UserDTO findByUsername(String username);
+
+    /**
+     * 根据email获取用户数据
+     * @param email : 邮箱
+     * @return
+     */
+    UserDTO findByEmail(String email);
 }

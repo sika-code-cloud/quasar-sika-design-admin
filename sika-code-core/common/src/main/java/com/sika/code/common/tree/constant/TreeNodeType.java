@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum TreeNodeType implements TypeEnumInf {
+public enum TreeNodeType implements TypeEnumInf<Integer> {
     /**
      * 书节点类型
      */

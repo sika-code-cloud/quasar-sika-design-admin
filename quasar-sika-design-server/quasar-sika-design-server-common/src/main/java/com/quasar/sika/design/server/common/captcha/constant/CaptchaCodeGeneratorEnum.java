@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum CaptchaCodeGeneratorEnum implements TypeEnumInf {
+public enum CaptchaCodeGeneratorEnum implements TypeEnumInf<Integer> {
     RANDOM_GENERATOR(10, "随机验证码生产者数据+字母"),
     RANDOM_GENERATOR_NUMBER(11, "纯数字随机验证码生产者"),
     RANDOM_GENERATOR_CHARACTER(12, "纯字母随机验证码生产者"),

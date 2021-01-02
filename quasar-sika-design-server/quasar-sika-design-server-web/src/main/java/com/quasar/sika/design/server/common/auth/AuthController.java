@@ -5,11 +5,17 @@ import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
 import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
+import com.quasar.sika.design.server.common.auth.pojo.request.BindOauthUserRequest;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
+import com.quasar.sika.design.server.common.mail.bo.request.CheckBindOauthUserMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.SendBindOauthUserMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.pojo.request.CheckMailRequest;
+import com.quasar.sika.design.server.common.mail.pojo.request.SendMailRequest;
+import com.quasar.sika.design.server.common.mail.service.MailService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
@@ -42,11 +48,30 @@ public class AuthController extends BaseStandardController {
     private AuthService authService;
     @Autowired
     private CaptchaService captchaService;
-    /** 授权登录-----beging */
+    @Autowired
+    private MailService mailService;
+
+    /** 授权登录-----begin */
+    /**
+     * 授权用户绑定-校验验证码
+     */
+    @RequestMapping("/check_bind_oauth_user_mail_code/anon")
+    @ResponseBody
+    public Result checkBindOauthUserMailCode(@RequestBody CheckMailRequest request) {
+        return success(mailService.checkMailCode(new CheckBindOauthUserMailCodeRequestBO().setRequest(request)));
+    } /**
+     * 授权用户绑定-发送验证码
+     */
+    @RequestMapping("/send_bind_oauth_user_mail_code/anon")
+    @ResponseBody
+    public Result sendBindOauthUserMailCode(@RequestBody SendMailRequest request) {
+        return success(mailService.sendMail(new SendBindOauthUserMailCodeRequestBO().setRequest(request)));
+    }
+
     /**
      * 前端调用接口获取授权URL，并且重定向到该url
      */
-    @RequestMapping("/getAuthorizeUrl/{source}/anon")
+    @RequestMapping("/get_authorize_url/{source}/anon")
     @ResponseBody
     public Result getAuthorizeUrl(@PathVariable("source") String source) {
         return success(authService.getAuthorizeUrl(source));
@@ -55,10 +80,15 @@ public class AuthController extends BaseStandardController {
     /**
      * 授权登录-配置的授权回调链接为前端-前端再ajax调用该接口 在创建github授权应用时的回调地址应为：http://127.0.0.1:8443/oauth/callback/github
      */
-    @RequestMapping("/oauthLogin/{source}/anon")
+    @RequestMapping("/oauth_login/{source}/anon")
     @ResponseBody
     public Result oauthLogin(@PathVariable("source") String source, AuthCallback callback) {
         return success(authService.oauthLogin(source, callback));
+    }
+
+    @RequestMapping("/bind_oauth_user")
+    public Result bindOauthUser(BindOauthUserRequest request) {
+        return success(authService.bindOauthUser(request));
     }
 
     @RequestMapping("/render/{source}/anon")
@@ -125,7 +155,10 @@ public class AuthController extends BaseStandardController {
             return fail(e.getErrorMsg());
         }
     }
-    /** 授权登录-----end */
+
+    /**
+     * 授权登录-----end
+     */
 
     @PostMapping("/register/anon")
     public Result register(@RequestBody AuthRegisterRequest request) {

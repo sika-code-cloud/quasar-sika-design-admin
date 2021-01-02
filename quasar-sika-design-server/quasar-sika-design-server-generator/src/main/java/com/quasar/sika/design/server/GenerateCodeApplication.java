@@ -14,7 +14,7 @@ public class GenerateCodeApplication {
     private static String author = "daiqi";
 
     public static void main(String[] args) {
-        String [] tableNames = {"sika_third_oauth_user"};
+        String [] tableNames = {"sika_mail_template"};
         for (String tableName : tableNames) {
             GeneratorCodeDTO generatorCodeDTO = GenerateCodeConfig.buildGeneratorCodeDTO(tableName, author);
             new GenerateCodeHandler().generateCode(generatorCodeDTO);

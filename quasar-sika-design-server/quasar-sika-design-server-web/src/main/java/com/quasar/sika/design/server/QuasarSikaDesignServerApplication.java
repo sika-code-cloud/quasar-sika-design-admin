@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author daiqi
  * @create 2019-05-10 21:16
  */
-@SpringBootApplication(scanBasePackages = {BaseComponentScan.COM_EASY_CLOUD, "com.quasar.sika.design.server"}, exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {BaseComponentScan.COM_EASY_CLOUD, "com.quasar.sika.design.server", "cn.hutool.extra.spring"}, exclude = {DataSourceAutoConfiguration.class})
 @MapperScan({"com.quasar.sika.design.server.**.mapper"})
 public class QuasarSikaDesignServerApplication {
     public static void main(String[] args) {

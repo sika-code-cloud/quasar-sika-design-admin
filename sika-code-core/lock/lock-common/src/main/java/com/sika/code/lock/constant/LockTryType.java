@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum LockTryType implements TypeEnumInf {
+public enum LockTryType implements TypeEnumInf<Integer> {
     /** 锁尝试非尝试类型 */
     UN_TRY(1, "非尝试锁"),
     TRY(2, "尝试锁"),

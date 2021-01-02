@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum StopStrategyEnum implements TypeEnumInf {
+public enum StopStrategyEnum implements TypeEnumInf<Integer> {
     /**
      * 不停止，用于需要一直轮训直到返回期望结果的情况
      */

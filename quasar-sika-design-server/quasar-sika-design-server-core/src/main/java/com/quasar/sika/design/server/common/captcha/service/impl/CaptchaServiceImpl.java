@@ -13,8 +13,6 @@ import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.constant.TypeEnumInf;
 import com.sika.code.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
@@ -28,15 +26,16 @@ import java.io.IOException;
 @Slf4j
 @Service
 public class CaptchaServiceImpl implements CaptchaService {
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public AbstractCaptcha createCaptchaVerifyCode(CaptchaGenerateRequest request) {
         AbstractCaptcha captcha = CaptchaFactory.createCaptchaVerifyCode(request);
         log.info("生成的验证码为：{}", captcha.getCode());
         // 放入缓存
-        putCaptchaCodeToCache(request.getType(), captcha.getCode());
+        String key = getCaptchaKey(request.getType());
+        // 验证码类型枚举
+        CaptchaCodeTypeEnum codeTypeEnum = TypeEnumInf.find(request.getType(), CaptchaCodeTypeEnum.class);
+        putToCache(key, captcha.getCode(), codeTypeEnum.getTimeout(), codeTypeEnum.getTimeUnit());
         return captcha;
     }
 
@@ -54,32 +53,16 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public boolean checkCaptchaVerifyCode(CaptchaCheckRequest request) {
-        String captchaCode = getCaptchaCodeFromCache(request.getType());
+        String captchaCode = getCaptchaKey(request.getType());
         if (StrUtil.isBlank(captchaCode)) {
             throw new BusinessException("验证码已失效");
         }
         CodeGenerator generator = CaptchaFactory.createCodeGenerator(request);
         boolean verify = generator.verify(captchaCode, request.getClientCode());
-        if (verify && removeCaptchaCodeToCache(request.getType())) {
+        if (verify && removeToCache(getCaptchaKey(request.getType()))) {
             return true;
         }
         throw new BusinessException("验证码有误");
-    }
-
-    private String getCaptchaCodeFromCache(Integer type) {
-        String captchaKey = getCaptchaKey(type);
-        return (String) redisTemplate.opsForValue().get(captchaKey);
-    }
-
-    private void putCaptchaCodeToCache(Integer type, String captchaCode) {
-        String captchaKey = getCaptchaKey(type);
-        CaptchaCodeTypeEnum codeTypeEnum = TypeEnumInf.find(type, CaptchaCodeTypeEnum.class);
-        redisTemplate.opsForValue().set(captchaKey, captchaCode, codeTypeEnum.getTimeout(), codeTypeEnum.getTimeUnit());
-    }
-
-    private Boolean removeCaptchaCodeToCache(Integer type) {
-        String captchaKey = getCaptchaKey(type);
-        return redisTemplate.delete(captchaKey);
     }
 
     private String getCaptchaKey(Integer type) {

@@ -11,7 +11,7 @@ import org.springframework.amqp.core.ExchangeTypes;
  */
 @Getter
 @AllArgsConstructor
-public enum MqExchangeType implements TypeEnumInf {
+public enum MqExchangeType implements TypeEnumInf<Integer> {
     /**
      * 交换器类型枚举
      */

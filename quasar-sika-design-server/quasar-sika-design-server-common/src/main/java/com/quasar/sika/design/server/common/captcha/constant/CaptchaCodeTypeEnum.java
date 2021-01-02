@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @AllArgsConstructor
-public enum CaptchaCodeTypeEnum implements TypeEnumInf {
-    LOGIN(10, "登录验证码", 600, TimeUnit.SECONDS),
+public enum CaptchaCodeTypeEnum implements TypeEnumInf<Integer> {
+    LOGIN(10, "登录验证码", 600L, TimeUnit.SECONDS),
     ;
     private final Integer type;
     private final String desc;
-    private final Integer timeout;
+    private final Long timeout;
     private final TimeUnit timeUnit;
 }

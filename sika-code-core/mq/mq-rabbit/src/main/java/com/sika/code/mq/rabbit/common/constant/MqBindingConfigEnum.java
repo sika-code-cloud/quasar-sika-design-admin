@@ -8,7 +8,7 @@ import com.sika.code.basic.constant.TypeEnumInf;
  * @author daiqi
  * @create 2019-07-06 19:11
  */
-public interface MqBindingConfigEnum extends TypeEnumInf {
+public interface MqBindingConfigEnum extends TypeEnumInf<Integer> {
     /**
      * 绑定的规则Key
      */

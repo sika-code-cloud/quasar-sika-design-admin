@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum WaitStrategyEnum implements TypeEnumInf {
+public enum WaitStrategyEnum implements TypeEnumInf<Integer> {
     /**
      * 固定等待时
      */

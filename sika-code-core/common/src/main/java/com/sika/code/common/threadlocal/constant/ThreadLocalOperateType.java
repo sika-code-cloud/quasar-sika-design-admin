@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ThreadLocalOperateType implements TypeEnumInf {
+public enum ThreadLocalOperateType implements TypeEnumInf<Integer> {
     /** ThreadLocal类型枚举 */
     THREAD_LOCAL_INHERITABLE(0, "操作自定义的ThreadLocal类型和InheritableThreadLocal对象类型"),
     THREAD_LOCAL(1, "操作自定义ThreadLocal对象类型"),

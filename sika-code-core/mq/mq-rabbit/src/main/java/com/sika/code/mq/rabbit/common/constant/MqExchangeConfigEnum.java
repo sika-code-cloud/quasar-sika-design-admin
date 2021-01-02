@@ -9,7 +9,7 @@ import com.sika.code.common.string.constant.StringConstant;
  * @author daiqi
  * @create 2019-07-06 19:11
  */
-public interface MqExchangeConfigEnum extends TypeEnumInf {
+public interface MqExchangeConfigEnum extends TypeEnumInf<Integer> {
     /**
      * 交换机名称
      */

@@ -7,7 +7,7 @@ import com.sika.code.basic.constant.TypeEnumInf;
  * @author daiqi
  * @create 2019-07-06 16:54
  */
-public interface MqQueueConfigEnum extends TypeEnumInf {
+public interface MqQueueConfigEnum extends TypeEnumInf<Integer> {
 
     /**
      * 队列名称

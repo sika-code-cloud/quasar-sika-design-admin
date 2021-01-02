@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum LockType implements TypeEnumInf {
+public enum LockType implements TypeEnumInf<Integer> {
     /** 锁公平非公平类型 */
     UN_FAIR(1, "非公平锁"),
     FAIR(2, "公平锁"),

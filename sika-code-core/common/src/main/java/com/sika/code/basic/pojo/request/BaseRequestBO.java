@@ -55,6 +55,18 @@ public interface BaseRequestBO<RESPONSE extends BaseResponseBO> extends BaseBO {
     default <POJO, ResponseBO extends BaseResponseBO<POJO>> ResponseBO newResponseBO(BaseRequestBO<ResponseBO> requestBO, POJO pojoForResponse) {
         return BeanFactory.newResponseBO(requestBO, pojoForResponse);
     }
+    /**
+     * <p>
+     * 创建响应逻辑对象
+     * </p>
+     * @author daiqi
+     * @date 2019/6/21 21:41
+     * @param pojoForResponse : pojo
+     * @return ResponseBO
+     */
+    default <POJO, ResponseBO extends BaseResponseBO<POJO>> ResponseBO newResponseBO(POJO pojoForResponse) {
+        return (ResponseBO) BeanFactory.newResponseBO(this, pojoForResponse);
+    }
 
 
 }

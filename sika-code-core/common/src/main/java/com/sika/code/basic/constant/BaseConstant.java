@@ -45,7 +45,7 @@ public class BaseConstant {
 
     @Getter
     @AllArgsConstructor
-    public enum AvailableEnum implements TypeEnumInf {
+    public enum AvailableEnum implements TypeEnumInf<Integer> {
         /**
          * 可用状态---0---不可用
          */

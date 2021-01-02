@@ -16,7 +16,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum NoGeneratorTimeFormatStrategy implements NoGeneratorFormatStrategy, TypeEnumInf {
+public enum NoGeneratorTimeFormatStrategy implements NoGeneratorFormatStrategy, TypeEnumInf<Integer> {
     /**
      * 编号生成策略 --- 时间策略
      */

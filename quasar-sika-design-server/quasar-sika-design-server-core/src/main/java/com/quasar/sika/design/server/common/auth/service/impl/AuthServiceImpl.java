@@ -8,10 +8,7 @@ import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthU
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.OauthLoginRequest;
+import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
@@ -128,6 +125,17 @@ public class AuthServiceImpl implements AuthService {
         throw new BusinessException(response.getMsg());
     }
 
+    @Override
+    public OauthResponse bindOauthUser(BindOauthUserRequest request) {
+        return null;
+    }
+
+    /**
+     * 更新密码的核心方法
+     * 根据username查询用户信息-然后更新密码
+     * @param username : 用户名
+     * @param password : 密码
+     */
     private void updatePasswordCore(String username, String password) {
         UserDTO userDTOFromDb = userService.findByUsername(username);
         if (BaseUtil.isNull(userDTOFromDb)) {
