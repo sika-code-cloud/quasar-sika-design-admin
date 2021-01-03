@@ -14,7 +14,17 @@ import me.zhyd.oauth.model.AuthUser;
  */
 public interface ThirdOauthUserService extends BaseStandardService<ThirdOauthUserDTO> {
     /**
+     * 根据
+     *
+     * @param uuid
+     * @param source
+     * @return
+     */
+    ThirdOauthUserDTO findByUuidAndSource(String uuid, String source);
+
+    /**
      * 根据第三方授权用户 新增|修改该用户的授权信息
+     * 更新索引：uuid + source
      *
      * @param authUser
      * @return

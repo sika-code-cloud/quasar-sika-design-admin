@@ -35,7 +35,6 @@ public class ThirdOauthUserBindRequestBO extends BaseStandardAlterRequestBO<Thir
 
     @Override
     protected ThirdOauthUserBindResponseBO doExecute() {
-        // 校验会话中的邮件授权码
 
         // 根据邮箱查询用户信息
         UserDTO userFromDb = userService().findByEmail(request.getEmail());

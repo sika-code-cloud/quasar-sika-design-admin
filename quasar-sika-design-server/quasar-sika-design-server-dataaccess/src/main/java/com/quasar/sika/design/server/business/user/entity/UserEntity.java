@@ -1,6 +1,5 @@
 package com.quasar.sika.design.server.business.user.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sika.code.standard.base.pojo.entity.BaseStandardEntity;
 import lombok.Data;
@@ -43,7 +42,6 @@ public class UserEntity extends BaseStandardEntity implements Serializable {
     /**
      * 用户昵称
      */
-        @TableField("nickName")
     private String nickname;
 
     /**

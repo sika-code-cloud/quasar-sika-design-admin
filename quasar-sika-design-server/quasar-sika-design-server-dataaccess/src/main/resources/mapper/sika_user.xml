@@ -16,7 +16,7 @@
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="oauth_pwd" property="oauthPwd" />
-        <result column="nickName" property="nickname" />
+        <result column="nickname" property="nickname" />
         <result column="sex" property="sex" />
         <result column="phone" property="phone" />
         <result column="email" property="email" />
@@ -27,7 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="columnList">
-        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, username, password, oauth_pwd, nickName, sex, phone, email, avatar, token, type
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, username, password, oauth_pwd, nickname, sex, phone, email, avatar, token, type
     </sql>
 
     <!-- 根据查询条件获取列表信息 -->
@@ -99,7 +99,7 @@
         <if test="query.username != null">AND username = #{query.username}</if>
         <if test="query.password != null">AND password = #{query.password}</if>
         <if test="query.oauthPwd != null">AND oauth_pwd = #{query.oauthPwd}</if>
-        <if test="query.nickname != null">AND nickName = #{query.nickname}</if>
+        <if test="query.nickname != null">AND nickname = #{query.nickname}</if>
         <if test="query.sex != null">AND sex = #{query.sex}</if>
         <if test="query.phone != null">AND phone = #{query.phone}</if>
         <if test="query.email != null">AND email = #{query.email}</if>

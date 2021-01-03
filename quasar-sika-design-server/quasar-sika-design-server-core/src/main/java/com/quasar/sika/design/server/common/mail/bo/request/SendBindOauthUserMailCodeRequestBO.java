@@ -3,6 +3,7 @@ package com.quasar.sika.design.server.common.mail.bo.request;
 import cn.hutool.core.util.RandomUtil;
 import com.quasar.sika.design.server.common.mail.bo.reqsponse.SendMailCodeResponseBO;
 import com.quasar.sika.design.server.common.mail.constant.MailCodeEnum;
+import com.quasar.sika.design.server.common.mail.pojo.response.SendMailResponse;
 import com.sika.code.basic.util.Assert;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -33,7 +34,8 @@ public class SendBindOauthUserMailCodeRequestBO extends SendMailCodeRequestBO {
 
     @Override
     protected SendMailCodeResponseBO doExecute() {
-        return super.doExecute();
+        SendMailResponse response = senMailCode();
+        return newResponseBO(response);
     }
 
 }

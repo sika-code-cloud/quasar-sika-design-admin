@@ -4,6 +4,7 @@ spring:
     name: quasar-sika-design-server
   profiles:
     active: @profileActive@
+#    active: develop
 ## ==========================jsckson配置=====================================
   jackson:
     serialization:

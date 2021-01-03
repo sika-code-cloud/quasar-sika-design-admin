@@ -38,7 +38,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public SendMailCodeResponseBO sendMail(SendMailCodeRequestBO requestBO) {
+    public SendMailCodeResponseBO sendMailCode(SendMailCodeRequestBO requestBO) {
         return requestBO.execute();
     }
 

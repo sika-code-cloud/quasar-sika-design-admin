@@ -25,7 +25,7 @@ public interface MailService extends BaseStandardDomain {
      */
     CheckMailCodeResponseBO checkMailCode(CheckMailCodeRequestBO requestBO);
 
-    SendMailCodeResponseBO sendMail(SendMailCodeRequestBO requestBO);
+    SendMailCodeResponseBO sendMailCode(SendMailCodeRequestBO requestBO);
 
     /**
      * 发送邮箱验证码

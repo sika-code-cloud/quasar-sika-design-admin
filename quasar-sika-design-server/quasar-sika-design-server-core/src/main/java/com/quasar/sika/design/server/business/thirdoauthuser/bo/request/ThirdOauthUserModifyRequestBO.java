@@ -3,7 +3,6 @@ package com.quasar.sika.design.server.business.thirdoauthuser.bo.request;
 import cn.hutool.core.bean.BeanUtil;
 import com.quasar.sika.design.server.business.thirdoauthuser.bo.response.ThirdOauthUserModifyResponseBO;
 import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
-import com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery;
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
@@ -41,10 +40,7 @@ public class ThirdOauthUserModifyRequestBO extends BaseStandardRequestBO<ThirdOa
     protected ThirdOauthUserModifyResponseBO doExecute() {
         ThirdOauthUserDTO oauthUserDTO = BeanUtil.copyProperties(authUser, ThirdOauthUserDTO.class);
         // 从数据库中查询用户是否存在
-        ThirdOauthUserQuery query = new ThirdOauthUserQuery()
-                .setUuid(authUser.getUuid())
-                .setSource(authUser.getSource());
-        ThirdOauthUserDTO oauthUserFromDb = getThirdOauthUserService().find(query);
+        ThirdOauthUserDTO oauthUserFromDb = getThirdOauthUserService().findByUuidAndSource(authUser.getUuid(), authUser.getSource());
         // 存在设置id
         if (BaseUtil.isNotNull(oauthUserFromDb)) {
             oauthUserDTO.setId(oauthUserFromDb.getId());

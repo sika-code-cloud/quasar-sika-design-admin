@@ -18,15 +18,13 @@ import lombok.experimental.Accessors;
 public abstract class SendMailCodeRequestBO extends BaseStandardRequestBO<SendMailCodeResponseBO> implements MailDomain {
     protected SendMailRequest request;
 
-    @Override
-    protected SendMailCodeResponseBO doExecute() {
+    protected SendMailResponse senMailCode() {
         // 发送验证码
         SendMailResponse response = mailService().sendMail(this.request);
         // 缓存请求
         String cacheKey = mailService().getCacheKey(request.getCode());
         mailService().putToCache(cacheKey, request);
-        // 响应
-        return newResponseBO(response);
+        return response;
     }
 
     @Override

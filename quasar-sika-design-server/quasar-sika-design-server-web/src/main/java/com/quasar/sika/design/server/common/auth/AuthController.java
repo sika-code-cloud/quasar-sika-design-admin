@@ -59,13 +59,15 @@ public class AuthController extends BaseStandardController {
     @ResponseBody
     public Result checkBindOauthUserMailCode(@RequestBody CheckMailRequest request) {
         return success(mailService.checkMailCode(new CheckBindOauthUserMailCodeRequestBO().setRequest(request)));
-    } /**
+    }
+
+    /**
      * 授权用户绑定-发送验证码
      */
     @RequestMapping("/send_bind_oauth_user_mail_code/anon")
     @ResponseBody
     public Result sendBindOauthUserMailCode(@RequestBody SendMailRequest request) {
-        return success(mailService.sendMail(new SendBindOauthUserMailCodeRequestBO().setRequest(request)));
+        return success(mailService.sendMailCode(new SendBindOauthUserMailCodeRequestBO().setRequest(request)));
     }
 
     /**
