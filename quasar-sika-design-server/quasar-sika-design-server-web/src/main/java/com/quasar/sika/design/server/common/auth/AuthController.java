@@ -20,6 +20,7 @@ import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
+import com.sika.code.standard.base.executor.DomainExecutor;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -58,7 +59,7 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/check_bind_oauth_user_mail_code/anon")
     @ResponseBody
     public Result checkBindOauthUserMailCode(@RequestBody CheckMailRequest request) {
-        return success(mailService.checkMailCode(new CheckBindOauthUserMailCodeRequestBO().setRequest(request)));
+        return success(DomainExecutor.excute(new CheckBindOauthUserMailCodeRequestBO().setRequest(request)));
     }
 
     /**
@@ -67,7 +68,7 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/send_bind_oauth_user_mail_code/anon")
     @ResponseBody
     public Result sendBindOauthUserMailCode(@RequestBody SendMailRequest request) {
-        return success(mailService.sendMailCode(new SendBindOauthUserMailCodeRequestBO().setRequest(request)));
+        return success(DomainExecutor.excute(new SendBindOauthUserMailCodeRequestBO().setRequest(request)));
     }
 
     /**

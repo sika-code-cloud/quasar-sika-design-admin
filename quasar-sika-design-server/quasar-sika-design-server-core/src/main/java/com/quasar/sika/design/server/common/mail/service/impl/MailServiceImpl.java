@@ -11,10 +11,6 @@ import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import com.quasar.sika.design.server.business.mailtemplate.pojo.dto.MailTemplateDTO;
 import com.quasar.sika.design.server.business.mailtemplate.service.MailTemplateService;
-import com.quasar.sika.design.server.common.mail.bo.reqsponse.CheckMailCodeResponseBO;
-import com.quasar.sika.design.server.common.mail.bo.reqsponse.SendMailCodeResponseBO;
-import com.quasar.sika.design.server.common.mail.bo.request.CheckMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.SendMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.constant.MailCodeEnum;
 import com.quasar.sika.design.server.common.mail.pojo.request.SendMailRequest;
 import com.quasar.sika.design.server.common.mail.pojo.response.SendMailResponse;
@@ -31,16 +27,6 @@ import org.springframework.stereotype.Service;
 public class MailServiceImpl implements MailService {
     @Autowired
     private MailTemplateService mailTemplateService;
-
-    @Override
-    public CheckMailCodeResponseBO checkMailCode(CheckMailCodeRequestBO requestBO) {
-       return requestBO.execute();
-    }
-
-    @Override
-    public SendMailCodeResponseBO sendMailCode(SendMailCodeRequestBO requestBO) {
-        return requestBO.execute();
-    }
 
     @Override
     public SendMailResponse sendMail(SendMailRequest request) {
