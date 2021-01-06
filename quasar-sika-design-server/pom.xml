@@ -37,6 +37,24 @@
             <groupId>com.sika.code.core</groupId>
             <artifactId>standard-footer</artifactId>
             <version>${com.sika.code.core.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jna-platform</artifactId>
+                    <groupId>net.java.dev.jna</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jna</artifactId>
+                    <groupId>net.java.dev.jna</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hutool-starter</artifactId>
+                    <groupId>com.sika.code.core</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>common</artifactId>
+                    <groupId>com.sika.code.core</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>

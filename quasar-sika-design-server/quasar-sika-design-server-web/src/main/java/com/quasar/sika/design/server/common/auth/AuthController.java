@@ -13,9 +13,6 @@ import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerate
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
 import com.quasar.sika.design.server.common.mail.bo.request.CheckBindOauthUserMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.bo.request.SendBindOauthUserMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.pojo.request.CheckMailRequest;
-import com.quasar.sika.design.server.common.mail.pojo.request.SendMailRequest;
-import com.quasar.sika.design.server.common.mail.service.MailService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
@@ -49,8 +46,6 @@ public class AuthController extends BaseStandardController {
     private AuthService authService;
     @Autowired
     private CaptchaService captchaService;
-    @Autowired
-    private MailService mailService;
 
     /** 授权登录-----begin */
     /**
@@ -58,8 +53,8 @@ public class AuthController extends BaseStandardController {
      */
     @RequestMapping("/check_bind_oauth_user_mail_code/anon")
     @ResponseBody
-    public Result checkBindOauthUserMailCode(@RequestBody CheckMailRequest request) {
-        return success(DomainExecutor.excute(new CheckBindOauthUserMailCodeRequestBO().setRequest(request)));
+    public Result checkBindOauthUserMailCode(@RequestBody CheckBindOauthUserMailCodeRequestBO requestBO) {
+        return success(DomainExecutor.execute(requestBO));
     }
 
     /**
@@ -67,8 +62,8 @@ public class AuthController extends BaseStandardController {
      */
     @RequestMapping("/send_bind_oauth_user_mail_code/anon")
     @ResponseBody
-    public Result sendBindOauthUserMailCode(@RequestBody SendMailRequest request) {
-        return success(DomainExecutor.excute(new SendBindOauthUserMailCodeRequestBO().setRequest(request)));
+    public Result sendBindOauthUserMailCode(@RequestBody SendBindOauthUserMailCodeRequestBO requestBo) {
+        return success(DomainExecutor.execute(requestBo));
     }
 
     /**

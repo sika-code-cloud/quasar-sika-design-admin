@@ -1,6 +1,7 @@
 package com.sika.code.exception;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.sika.code.basic.errorcode.BaseErrorCode;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.pojo.dto.ServiceResult;
@@ -28,15 +29,6 @@ public class BusinessException extends RuntimeException {
 
     protected String code;
     protected String message;
-
-    /**
-     * 格式化的值
-     */
-    private Object[] formatValues;
-    /**
-     * 是否已经格式化的标志
-     */
-    private boolean isFormated;
     /**
      * 异常详情
      */
@@ -94,7 +86,7 @@ public class BusinessException extends RuntimeException {
         if (ArrayUtil.isEmpty(formatValues)) {
             formatValues = new String[]{"数据"};
         }
-        this.formatValues = formatValues;
+        this.message = StrUtil.format(this.message, formatValues);
         return this;
     }
 
@@ -104,17 +96,6 @@ public class BusinessException extends RuntimeException {
         return this;
     }
 
-    @Override
-    public String getMessage() {
-        if (isFormated) {
-            return this.message;
-        }
-        if (StringUtil.isNotEmpty(this.message) && ArrayUtil.isNotEmpty(this.formatValues)) {
-            this.setMessage(String.format(this.message, this.formatValues));
-            this.isFormated = true;
-        }
-        return this.message;
-    }
 
     public String getMessageDetail() {
         if (BaseUtil.isNotNull(this.messageDetail)) {

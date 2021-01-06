@@ -33,19 +33,19 @@ public enum BaseErrorCodeEnum implements BaseErrorCode {
 	/** 异常---非法类型异常---BASE_000010 */
 	ILLICIT_TYPE_EXCEPTION("BASE_000010", "非法类型异常"),
 	/** 异常---对象为空异常---BASE_000011 */
-	OBJECT_NULL("BASE_000011", "[%s]为空"),
+	OBJECT_NULL("BASE_000011", "[{}]为空"),
 	/** 异常---列表为空异常---BASE_000012 */
-	LIST_NULL("BASE_000012", "列表[%s]为空"),
+	LIST_NULL("BASE_000012", "列表[{}]为空"),
 	/** 异常---列表为空或者空列表异常---BASE_000013 */
-	LIST_EMPTY("BASE_000013", "列表[%s]数据为空"),
+	LIST_EMPTY("BASE_000013", "列表{}]数据为空"),
 	/** 异常---字符串为空或者空串异常---BASE_000014 */
-	STR_EMPTY("BASE_000014", "[%s]为空或者空串"),
+	STR_EMPTY("BASE_000014", "[{}]为空或者空串"),
 	/** 异常---数据不存在异常---BASE_000015 */
-	NON_EXISTENT("BASE_000015", "[%s]不存在"),
+	NON_EXISTENT("BASE_000015", "[{}]不存在"),
 	/** 异常---数据存在异常---BASE_000016 */
-	ALREADY_EXISTENT("BASE_000016", "[%s]已经存在"),
+	ALREADY_EXISTENT("BASE_000016", "[{}]已经存在"),
 	/** 异常---数据有误异常---BASE_000017 */
-	DATA_ERROR("BASE_000017", "[%s]有误"),
+	DATA_ERROR("BASE_000017", "[{}]有误"),
 	NOT_HAVE_PERMISSION("AUTHORITY_000005", "没有足够的权限"),
 	PARAM_ERROR("BASE_000018", "参数错误"),
 	BUSINESS_EXCEPTION("BASE_100001", "业务一场"),

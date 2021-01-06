@@ -1,5 +1,6 @@
 package com.sika.code.common.log.aspect;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -47,11 +48,11 @@ public class ControllerLogAspect {
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
 
-        String url = request.getServletPath().toString();
-        if ("".equals(url)) {
+        String url = request.getServletPath();
+        if (StrUtil.isBlank(url)) {
             url = request.getPathInfo();
         }
-        if ("".equals(url)) {
+        if (StrUtil.isBlank(url)) {
             url = request.getRequestURI();
         }
         log.info("\r\n");

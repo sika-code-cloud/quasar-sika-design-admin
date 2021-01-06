@@ -21,7 +21,7 @@ public class DomainExecutor {
      * @author daiqi
      * @date 2021/1/4 15:45
      */
-    public static <POJO, Response extends BaseResponseBO<POJO>> Response excute(BaseRequestBO<Response> requestBO) {
+    public static <POJO, Response extends BaseResponseBO<POJO>> Response execute(BaseRequestBO<Response> requestBO) {
         Assert.verifyObjNull(requestBO, "业务逻辑请求对象");
         return requestBO.execute();
     }
