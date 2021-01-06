@@ -15,6 +15,7 @@ import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
+import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -52,26 +53,26 @@ public class AuthServiceImpl implements AuthService {
         UsernamePasswordToken token = request.build().getToken();
         // 账号登录
         if (StrUtil.isBlank(request.getUsername()) || StrUtil.isBlank(request.getPassword())) {
-            throw new BusinessException(BaseErrorCodeEnum.PARAM_ERROR, "参数不全");
+            throw new BusinessException("用户名或者密码为空");
         }
         // 拿到当前用户(可能还是游客，没有登录)
         Subject currentUser = SecurityUtils.getSubject();
         // 如果这个用户没有登录,进行登录功能
-        if (BooleanUtil.isFalse(currentUser.isAuthenticated())) {
-            try {
-                // String token = MD5Utils.encrypt( String.valueOf( System.currentTimeMillis() ) );
-                currentUser.login(token);
-            } catch (UnknownAccountException e) {
-                throw new BusinessException(BaseErrorCodeEnum.PARAM_ERROR, "账号不存在");
-            } catch (IncorrectCredentialsException e) {
-                throw new BusinessException(BaseErrorCodeEnum.BUSINESS_EXCEPTION, "用户名或者密码错误");
-            } catch (LockedAccountException e) {
-                throw new BusinessException(BaseErrorCodeEnum.BUSINESS_EXCEPTION, "登录失败，该用户已被冻结!");
-            } catch (AuthenticationException e) {
-                throw new BusinessException(BaseErrorCodeEnum.SYS_ERROR, "系统错误");
-            }
+        if (BooleanUtil.isTrue(currentUser.isAuthenticated())) {
+            return AuthResponse.success(ShiroUtils.getUserInfo());
         }
-        return AuthResponse.success(ShiroUtils.getUserInfo());
+        try {
+            currentUser.login(token);
+        } catch (UnknownAccountException e) {
+            throw new BusinessException("账号不存在");
+        } catch (IncorrectCredentialsException e) {
+            throw new BusinessException("用户名或者密码错误");
+        } catch (LockedAccountException e) {
+            throw new BusinessException("登录失败，该用户已被冻结!");
+        } catch (AuthenticationException e) {
+            throw new BusinessException("系统错误");
+        }
+        throw new BusinessException("系统错误");
     }
 
     @Override
@@ -91,9 +92,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse updateCurrentPassword(AuthUpdatePasswordRequest request) {
         UserDTO currentUser = ShiroUtils.getUserInfo();
-        if (BaseUtil.isNull(currentUser)) {
-            throw new BusinessException("当前用户信息异常");
-        }
+        Assert.verifyObjNullMsg(currentUser, "当前用户信息异常");
         String username = currentUser.getUsername();
         String password = request.getPassword();
         updatePasswordCore(username, password);
@@ -133,6 +132,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * 更新密码的核心方法
      * 根据username查询用户信息-然后更新密码
+     *
      * @param username : 用户名
      * @param password : 密码
      */
