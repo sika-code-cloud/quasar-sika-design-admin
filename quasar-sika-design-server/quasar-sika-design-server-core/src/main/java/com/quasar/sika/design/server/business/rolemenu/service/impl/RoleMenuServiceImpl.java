@@ -1,16 +1,13 @@
 package com.quasar.sika.design.server.business.rolemenu.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.quasar.sika.design.server.business.common.util.BusinessUtil;
 import com.quasar.sika.design.server.business.rolemenu.convert.RoleMenuConvert;
 import com.quasar.sika.design.server.business.rolemenu.entity.RoleMenuEntity;
 import com.quasar.sika.design.server.business.rolemenu.mapper.RoleMenuMapper;
 import com.quasar.sika.design.server.business.rolemenu.pojo.dto.RoleMenuDTO;
 import com.quasar.sika.design.server.business.rolemenu.pojo.query.RoleMenuQuery;
 import com.quasar.sika.design.server.business.rolemenu.service.RoleMenuService;
-import com.sika.code.basic.util.BaseUtil;
+import com.quasar.sika.design.server.common.normal.util.CommonUtil;
 import com.sika.code.standard.base.convert.BaseConvert;
 import com.sika.code.standard.base.service.impl.BaseStandardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +18,11 @@ import java.util.Set;
 
 /**
  * <p>
- * 角色菜单表 服务实现类
+ * 角色和菜单关联表 服务实现类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:46
+ * @since 2021-01-08 00:03:22
  */
 @Service(value = "roleMenuService")
 public class RoleMenuServiceImpl extends BaseStandardServiceImpl<RoleMenuMapper, RoleMenuEntity, RoleMenuDTO> implements RoleMenuService {
@@ -33,67 +30,33 @@ public class RoleMenuServiceImpl extends BaseStandardServiceImpl<RoleMenuMapper,
     private RoleMenuMapper roleMenuMapper;
 
     @Override
+    public Set<Long> listMenuIdsByRoleId(Long roleId) {
+        List<RoleMenuDTO> roleMenus = listByRoleId(roleId);
+        return CommonUtil.mapToField(roleMenus, "roleId");
+    }
+
     public List<RoleMenuDTO> listByRoleId(Long roleId) {
-        if (BaseUtil.isNull(roleId)) {
-            return Lists.newArrayList();
-        }
-        Set<Long> roleIds = Sets.newLinkedHashSet();
-        roleIds.add(roleId);
-        return listByRoleIds(roleIds);
-    }
-
-    @Override
-    public List<RoleMenuDTO> listByRoleIds(Set<Long> roleIds) {
-        if (CollUtil.isEmpty(roleIds)) {
+        if (roleId == null) {
             return Lists.newArrayList();
         }
         RoleMenuQuery query = new RoleMenuQuery();
-        query.setRoleIds(roleIds);
-        return list(query);
-    }
-
-    @Override
-    public List<RoleMenuDTO> listByMenuId(Long menuId) {
-        if (BaseUtil.isNull(menuId)) {
-            return Lists.newArrayList();
-        }
-        Set<Long> menuIds = Sets.newLinkedHashSet();
-        menuIds.add(menuId);
-        return listByMenuIds(menuIds);
-    }
-
-    @Override
-    public List<RoleMenuDTO> listByMenuIds(Set<Long> menuIds) {
-        if (CollUtil.isEmpty(menuIds)) {
-            return Lists.newArrayList();
-        }
-        RoleMenuQuery query = new RoleMenuQuery();
-        query.setMenuIds(menuIds);
+        query.setRoleId(roleId);
         return list(query);
     }
 
     @Override
     public Set<Long> listRoleIdsByMenuId(Long menuId) {
-        List<RoleMenuDTO> roleMenuDTOS = listByMenuId(menuId);
-        return BusinessUtil.mapToId(roleMenuDTOS, RoleMenuDTO.class);
+        List<RoleMenuDTO> roleMenus = listByRoleId(menuId);
+        return CommonUtil.mapToField(roleMenus, "menuId");
     }
 
-    @Override
-    public Set<Long> listRoleIdsByMenuIds(Set<Long> menuIds) {
-        List<RoleMenuDTO> roleMenuDTOS = listByMenuIds(menuIds);
-        return BusinessUtil.mapToId(roleMenuDTOS, RoleMenuDTO.class);
-    }
-
-    @Override
-    public Set<Long> listMenuIdsByRoleId(Long roleId) {
-        List<RoleMenuDTO> roleMenuDTOS = listByRoleId(roleId);
-        return BusinessUtil.mapToId(roleMenuDTOS, RoleMenuDTO.class);
-    }
-
-    @Override
-    public Set<Long> listMenuIdsByRoleIds(Set<Long> roleIds) {
-        List<RoleMenuDTO> roleMenuDTOS = listByRoleIds(roleIds);
-        return BusinessUtil.mapToId(roleMenuDTOS, RoleMenuDTO.class);
+    public List<RoleMenuDTO> listByMenuId(Long menuId) {
+        if (menuId == null) {
+            return Lists.newArrayList();
+        }
+        RoleMenuQuery query = new RoleMenuQuery();
+        query.setMenuId(menuId);
+        return list(query);
     }
 
     @Override
