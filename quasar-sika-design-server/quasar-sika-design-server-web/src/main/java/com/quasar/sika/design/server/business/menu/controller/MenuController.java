@@ -1,24 +1,23 @@
 package com.quasar.sika.design.server.business.menu.controller;
 
 
-import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
-import com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery;
-import com.quasar.sika.design.server.business.menu.service.MenuService;
+import java.util.List;
 import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
+import com.quasar.sika.design.server.business.menu.service.MenuService;
+import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
+import com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 /**
  * <p>
- * 菜单表 前端控制器
+ * 菜单权限表 前端控制器
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:31
+ * @since 2021-01-07 23:35:13
  */
 @RestController(value = "menuController")
 @RequestMapping("menu")

@@ -6,11 +6,11 @@ import com.sika.code.standard.base.basemapper.BaseStandardMapper;
 
 /**
  * <p>
- * 用户角色表 Mapper 接口
+ * 用户和角色关联表 Mapper 接口
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:36
+ * @since 2021-01-08 00:03:51
  */
 @Repository
 public interface UserRoleMapper extends BaseStandardMapper<UserRoleEntity> {

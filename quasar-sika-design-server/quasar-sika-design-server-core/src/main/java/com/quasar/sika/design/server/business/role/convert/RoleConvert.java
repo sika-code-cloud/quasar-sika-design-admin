@@ -9,11 +9,11 @@ import com.quasar.sika.design.server.business.role.pojo.dto.RoleDTO;
 
 /**
  * <p>
- * 角色表 转换类
+ * 角色信息表 转换类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:21
+ * @since 2021-01-07 23:35:58
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RoleConvert extends BaseConvert<RoleEntity, RoleDTO> {

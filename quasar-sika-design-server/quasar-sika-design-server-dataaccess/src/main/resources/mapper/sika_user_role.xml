@@ -87,25 +87,13 @@
 
     <!-- 根据查询条件SQL -->
     <sql id="query_sql" >
-        <if test="query.userRoleId != null">AND id = #{query.userRoleId}</if>
         <if test="query.id != null">AND id = #{query.id}</if>
+        <if test="query.userRoleId != null">AND id = #{query.userRoleId}</if>
         <if test="query.userId != null">AND user_id = #{query.userId}</if>
         <if test="query.roleId != null">AND role_id = #{query.roleId}</if>
         <if test="query.ids != null and query.ids.size() > 0">
             AND id in
             <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
-                #{item}
-            </foreach>
-        </if>
-        <if test="query.userIds != null and query.userIds.size() > 0">
-            AND user_id in
-            <foreach item="item" collection="query.userIds" separator="," open="(" close=")" index="">
-                #{item}
-            </foreach>
-        </if>
-        <if test="query.roleIds != null and query.roleIds.size() > 0">
-            AND role_id in
-            <foreach item="item" collection="query.roleIds" separator="," open="(" close=")" index="">
                 #{item}
             </foreach>
         </if>

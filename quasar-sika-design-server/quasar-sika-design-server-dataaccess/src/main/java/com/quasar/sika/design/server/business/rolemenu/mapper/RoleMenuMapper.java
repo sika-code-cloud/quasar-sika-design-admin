@@ -6,11 +6,11 @@ import com.sika.code.standard.base.basemapper.BaseStandardMapper;
 
 /**
  * <p>
- * 角色菜单表 Mapper 接口
+ * 角色和菜单关联表 Mapper 接口
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:44
+ * @since 2021-01-08 00:03:20
  */
 @Repository
 public interface RoleMenuMapper extends BaseStandardMapper<RoleMenuEntity> {

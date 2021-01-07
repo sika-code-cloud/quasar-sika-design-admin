@@ -2,11 +2,11 @@ package com.quasar.sika.design.server.business.role.constant;
 
 /**
  * <p>
- * 角色表 常量类
+ * 角色信息表 常量类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:16
+ * @since 2021-01-07 23:35:52
  */
 public class RoleConstant {
 

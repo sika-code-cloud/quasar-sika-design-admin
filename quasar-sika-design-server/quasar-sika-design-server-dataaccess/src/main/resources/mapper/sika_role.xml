@@ -13,13 +13,15 @@
         <result column="available" property="available" />
         <result column="is_deleted" property="isDeleted" />
         <result column="remark" property="remark" />
-        <result column="code" property="code" />
-        <result column="name" property="name" />
+        <result column="role_name" property="roleName" />
+        <result column="role_key" property="roleKey" />
+        <result column="role_sort" property="roleSort" />
+        <result column="data_scope" property="dataScope" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="columnList">
-        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, code, name
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, role_name, role_key, role_sort, data_scope
     </sql>
 
     <!-- 根据查询条件获取列表信息 -->
@@ -87,9 +89,18 @@
 
     <!-- 根据查询条件SQL -->
     <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
         <if test="query.roleId != null">AND id = #{query.roleId}</if>
-        <if test="query.code != null">AND code = #{query.code}</if>
-        <if test="query.name != null">AND name = #{query.name}</if>
+        <if test="query.roleName != null">AND role_name = #{query.roleName}</if>
+        <if test="query.roleKey != null">AND role_key = #{query.roleKey}</if>
+        <if test="query.roleSort != null">AND role_sort = #{query.roleSort}</if>
+        <if test="query.dataScope != null">AND data_scope = #{query.dataScope}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
     <!-- 排序的sql -->

@@ -8,11 +8,11 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 角色菜单表
+ * 角色和菜单关联表
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:41
+ * @since 2021-01-08 00:03:15
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -26,12 +26,12 @@ public class RoleMenuDTO extends BaseStandardDTO implements Serializable {
      */
     private Long roleMenuId;
     /**
-     * 菜单id
-     */
-    private Long menuId;
-    /**
-     * 角色id
+     * 角色ID
      */
     private Long roleId;
+    /**
+     * 菜单ID
+     */
+    private Long menuId;
 
 }

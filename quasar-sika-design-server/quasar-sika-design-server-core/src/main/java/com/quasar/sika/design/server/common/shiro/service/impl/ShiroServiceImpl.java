@@ -52,13 +52,13 @@ public class ShiroServiceImpl implements ShiroService {
         List<MenuDTO> permissionList = menuService.list(new MenuQuery());
         if (!CollectionUtils.isEmpty(permissionList)) {
             permissionList.forEach(e -> {
-                if (StringUtils.isNotBlank(e.getPath())) {
+                if (StringUtils.isNotBlank(e.getUrl())) {
                     // 根据url查询相关联的角色名,拼接自定义的角色权限
-                    List<RoleDTO> roleList = roleService.listRoleByMenuId(e.getId());
+                    List<RoleDTO> roleList = roleService.listByMenuId(e.getId());
                     StringJoiner scRoles = new StringJoiner(",", "scRoles[", "]");
                     if (!CollectionUtils.isEmpty(roleList)) {
                         roleList.forEach(f -> {
-                            scRoles.add(f.getCode());
+                            scRoles.add(f.getRoleKey());
                         });
                     }
 
@@ -68,7 +68,7 @@ public class ShiroServiceImpl implements ShiroService {
                     // ③ 角色权限 scRoles：自定义的只需要满足其中一个角色即可访问  ;  roles[admin,guest] : 默认需要每个参数满足才算通过，相当于hasAllRoles()方法
                     // ④ zqPerms:认证自定义的url过滤器拦截权限  【注：多个过滤器用 , 分割】
 //                    filterChainDefinitionMap.put( "/api" + e.getUrl(),"authc,token,roles[admin,guest],zqPerms[" + e.getResources() + "]" );
-                    filterChainDefinitionMap.put(e.getPath(), "authc,token," + scRoles.toString() + ",scPerms[" + e.getResources() + "]");
+                    filterChainDefinitionMap.put(e.getUrl(), "authc,token," + scRoles.toString() + ",scPerms[" + e.getPerms() + "]");
 //                        filterChainDefinitionMap.put("/api/system/user/listPage", "authc,token,zqPerms[user1]"); // 写死的一种用法
                 }
             });

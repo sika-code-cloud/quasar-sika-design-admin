@@ -68,7 +68,7 @@ public class SystemResponseBO {
     }
 
 
-    private static String getSize(long size) {
+    private static String convertFileSize(long size) {
         if (size >= GB) {
             return formatForSize(size, GB) + "G";
         } else if (size >= MB) {
@@ -150,9 +150,9 @@ public class SystemResponseBO {
             long freeTemp = osmxb.getFreePhysicalMemorySize();
             long usedTemp = totalTemp - freeTemp;
 
-            this.total = getSize(totalTemp);
-            this.free = getSize(freeTemp);
-            this.used = getSize(usedTemp);
+            this.total = convertFileSize(totalTemp);
+            this.free = convertFileSize(freeTemp);
+            this.used = convertFileSize(usedTemp);
             this.usedRate = computeRate(usedTemp, totalTemp);
 
 
@@ -161,9 +161,9 @@ public class SystemResponseBO {
             long jvmUsedTemp = mxb.getHeapMemoryUsage().getUsed();
             long jvmFreeTemp = jvmTotalTemp - jvmUsedTemp;
 
-            this.jvmTotal = getSize(jvmTotalTemp);
-            this.jvmFree = getSize(jvmFreeTemp);
-            this.jvmUsed = getSize(jvmUsedTemp);
+            this.jvmTotal = convertFileSize(jvmTotalTemp);
+            this.jvmFree = convertFileSize(jvmFreeTemp);
+            this.jvmUsed = convertFileSize(jvmUsedTemp);
             this.jvmUsedRate = computeRate(jvmUsedTemp, jvmTotalTemp);
 
             return this;
@@ -240,9 +240,9 @@ public class SystemResponseBO {
             }
             long usedTemp = totalTemp - freeTemp;
 
-            this.total = getSize(totalTemp);
-            this.free = getSize(freeTemp);
-            this.used = getSize(usedTemp);
+            this.total = convertFileSize(totalTemp);
+            this.free = convertFileSize(freeTemp);
+            this.used = convertFileSize(usedTemp);
             this.usedRate = computeRate(usedTemp, totalTemp);
             return this;
         }

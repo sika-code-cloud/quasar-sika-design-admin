@@ -5,21 +5,19 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="ResultMap" type="com.quasar.sika.design.server.business.rolemenu.entity.RoleMenuEntity">
         <result column="id" property="id" />
-        <result column="create_by" property="createBy" />
-        <result column="update_by" property="updateBy" />
         <result column="create_date" property="createDate" />
         <result column="update_date" property="updateDate" />
         <result column="version" property="version" />
         <result column="available" property="available" />
         <result column="is_deleted" property="isDeleted" />
         <result column="remark" property="remark" />
-        <result column="menu_id" property="menuId" />
         <result column="role_id" property="roleId" />
+        <result column="menu_id" property="menuId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="columnList">
-        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, menu_id, role_id
+        id, create_date, update_date, version, available, is_deleted, remark, role_id, menu_id
     </sql>
 
     <!-- 根据查询条件获取列表信息 -->
@@ -87,24 +85,13 @@
 
     <!-- 根据查询条件SQL -->
     <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
         <if test="query.roleMenuId != null">AND id = #{query.roleMenuId}</if>
-        <if test="query.menuId != null">AND menu_id = #{query.menuId}</if>
         <if test="query.roleId != null">AND role_id = #{query.roleId}</if>
+        <if test="query.menuId != null">AND menu_id = #{query.menuId}</if>
         <if test="query.ids != null and query.ids.size() > 0">
             AND id in
             <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
-                #{item}
-            </foreach>
-        </if>
-        <if test="query.menuIds != null and query.menuIds.size() > 0">
-            AND menu_id in
-            <foreach item="item" collection="query.menuIds" separator="," open="(" close=")" index="">
-                #{item}
-            </foreach>
-        </if>
-        <if test="query.roleIds != null and query.roleIds.size() > 0">
-            AND role_id in
-            <foreach item="item" collection="query.roleIds" separator="," open="(" close=")" index="">
                 #{item}
             </foreach>
         </if>

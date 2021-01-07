@@ -1,19 +1,18 @@
 package com.quasar.sika.design.server.business.menu.pojo.dto;
 
+import java.io.Serializable;
 import com.sika.code.standard.base.pojo.dto.BaseStandardDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-
 /**
  * <p>
- * 菜单表
+ * 菜单权限表
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:23
+ * @since 2021-01-07 23:35:02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -27,36 +26,40 @@ public class MenuDTO extends BaseStandardDTO implements Serializable {
      */
     private Long menuId;
     /**
-     * 父菜单id
+     * 菜单名称
+     */
+    private String menuName;
+    /**
+     * 父菜单ID
      */
     private Long parentId;
     /**
-     * 菜单路径
+     * 显示顺序
      */
-    private String path;
+    private Integer orderNum;
     /**
-     * 权限字段
+     * 请求地址
      */
-    private String resources;
+    private String url;
     /**
-     * 菜单标题
+     * 打开方式（menuItem页签 menuBlank新窗口）
      */
-    private String title;
+    private String target;
     /**
-     * 菜单级别
+     * 菜单类型（M目录 C菜单 F按钮）
      */
-    private Integer level;
+    private String menuType;
     /**
-     * 排序编号
+     * 菜单状态（0显示 1隐藏）
      */
-    private Integer sortNo;
+    private String visible;
     /**
-     * 图标
+     * 权限标识
+     */
+    private String perms;
+    /**
+     * 菜单图标
      */
     private String icon;
-    /**
-     * menu、button
-     */
-    private String type;
 
 }

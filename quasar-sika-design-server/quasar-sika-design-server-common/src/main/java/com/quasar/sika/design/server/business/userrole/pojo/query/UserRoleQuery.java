@@ -1,20 +1,19 @@
 package com.quasar.sika.design.server.business.userrole.pojo.query;
 
-import com.sika.code.standard.base.pojo.query.BaseStandardQuery;
+import java.io.Serializable;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Set;
+import com.sika.code.standard.base.pojo.query.BaseStandardQuery;
 
 /**
  * <p>
- * 用户角色表 查询类
+ * 用户和角色关联表 查询类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:33
+ * @since 2021-01-08 00:03:47
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -27,17 +26,17 @@ public class UserRoleQuery extends BaseStandardQuery implements Serializable {
      */
     protected Long userRoleId;
     /**
-     * 用户id
+     * 用户ID
      */
     protected Long userId;
     /**
-     * 角色id
+     * 角色ID
      */
     protected Long roleId;
-
-    private Set<Long> ids;
-    private Set<Long> userIds;
-    private Set<Long> roleIds;
+    /**
+     * id列表
+     */
+    protected Set<Long> ids;
 
 }
 

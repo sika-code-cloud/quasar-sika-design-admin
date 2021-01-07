@@ -9,11 +9,11 @@ import com.quasar.sika.design.server.business.rolemenu.pojo.dto.RoleMenuDTO;
 
 /**
  * <p>
- * 角色菜单表 转换类
+ * 角色和菜单关联表 转换类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:47
+ * @since 2021-01-08 00:03:22
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RoleMenuConvert extends BaseConvert<RoleMenuEntity, RoleMenuDTO> {

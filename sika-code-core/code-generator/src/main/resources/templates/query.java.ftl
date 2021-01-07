@@ -3,6 +3,7 @@ package ${package.Query};
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

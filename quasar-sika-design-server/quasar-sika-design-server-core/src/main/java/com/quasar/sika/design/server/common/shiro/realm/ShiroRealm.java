@@ -13,7 +13,6 @@ import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.constant.BaseConstant;
 import com.sika.code.basic.util.BaseUtil;
 import lombok.extern.slf4j.Slf4j;
-import me.zhyd.oauth.model.AuthUser;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -54,12 +53,12 @@ public class ShiroRealm extends AuthorizingRealm {
         Set<String> rolesSet = new HashSet<>();
         Set<String> permsSet = new HashSet<>();
         // 获取当前用户对应的权限(这里根据业务自行查询)
-        List<RoleDTO> roleList = roleService.listRoleByMenuId(userId);
+        List<RoleDTO> roleList = roleService.listByUserId(userId);
         for (RoleDTO role : roleList) {
-            rolesSet.add(role.getCode());
-            List<MenuDTO> menuList = menuService.listMenuByRoleId(role.getId());
+            rolesSet.add(role.getRoleKey());
+            List<MenuDTO> menuList = menuService.listByRoleId(role.getId());
             for (MenuDTO menu : menuList) {
-                permsSet.add(menu.getResources());
+                permsSet.add(menu.getPerms());
             }
         }
         //将查到的权限和角色分别传入authorizationInfo中

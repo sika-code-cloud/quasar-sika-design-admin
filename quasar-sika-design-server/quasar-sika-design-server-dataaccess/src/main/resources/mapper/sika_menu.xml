@@ -13,19 +13,20 @@
         <result column="available" property="available" />
         <result column="is_deleted" property="isDeleted" />
         <result column="remark" property="remark" />
+        <result column="menu_name" property="menuName" />
         <result column="parent_id" property="parentId" />
-        <result column="path" property="path" />
-        <result column="resources" property="resources" />
-        <result column="title" property="title" />
-        <result column="level" property="level" />
-        <result column="sort_no" property="sortNo" />
+        <result column="order_num" property="orderNum" />
+        <result column="url" property="url" />
+        <result column="target" property="target" />
+        <result column="menu_type" property="menuType" />
+        <result column="visible" property="visible" />
+        <result column="perms" property="perms" />
         <result column="icon" property="icon" />
-        <result column="type" property="type" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="columnList">
-        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, parent_id, path,resources, title, level, sort_no, icon, type
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, menu_name, parent_id, order_num, url, target, menu_type, visible, perms, icon
     </sql>
 
     <!-- 根据查询条件获取列表信息 -->
@@ -93,15 +94,23 @@
 
     <!-- 根据查询条件SQL -->
     <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
         <if test="query.menuId != null">AND id = #{query.menuId}</if>
+        <if test="query.menuName != null">AND menu_name = #{query.menuName}</if>
         <if test="query.parentId != null">AND parent_id = #{query.parentId}</if>
-        <if test="query.path != null">AND path = #{query.path}</if>
-        <if test="query.resources != null">AND resources = #{query.resources}</if>
-        <if test="query.title != null">AND title = #{query.title}</if>
-        <if test="query.level != null">AND level = #{query.level}</if>
-        <if test="query.sortNo != null">AND sort_no = #{query.sortNo}</if>
+        <if test="query.orderNum != null">AND order_num = #{query.orderNum}</if>
+        <if test="query.url != null">AND url = #{query.url}</if>
+        <if test="query.target != null">AND target = #{query.target}</if>
+        <if test="query.menuType != null">AND menu_type = #{query.menuType}</if>
+        <if test="query.visible != null">AND visible = #{query.visible}</if>
+        <if test="query.perms != null">AND perms = #{query.perms}</if>
         <if test="query.icon != null">AND icon = #{query.icon}</if>
-        <if test="query.type != null">AND type = #{query.type}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
     <!-- 排序的sql -->

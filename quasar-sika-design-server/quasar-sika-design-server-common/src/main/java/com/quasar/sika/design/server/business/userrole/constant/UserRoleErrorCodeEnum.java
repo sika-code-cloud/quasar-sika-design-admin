@@ -6,11 +6,11 @@ import lombok.Getter;
 
 /**
  * <p>
- * 用户角色表 错误枚举类
+ * 用户和角色关联表 错误枚举类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:34
+ * @since 2021-01-08 00:03:49
  */
 @Getter
 @AllArgsConstructor

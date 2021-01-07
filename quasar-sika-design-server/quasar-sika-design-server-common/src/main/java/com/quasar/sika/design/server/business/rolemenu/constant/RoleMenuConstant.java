@@ -2,11 +2,11 @@ package com.quasar.sika.design.server.business.rolemenu.constant;
 
 /**
  * <p>
- * 角色菜单表 常量类
+ * 角色和菜单关联表 常量类
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:42
+ * @since 2021-01-08 00:03:17
  */
 public class RoleMenuConstant {
 

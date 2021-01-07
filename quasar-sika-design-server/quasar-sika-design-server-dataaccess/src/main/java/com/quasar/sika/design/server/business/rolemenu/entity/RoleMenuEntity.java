@@ -9,11 +9,11 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 角色菜单表
+ * 角色和菜单关联表
  * </p>
  *
  * @author daiqi
- * @since 2020-12-26 16:59:44
+ * @since 2021-01-08 00:03:19
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -24,14 +24,14 @@ public class RoleMenuEntity extends BaseStandardEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 菜单id
-     */
-    private Long menuId;
-
-    /**
-     * 角色id
+     * 角色ID
      */
     private Long roleId;
+
+    /**
+     * 菜单ID
+     */
+    private Long menuId;
 
 
 }
