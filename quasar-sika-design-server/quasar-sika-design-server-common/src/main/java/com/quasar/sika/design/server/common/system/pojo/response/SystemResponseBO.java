@@ -1,8 +1,11 @@
 package com.quasar.sika.design.server.common.system.pojo.response;
 
-import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.BetweenFormater;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.system.*;
+import cn.hutool.system.JavaRuntimeInfo;
+import cn.hutool.system.JvmInfo;
+import cn.hutool.system.OsInfo;
+import cn.hutool.system.SystemUtil;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
 import com.sika.code.common.number.util.NumberUtil;
@@ -11,6 +14,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.File;
+import java.lang.management.MemoryMXBean;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -22,6 +26,10 @@ import java.util.Date;
 @Accessors(chain = true)
 public class SystemResponseBO {
     private static final Date START_DATE = DateUtil.date();
+    private static final long KB = 1024;
+    private static final long MB = KB * 1024;
+    private static final long GB = MB * 1024;
+    private static final int SCALE = 2;
     private Cpu cpu;
     private Memory memory;
     private Server server;
@@ -38,8 +46,38 @@ public class SystemResponseBO {
         return this;
     }
 
-    private static BigDecimal computeRate(long v1, long v2) {
-        return NumberUtil.div(new BigDecimal(v1 * 100), new BigDecimal(v2), 2);
+    private static String computeRate(long v1, long v2) {
+        BigDecimal rate = NumberUtil.div(NumberUtil.toBigDecimal(v1), NumberUtil.toBigDecimal(v2));
+        return formatForRate(rate);
+    }
+
+    private static String formatForRate(BigDecimal rate) {
+        String format = "#.##%";
+        return NumberUtil.decimalFormat(format, rate);
+    }
+
+    private static BigDecimal divFor100(Number number) {
+        return NumberUtil.div(NumberUtil.toBigDecimal(number), 100);
+    }
+
+    private static String formatForSize(long size, long unit) {
+        String format = "0.##";
+        BigDecimal bigDecimal = NumberUtil.toBigDecimal(size);
+        BigDecimal unitDecimal = NumberUtil.toBigDecimal(unit);
+        return NumberUtil.decimalFormat(format, NumberUtil.div(bigDecimal, unitDecimal));
+    }
+
+
+    private static String getSize(long size) {
+        if (size >= GB) {
+            return formatForSize(size, GB) + "G";
+        } else if (size >= MB) {
+            return formatForSize(size, MB) + "MB";
+        } else if (size >= KB) {
+            return formatForSize(size, KB) + "KB";
+        } else {
+            return size + "B";
+        }
     }
 
     @Data
@@ -54,27 +92,27 @@ public class SystemResponseBO {
         /**
          * CPU总的使用率
          */
-        private double toTal;
+        private String total;
 
         /**
          * CPU系统使用率
          */
-        private double sys;
+        private String sys;
 
         /**
          * CPU用户使用率
          */
-        private double used;
+        private String used;
 
         /**
          * CPU当前等待率
          */
-        private double wait;
+        private String wait;
 
         /**
          * CPU当前空闲率
          */
-        private double free;
+        private String free;
 
         /**
          * CPU型号信息
@@ -83,7 +121,13 @@ public class SystemResponseBO {
 
         private Cpu build() {
             CpuInfo cpuInfo = OshiUtil.getCpuInfo();
-            BeanUtil.copyProperties(cpuInfo, this);
+            this.total = formatForRate(divFor100(cpuInfo.getToTal()));
+            this.sys = formatForRate(divFor100(cpuInfo.getSys()));
+            this.used = formatForRate(divFor100(cpuInfo.getUsed()));
+            this.wait = formatForRate(divFor100(cpuInfo.getWait()));
+            this.free = formatForRate(divFor100(cpuInfo.getFree()));
+            this.cpuNum = cpuInfo.getCpuNum();
+            this.cpuModel = cpuInfo.getCpuModel();
             return this;
         }
     }
@@ -91,27 +135,37 @@ public class SystemResponseBO {
     @Data
     @Accessors(chain = true)
     private static class Memory {
-        private long total;
-        private long used;
-        private long free;
-        private BigDecimal usedRate;
-        private long jvmTotal;
-        private long jvmUsed;
-        private long jvmFree;
-        private BigDecimal jvmUsedRate;
+        private String total;
+        private String used;
+        private String free;
+        private String usedRate;
+        private String jvmTotal;
+        private String jvmUsed;
+        private String jvmFree;
+        private String jvmUsedRate;
 
         private Memory build() {
             OperatingSystemMXBean osmxb = (OperatingSystemMXBean) SystemUtil.getOperatingSystemMXBean();
-            this.total = osmxb.getTotalPhysicalMemorySize();
-            this.free = osmxb.getFreePhysicalMemorySize();
-            this.used = total - free;
-            this.usedRate = computeRate(used, total);
+            long totalTemp = osmxb.getTotalPhysicalMemorySize();
+            long freeTemp = osmxb.getFreePhysicalMemorySize();
+            long usedTemp = totalTemp - freeTemp;
 
-            RuntimeInfo runtimeInfo = SystemUtil.getRuntimeInfo();
-            this.jvmTotal = runtimeInfo.getTotalMemory();
-            this.jvmFree = runtimeInfo.getFreeMemory();
-            this.jvmUsed = runtimeInfo.getMaxMemory();
-            this.jvmUsedRate = computeRate(jvmUsed, jvmTotal);
+            this.total = getSize(totalTemp);
+            this.free = getSize(freeTemp);
+            this.used = getSize(usedTemp);
+            this.usedRate = computeRate(usedTemp, totalTemp);
+
+
+            MemoryMXBean mxb = SystemUtil.getMemoryMXBean();
+            long jvmTotalTemp = mxb.getHeapMemoryUsage().getMax();
+            long jvmUsedTemp = mxb.getHeapMemoryUsage().getUsed();
+            long jvmFreeTemp = jvmTotalTemp - jvmUsedTemp;
+
+            this.jvmTotal = getSize(jvmTotalTemp);
+            this.jvmFree = getSize(jvmFreeTemp);
+            this.jvmUsed = getSize(jvmUsedTemp);
+            this.jvmUsedRate = computeRate(jvmUsedTemp, jvmTotalTemp);
+
             return this;
         }
     }
@@ -146,7 +200,7 @@ public class SystemResponseBO {
         private String version;
         private String vendor;
 
-        private Date startDate;
+        private String startDate;
         private String runTime;
         private String homeDir;
         private String projectPath;
@@ -154,14 +208,15 @@ public class SystemResponseBO {
         private Jvm build() {
             JvmInfo jvmInfo = SystemUtil.getJvmInfo();
             this.name = jvmInfo.getName();
-            this.version = jvmInfo.getVersion();
+            this.version = SystemUtil.getJavaInfo().getVersion();
             this.vendor = jvmInfo.getVendor();
 
-            this.startDate = DateUtil.date(SystemUtil.getRuntimeMXBean().getStartTime());
-            this.runTime = DateUtil.formatBetween(startDate, DateUtil.date());
+            Date startDateTemp = DateUtil.date(SystemUtil.getRuntimeMXBean().getStartTime());
+            this.runTime = DateUtil.formatBetween(startDateTemp, DateUtil.date(),  BetweenFormater.Level.SECOND);
+            this.startDate = DateUtil.formatDateTime(startDateTemp);
             JavaRuntimeInfo javaRuntimeInfo = SystemUtil.getJavaRuntimeInfo();
             this.homeDir = javaRuntimeInfo.getHomeDir();
-            this.projectPath = javaRuntimeInfo.getClassPath();
+            this.projectPath = SystemUtil.get(SystemUtil.USER_DIR);
             return this;
         }
     }
@@ -169,21 +224,26 @@ public class SystemResponseBO {
     @Data
     @Accessors(chain = true)
     private static class Disk {
-        private long total;
-        private long free;
-        private long used;
-        private BigDecimal usedRate;
+        private String total;
+        private String free;
+        private String used;
+        private String usedRate;
 
         private Disk build() {
             // 磁盘使用情况
             File[] files = File.listRoots();
+            long totalTemp = 0L;
+            long freeTemp = 0L;
             for (File file : files) {
-                this.total = file.getTotalSpace();
-                this.free = file.getTotalSpace();
-                this.used = file.getUsableSpace();
-                this.usedRate = computeRate(used, total);
-
+                totalTemp += file.getTotalSpace();
+                freeTemp += file.getFreeSpace();
             }
+            long usedTemp = totalTemp - freeTemp;
+
+            this.total = getSize(totalTemp);
+            this.free = getSize(freeTemp);
+            this.used = getSize(usedTemp);
+            this.usedRate = computeRate(usedTemp, totalTemp);
             return this;
         }
     }

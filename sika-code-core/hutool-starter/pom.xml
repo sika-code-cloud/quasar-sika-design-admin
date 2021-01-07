@@ -25,31 +25,11 @@
             <artifactId>TinyPinyin</artifactId>
             <version>2.0.3.RELEASE</version>
         </dependency>
+    <!-- 获取系统信息 -->
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
-            <version>5.3.7</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jna</artifactId>
-                    <groupId>net.java.dev.jna</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jna-platform</artifactId>
-                    <groupId>net.java.dev.jna</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>${jna.version}</version>
-
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna-platform</artifactId>
-            <version>${jna.version}</version>
+            <version>3.9.1</version>
         </dependency>
     </dependencies>
 
