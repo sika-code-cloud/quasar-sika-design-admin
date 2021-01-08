@@ -10,6 +10,7 @@ import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauth
 import com.quasar.sika.design.server.business.thirdoauthuser.pojo.query.ThirdOauthUserQuery;
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.sika.code.standard.base.convert.BaseConvert;
+import com.sika.code.standard.base.executor.DomainExecutor;
 import com.sika.code.standard.base.service.impl.BaseStandardServiceImpl;
 import me.zhyd.oauth.model.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class ThirdOauthUserServiceImpl extends BaseStandardServiceImpl<ThirdOaut
         // 参数设置
         ThirdOauthUserModifyRequestBO request = new ThirdOauthUserModifyRequestBO().setAuthUser(authUser);
         // 执行
-        ThirdOauthUserModifyResponseBO responseBO = request.execute();
+        ThirdOauthUserModifyResponseBO responseBO = DomainExecutor.execute(request);
         // 响应
         return responseBO.getOauthUserDTO();
     }

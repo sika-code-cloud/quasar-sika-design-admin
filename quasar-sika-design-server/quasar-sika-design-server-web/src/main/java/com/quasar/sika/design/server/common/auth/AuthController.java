@@ -11,8 +11,10 @@ import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
-import com.quasar.sika.design.server.common.mail.bo.request.CheckBindOauthUserMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.SendBindOauthUserMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckBindOauthUserMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckUserRegisterMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.sender.SendBindOauthUserMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.sender.SendUserRegisterMailCodeRequestBO;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
@@ -63,6 +65,24 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/send_bind_oauth_user_mail_code/anon")
     @ResponseBody
     public Result sendBindOauthUserMailCode(@RequestBody SendBindOauthUserMailCodeRequestBO requestBo) {
+        return success(DomainExecutor.execute(requestBo));
+    }
+
+    /**
+     * 用户注册 - 发送验证码
+     */
+    @RequestMapping("/check_user_register_mail_code/anon")
+    @ResponseBody
+    public Result checkUserRegisterMailCode(@RequestBody CheckUserRegisterMailCodeRequestBO requestBo) {
+        return success(DomainExecutor.execute(requestBo));
+    }
+
+    /**
+     * 用户注册 - 校验验证码
+     */
+    @RequestMapping("/send_user_register_mail_code/anon")
+    @ResponseBody
+    public Result sendUserRegisterMailCode(@RequestBody SendUserRegisterMailCodeRequestBO requestBo) {
         return success(DomainExecutor.execute(requestBo));
     }
 
@@ -210,7 +230,7 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/unLogin/anon")
     @ResponseBody
     public Result unLogin() {
-        return fail(BaseErrorCodeEnum.RUNTIME_EXCEPTION, "用户尚未登录，请先登录");
+        return fail(BaseErrorCodeEnum.UN_AUTH, BaseErrorCodeEnum.UN_AUTH.getMessage());
     }
 
     /**

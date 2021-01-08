@@ -36,6 +36,15 @@ public class MailTemplateServiceImpl extends BaseStandardServiceImpl<MailTemplat
     }
 
     @Override
+    public MailTemplateDTO findByType(Integer type) {
+        if (type == null) {
+            return null;
+        }
+        MailTemplateQuery query = new MailTemplateQuery().setType(type);
+        return find(query);
+    }
+
+    @Override
     protected BaseConvert<MailTemplateEntity, MailTemplateDTO> convert() {
         return MailTemplateConvert.INSTANCE;
     }

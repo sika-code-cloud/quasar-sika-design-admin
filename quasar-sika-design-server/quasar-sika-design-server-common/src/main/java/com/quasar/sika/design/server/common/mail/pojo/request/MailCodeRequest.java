@@ -11,5 +11,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class MailCodeRequest {
+    private Integer type;
     private String code;
 }

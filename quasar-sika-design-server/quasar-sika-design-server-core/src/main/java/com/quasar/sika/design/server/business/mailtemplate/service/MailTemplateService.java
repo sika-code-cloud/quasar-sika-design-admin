@@ -18,4 +18,10 @@ public interface MailTemplateService extends BaseStandardService<MailTemplateDTO
      * @return
      */
     MailTemplateDTO findByCode(String code);
+    /**
+     * 根据type查询邮件模板数据
+     * @param type
+     * @return
+     */
+    MailTemplateDTO findByType(Integer type);
 }

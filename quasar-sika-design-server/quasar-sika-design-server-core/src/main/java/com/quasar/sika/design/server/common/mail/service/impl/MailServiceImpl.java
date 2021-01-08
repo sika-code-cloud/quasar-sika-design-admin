@@ -43,18 +43,18 @@ public class MailServiceImpl implements MailService {
         Assert.verifyObjNull(request, "发送邮件验证码请求对象");
         Assert.verifyStrEmpty(request.getContent(), "邮件内容");
         Assert.verifyStrEmpty(request.getSubject(), "邮件主题");
-        Assert.verifyStrEmpty(request.getCode(), "邮件验证码code");
+        Assert.verifyObjNull(request.getType(), "邮件验证码type");
         Validator.validateEmail(request.getTo(), "邮箱格式有误");
         // 类型校验
-        MailCodeEnum codeTypeEnum = TypeEnumInf.find(request.getCode(), MailCodeEnum.class);
-        Assert.verifyObjNull(codeTypeEnum, StrUtil.format("邮件验证码code【{}】对应的邮件验证码枚举", request.getCode()));
+        MailCodeEnum codeTypeEnum = TypeEnumInf.find(request.getType(), MailCodeEnum.class);
+        Assert.verifyObjNull(codeTypeEnum, StrUtil.format("邮件验证码code【{}】对应的邮件验证码枚举", request.getType()));
     }
 
     private String buildMailContent(SendMailRequest request) {
         // 查询模板
-        MailTemplateDTO mailTemplate = mailTemplateService.findByCode(request.getCode());
-        Assert.verifyDataNotExistent(mailTemplate, StrUtil.format("邮件模板code【{}】对应的数据", request.getCode()));
-        Assert.verifyStrEmpty(mailTemplate.getContent(), StrUtil.format("邮件模板code【{}】对应的内容", request.getCode()));
+        MailTemplateDTO mailTemplate = mailTemplateService.findByType(request.getType());
+        Assert.verifyDataNotExistent(mailTemplate, StrUtil.format("邮件模板type【{}】对应的数据", request.getType()));
+        Assert.verifyStrEmpty(mailTemplate.getContent(), StrUtil.format("邮件模板type【{}】对应的内容", request.getType()));
         // 使用模板引擎组件邮件内容
         TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig());
         Template template = engine.getTemplate(mailTemplate.getContent());

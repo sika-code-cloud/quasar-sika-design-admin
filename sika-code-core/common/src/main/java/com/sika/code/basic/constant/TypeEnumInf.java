@@ -10,6 +10,7 @@ import com.sika.code.common.util.EnumUtil;
  */
 public interface TypeEnumInf<T> {
     String GET_TYPE_NAME = "getType";
+    String GET_CODE_NAME = "getCode";
 
     /**
      * 获取类型
@@ -26,7 +27,7 @@ public interface TypeEnumInf<T> {
      * 根据类型查找指定枚举类的枚举对象
      * </p>
      *
-     * @param value          : 类型
+     * @param value         : 类型
      * @param typeEnumClass : 类型枚举class
      * @return boolean
      * @author daiqi
@@ -34,6 +35,10 @@ public interface TypeEnumInf<T> {
      */
     static <T extends TypeEnumInf> T find(Object value, Class<T> typeEnumClass) {
         return EnumUtil.find(typeEnumClass, GET_TYPE_NAME, value);
+    }
+
+    static <T extends TypeEnumInf> T findByCode(Object value, Class<T> typeEnumClass) {
+        return EnumUtil.find(typeEnumClass, GET_CODE_NAME, value);
     }
 
     /**

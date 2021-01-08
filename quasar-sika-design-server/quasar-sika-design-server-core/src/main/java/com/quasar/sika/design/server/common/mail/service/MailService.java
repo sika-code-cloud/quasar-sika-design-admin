@@ -28,7 +28,7 @@ public interface MailService extends BaseStandardDomain {
      * @return
      */
     default String getCacheKey(String code) {
-        MailCodeEnum mailCodeEnum = TypeEnumInf.find(code, MailCodeEnum.class);
+        MailCodeEnum mailCodeEnum = TypeEnumInf.findByCode(code, MailCodeEnum.class);
         return "MAIL_CODE:" + this.getClass() + ":" + ShiroUtils.getSessionId() + ":" + mailCodeEnum.name();
     }
 }

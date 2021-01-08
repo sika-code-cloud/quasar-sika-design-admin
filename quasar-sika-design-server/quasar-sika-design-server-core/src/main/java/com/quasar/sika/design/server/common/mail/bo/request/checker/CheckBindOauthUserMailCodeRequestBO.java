@@ -1,4 +1,4 @@
-package com.quasar.sika.design.server.common.mail.bo.request;
+package com.quasar.sika.design.server.common.mail.bo.request.checker;
 
 import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
@@ -16,7 +16,7 @@ import me.zhyd.oauth.model.AuthUser;
 
 /**
  * @author sikadai
- * @Description: 发送绑定授权邮件验证码请求逻辑类
+ * @Description: 校验绑定授权用户邮件验证码请求逻辑类
  * @date 2021/1/30:35
  */
 @Data
@@ -25,14 +25,9 @@ public class CheckBindOauthUserMailCodeRequestBO extends CheckMailCodeRequestBO 
 
     @Override
     protected void init() {
-        request.setCode(MailCodeEnum.BIND_OAUTH_USER.getType());
+        buildRequest(MailCodeEnum.BIND_OAUTH_USER);
     }
 
-    @Override
-    protected void verify() {
-        Assert.verifyObjNull(request, "绑定授权用户请求对象");
-        Assert.verifyStrEmpty(request.getClientMailCode(), "客户端授权验证码");
-    }
 
     @Override
     protected CheckMailCodeResponseBO doExecute() {

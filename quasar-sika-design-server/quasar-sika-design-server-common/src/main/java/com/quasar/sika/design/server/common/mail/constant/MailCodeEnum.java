@@ -11,13 +11,18 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum MailCodeEnum implements TypeEnumInf<String> {
+public enum MailCodeEnum implements TypeEnumInf<Integer> {
     /**
      * 邮箱授权码编码
      */
-    BIND_OAUTH_USER("BIND_OAUTH_USER_00001","授权用户绑定验证码"),
+    BIND_OAUTH_USER(10, "BIND_OAUTH_USER_00001","授权用户绑定"),
+    /**
+     * 邮箱授权码编码
+     */
+    USER_REGISTER(10, "USER_REGISTER_00001","用户注册"),
     ;
-    private final String type;
+    private final Integer type;
+    private final String code;
     private final String desc;
 
 

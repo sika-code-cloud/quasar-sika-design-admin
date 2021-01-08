@@ -8,9 +8,7 @@ import com.sika.code.exception.dto.BaseBusinessExceptionDTO;
 import com.sika.code.no.generator.NoGenerator;
 import com.sika.code.result.Result;
 import com.sika.code.result.config.ResultNoConfig;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -128,7 +126,7 @@ public class ResultGenerator {
             result.setMessage(exception.getMessage());
         } else if (exception instanceof RuntimeException) {
             result.setCode(BaseErrorCodeEnum.RUNTIME_EXCEPTION.getCode());
-            result.setMessage(BaseErrorCodeEnum.RUNTIME_EXCEPTION.getMessage());
+            result.setMessage(exception.getMessage());
         } else {
             result.setCode(BaseErrorCodeEnum.SYS_EXCEPTION.getCode());
             result.setMessage(BaseErrorCodeEnum.SYS_EXCEPTION.getMessage());

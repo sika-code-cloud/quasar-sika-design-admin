@@ -11,8 +11,12 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class SendMailRequest extends MailCodeRequest{
+    /** 邮件接收者 */
     private String to;
+    /** 邮件主题 */
     private String subject;
+    /** 邮件内容 */
     private String content;
+    private String operate;
     private boolean isHtml;
 }

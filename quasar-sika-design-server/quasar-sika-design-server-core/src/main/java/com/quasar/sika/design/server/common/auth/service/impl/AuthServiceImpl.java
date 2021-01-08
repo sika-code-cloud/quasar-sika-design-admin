@@ -14,7 +14,6 @@ import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
-import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
@@ -57,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         }
         // 拿到当前用户(可能还是游客，没有登录)
         Subject currentUser = SecurityUtils.getSubject();
-        // 如果这个用户没有登录,进行登录功能
+        // 如果用户已经登录,进行登录功能
         if (BooleanUtil.isTrue(currentUser.isAuthenticated())) {
             return AuthResponse.success(ShiroUtils.getUserInfo());
         }
@@ -72,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (AuthenticationException e) {
             throw new BusinessException("系统错误");
         }
-        throw new BusinessException("系统错误");
+        return AuthResponse.success(ShiroUtils.getUserInfo());
     }
 
     @Override
