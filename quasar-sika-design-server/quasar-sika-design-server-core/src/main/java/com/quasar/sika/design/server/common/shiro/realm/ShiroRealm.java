@@ -119,7 +119,7 @@ public class ShiroRealm extends AuthorizingRealm {
          */
         user.setToken(ShiroUtils.getSessionId());
         // 验证成功开始踢人(清除缓存和Session)
-        ShiroUtils.deleteCache(username, true);
+        ShiroUtils.deleteCache(username, false);
         // 认证成功后更新token
         updateToken(user);
         return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getUsername()), getName());

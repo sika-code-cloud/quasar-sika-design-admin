@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.captcha.pojo.request;
 
+import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeGeneratorEnum;
 import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeStyleEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,11 +18,19 @@ public class CaptchaGenerateRequest {
 
     public CaptchaGenerateRequest build() {
         if (this.length == null) {
-            this.width = 4;
+            this.length = 4;
         }
         if (this.style == null) {
             this.style = CaptchaCodeStyleEnum.LINE_CAPTCHA.getType();
         }
+        buildCaptchaGenerateRequest();
         return this;
+    }
+
+    protected void buildCaptchaGenerateRequest() {
+        // 算数验证码只需要设置长度为1
+        this.generator = CaptchaCodeGeneratorEnum.MATH_GENERATOR.getType();
+        this.style = CaptchaCodeStyleEnum.LINE_CAPTCHA.getType();
+        this.length = 1;
     }
 }

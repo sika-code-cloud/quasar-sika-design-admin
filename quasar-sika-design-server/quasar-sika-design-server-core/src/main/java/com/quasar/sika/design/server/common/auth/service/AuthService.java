@@ -1,19 +1,16 @@
 package com.quasar.sika.design.server.common.auth.service;
 
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.BindOauthUserRequest;
+import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import me.zhyd.oauth.model.AuthCallback;
 
 public interface AuthService {
-    /**
-     * 注册
-     */
-    AuthResponse register(AuthRegisterRequest request);
 
+    /**
+     * 登录
+     */
+    AuthResponse loginPhone(AuthLoginPhoneRequest request);
     /**
      * 登录
      */
@@ -71,5 +68,20 @@ public interface AuthService {
      * @return
      */
     OauthResponse bindOauthUser(BindOauthUserRequest request);
+
+    /**
+     * 校验注册的邮箱
+     */
+    boolean checkRegisterEmail(AuthRegisterRequest registerRequest);
+
+    /**
+     * 校验注册的手机号
+     */
+    boolean checkRegisterPhone(AuthRegisterRequest registerRequest);
+
+    /**
+     * 校验注册用户名
+     */
+    boolean checkRegisterUsername(AuthRegisterRequest registerRequest);
 
 }

@@ -58,7 +58,7 @@ module.exports = function (ctx) {
       // extractCSS: false,
       env: ctx.dev
         ? {
-            VUE_APP_BASE_API: 'http://dev.api.com/api'
+            VUE_APP_BASE_API: 'http://localhost:8101'
           }
         : {
             VUE_APP_BASE_API: 'http://prod.api.com'
@@ -132,6 +132,8 @@ module.exports = function (ctx) {
 
       // Quasar plugins
       plugins: [
+        'Cookies',
+        'Dialog',
         'Loading',
         'Notify',
         'LoadingBar',

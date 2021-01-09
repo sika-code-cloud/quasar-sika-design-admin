@@ -11,6 +11,7 @@ import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerate
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.constant.TypeEnumInf;
+import com.sika.code.basic.util.Assert;
 import com.sika.code.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public void generateAndWriteCaptchaVerifyCodeToResponse(HttpServletResponse response, CaptchaGenerateRequest request) {
+        Assert.verifyObjNullMsg(request, "请求对象为空");
+        Assert.verifyObjNullMsg(request.getType(), "验证码类型为空");
         AbstractCaptcha captcha = createCaptchaVerifyCode(request);
         ServletOutputStream servletOutputStream = null;
         try {
@@ -53,16 +56,31 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public boolean checkCaptchaVerifyCode(CaptchaCheckRequest request) {
-        String captchaCode = getCaptchaKey(request.getType());
+        String key = getCaptchaKey(request.getType());
+        String captchaCode = getFromCache(key);
         if (StrUtil.isBlank(captchaCode)) {
-            throw new BusinessException("验证码已失效");
+            throw new BusinessException("图片验证码已失效");
         }
         CodeGenerator generator = CaptchaFactory.createCodeGenerator(request);
         boolean verify = generator.verify(captchaCode, request.getClientCode());
-        if (verify && removeToCache(getCaptchaKey(request.getType()))) {
+        if (verify) {
             return true;
         }
-        throw new BusinessException("验证码有误");
+        throw new BusinessException("图片验证码有误");
+    }
+
+    @Override
+    public boolean checkAndRemoveCaptchaVerifyCode(CaptchaCheckRequest request) {
+        boolean verify = checkCaptchaVerifyCode(request);
+        if (verify && removeCaptchaVerifyCode(request)) {
+            return true;
+        }
+        throw new BusinessException("图片验证码有误");
+    }
+
+    @Override
+    public boolean removeCaptchaVerifyCode(CaptchaCheckRequest request) {
+        return removeToCache(getCaptchaKey(request.getType()));
     }
 
     private String getCaptchaKey(Integer type) {

@@ -14,7 +14,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class CheckUserRegisterMailCodeRequestBO extends CheckMailCodeRequestBO {
-
     @Override
     protected void init() {
         buildRequest(MailCodeEnum.USER_REGISTER);
@@ -22,7 +21,7 @@ public class CheckUserRegisterMailCodeRequestBO extends CheckMailCodeRequestBO {
 
     @Override
     protected CheckMailCodeResponseBO doExecute() {
-        // 1: 校验验证码
+        // 1: 校验邮箱验证码
         checkCode();
         return newResponseBO(new CheckMailResponse());
     }

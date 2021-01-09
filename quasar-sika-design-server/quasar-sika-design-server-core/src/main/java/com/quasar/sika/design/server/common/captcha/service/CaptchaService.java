@@ -19,5 +19,56 @@ public interface CaptchaService extends BaseStandardDomain {
 
     void generateAndWriteCaptchaVerifyCodeToResponse(HttpServletResponse response, CaptchaGenerateRequest request);
 
+    /**
+     * <p>
+     * 检验图片验证码 -- 此时不会删除验证码
+     * </p>
+     * <pre>
+     *     所需参数示例及其说明
+     *     参数名称 : 示例值 : 说明 : 是否必须
+     *     clientCode : 1 : 入参验证码 ：是
+     *     type : 10 : 验证码类型 ：是
+     * </pre>
+     *
+     * @param request
+     * @return boolean
+     * @author daiqi
+     * @date 2021/1/9 14:29
+     */
     boolean checkCaptchaVerifyCode(CaptchaCheckRequest request);
+
+    /**
+     * <p>
+     * 检验图片验证码 -- 校验通过会删除验证码
+     * </p>
+     * <pre>
+     *     所需参数示例及其说明
+     *     参数名称 : 示例值 : 说明 : 是否必须
+     *     clientCode : 1 : 入参验证码 ：是
+     *     type : 10 : 验证码类型 ：是
+     * </pre>
+     *
+     * @param request
+     * @return boolean
+     * @author daiqi
+     * @date 2021/1/9 14:29
+     */
+    boolean checkAndRemoveCaptchaVerifyCode(CaptchaCheckRequest request);
+    /**
+     * <p>
+     *  删除验证码
+     * </p>
+     * <pre>
+     *     所需参数示例及其说明
+     *     参数名称 : 示例值 : 说明 : 是否必须
+     *     clientCode : 1 : 入参验证码 ：是
+     *     type : 10 : 验证码类型 ：是
+     * </pre>
+     *
+     * @param request
+     * @return boolean
+     * @author daiqi
+     * @date 2021/1/9 14:29
+     */
+    boolean removeCaptchaVerifyCode(CaptchaCheckRequest request);
 }

@@ -1,39 +1,29 @@
-package com.quasar.sika.design.server.common.mail.domain;
+package com.quasar.sika.design.server.common.auth.domain;
 
-import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.quasar.sika.design.server.business.user.service.UserService;
+import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
 import com.quasar.sika.design.server.common.mail.service.MailService;
 import com.sika.code.standard.base.pojo.domain.BaseStandardDomain;
 
 /**
- * @author sikadai
- * @Description:
- * @date 2021/1/31:34
+ * @author daiqi
+ * @create 2021-01-09 18:03
  */
-public interface MailDomain extends BaseStandardDomain {
-    /**
-     * 用户服务
-     */
+public interface AuthDomain extends BaseStandardDomain {
     default UserService userService() {
         return getBean(UserService.class);
     }
 
-    /**
-     * 邮件服务
-     */
+    default AuthService authService() {
+        return getBean(AuthService.class);
+    }
+
     default MailService mailService() {
         return getBean(MailService.class);
     }
 
     default CaptchaService captchaService() {
         return getBean(CaptchaService.class);
-    }
-
-    /**
-     * 第三方用户服务
-     */
-    default ThirdOauthUserService thirdOauthUserService() {
-        return getBean(ThirdOauthUserService.class);
     }
 }

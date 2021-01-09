@@ -3,7 +3,7 @@
     <div>
       <q-form @submit="onSubmit" @reset="onReset" ref="loginForm">
         <q-tabs
-          v-model="tab"
+          v-model="loginType"
           active-color="primary"
           indicator-color="primary"
           align="left"
@@ -11,30 +11,29 @@
           narrow-indicator
           class="text-black"
         >
-          <q-tab name="mails" label="用户密码登录" />
-          <q-tab name="alarms" label="手机号登录" />
+          <q-tab :name="loginTypes.usernameLogin" label="用户密码登录" />
+          <q-tab :name="loginTypes.phoneLogin" label="手机号登录" />
         </q-tabs>
         <div class="q-gutter-y-sm">
-          <q-tab-panels v-model="tab" class="text-center">
-            <q-tab-panel name="mails" class="q-col-gutter-y-sm">
+          <q-tab-panels v-model="loginType" class="text-center">
+            <q-tab-panel :name="loginTypes.usernameLogin" class="q-col-gutter-y-sm">
               <div class="row">
                 <div class="col">
                   <q-input
                     outlined
                     clearable
                     clear-icon="cancel"
-                    v-model="name"
+                    v-model="loginData.username"
                     dense
-                    debounce="500"
-                    label="用户名:admin"
-                    lazy-rules
+                    debounce="1000"
+                    placeholder="用户名"
                     square
                     :rules="[
                       (val) => (val && val.length > 0) || '请输入用户名'
                     ]"
                   >
                     <template v-slot:prepend>
-                      <q-icon name="event" />
+                      <q-icon name="person" />
                     </template>
                   </q-input>
                 </div>
@@ -46,16 +45,15 @@
                     clearable
                     clear-icon="cancel"
                     :type="isPwd ? 'password' : 'text'"
-                    v-model="password"
+                    v-model="loginData.password"
                     dense
-                    debounce="500"
-                    label="密码:sika"
-                    lazy-rules
+                    debounce="1000"
+                    placeholder="密码"
                     square
                     :rules="[(val) => (val && val.length > 0) || '请输入密码']"
                   >
                     <template v-slot:prepend>
-                      <q-icon name="event" />
+                      <q-icon name="lock" />
                     </template>
                     <template v-slot:append>
                       <q-icon
@@ -69,25 +67,24 @@
               </div>
             </q-tab-panel>
 
-            <q-tab-panel name="alarms" class="q-col-gutter-y-sm">
+            <q-tab-panel :name="loginTypes.phoneLogin" class="q-col-gutter-y-sm">
               <div class="row">
                 <div class="col">
                   <q-input
                     outlined
                     clearable
                     clear-icon="cancel"
-                    v-model="name"
+                    v-model="loginData.phone"
                     dense
-                    debounce="500"
-                    label="手机号"
-                    lazy-rules
+                    debounce="1000"
+                    placeholder="手机号"
                     square
                     :rules="[
-                      (val) => (val && val.length > 0) || '请输入用户名'
+                      (val) => (val && val.length > 0) || '请输入手机号'
                     ]"
                   >
                     <template v-slot:prepend>
-                      <q-icon name="event" />
+                      <q-icon name="phone_iphone" />
                     </template>
                   </q-input>
                 </div>
@@ -96,24 +93,24 @@
                 <div class="col">
                   <q-input
                     outlined
+                    clearable
+                    clear-icon="cancel"
                     :type="isPwd ? 'password' : 'text'"
-                    v-model="password"
+                    v-model="loginData.phonePassword"
                     dense
-                    debounce="500"
-                    label="验证码"
-                    lazy-rules
+                    debounce="1000"
+                    placeholder="密码"
                     square
                     :rules="[(val) => (val && val.length > 0) || '请输入密码']"
                   >
                     <template v-slot:prepend>
-                      <q-icon name="event" />
+                      <q-icon name="lock" />
                     </template>
-                    <template v-slot:after>
-                      <q-btn
-                        unelevated
-                        color="secondary"
-                        class="no-border-radius"
-                        label="获取验证码"
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd = !isPwd"
                       />
                     </template>
                   </q-input>
@@ -140,7 +137,7 @@
                   color="primary q-mt-sm"
                   class="full-width no-border-radius"
                   type="submit"
-                  :loading="loginLogin"
+                  :loading="loginLoading"
                 >
                   <template v-slot:loading>
                     <q-spinner-ios class="on-left" />
@@ -177,110 +174,107 @@
         </div>
       </q-form>
     </div>
-    <q-dialog
-      v-model="currentLogin.login"
-      persistent
-      transition-show="scale"
-      transition-hide="scale"
-    >
-      <q-card class="bg-teal text-white" style="width: 300px">
-        <q-card-section>
-          <div class="text-h6">Persistent</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          {{ currentLogin.obj }}
-        </q-card-section>
-
-        <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="OK" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
 <script>
+import {
+  loginUsername,
+  loginPhone
+} from '@/api/user'
+import commonUtil from '@/utils/commonUtil'
+
+const iconObject = {
+  weixin: {
+    class: { iconName: 'iconweixin', color: 'text-grey' },
+    size: '22px'
+  },
+  zhifubao: {
+    class: {
+      iconName: 'iconzhifubao',
+      color: 'text-grey'
+    },
+    size: '20px'
+  },
+  taobao: {
+    class: { iconName: 'icontaobao', color: 'text-grey' },
+    size: '22px'
+  },
+  weibo: {
+    class: { iconName: 'iconweibo', color: 'text-grey' },
+    size: '20px'
+  },
+  github: {
+    class: { iconName: 'iconhuaban88', color: 'text-grey' },
+    size: '23px',
+    type: 'link'
+  }
+}
+const loginTypes = {
+  usernameLogin: 'usernameLogin',
+  phoneLogin: 'phoneLogin'
+}
 export default {
   name: 'Login',
   data() {
     return {
-      iconObject: {
-        weixin: {
-          class: { iconName: 'iconweixin', color: 'text-grey' },
-          size: '22px'
-        },
-        zhifubao: {
-          class: {
-            iconName: 'iconzhifubao',
-            color: 'text-grey'
-          },
-          size: '20px'
-        },
-        taobao: {
-          class: { iconName: 'icontaobao', color: 'text-grey' },
-          size: '22px'
-        },
-        weibo: {
-          class: { iconName: 'iconweibo', color: 'text-grey' },
-          size: '20px'
-        },
-        github: {
-          class: { iconName: 'iconhuaban88', color: 'text-grey' },
-          size: '23px',
-          type: 'link'
-        }
-      },
+      iconObject,
       iconActive: {
         weibo: 'grey'
       },
-      tab: 'mails',
-      name: null,
-      password: null,
+      loginTypes,
+      loginType: loginTypes.usernameLogin,
+      loginData: {
+        username: null,
+        password: null,
+        phone: null,
+        phonePassword: null
+      },
       accept: false,
       isPwd: true,
       autoLogin: true,
-      card: false,
-      loginLogin: false,
-      currentLogin: {
-        login: false,
-        obj: {}
-      }
+      loginLoading: false
     }
   },
   methods: {
     onSubmit() {
-      if (this.name !== 'admin' || this.password !== 'sika') {
-        this.$q.notify({
-          color: 'white',
-          textColor: 'negative',
-          icon: 'cancel',
-          position: 'top',
-          message: '用户名或密码不正确'
-        })
-        return
-      }
-      this.loginLogin = true
+      this.login()
+    },
+    login() {
+      this.loginLoading = true
       setTimeout(() => {
-        // we're done, we reset loading state
-        this.$q.notify({
-          color: 'white',
-          textColor: 'positive',
-          icon: 'check_circle',
-          position: 'top',
-          message: '登录成功'
-        })
-        this.loginLogin = true
-        this.$q.localStorage.set('name', this.name)
-        this.$router.push({
-          path: '/'
-        })
-      }, 2000)
+        if (this.loginType === this.loginTypes.usernameLogin) {
+          this.loginUsername()
+        } else {
+          this.loginPhone()
+        }
+      }, 1000)
+    },
+    loginPhone() {
+      loginPhone(this.loginData).then(response => {
+        this.success()
+      }).catch(err => {
+        console.log(err)
+        this.loginLoading = false
+      })
+    },
+    loginUsername() {
+      loginUsername(this.loginData).then(response => {
+        this.success()
+      }).catch(err => {
+        console.log(err)
+        this.loginLoading = false
+      })
+    },
+    success() {
+      commonUtil.notifySuccess('登录成功')
+      this.loginLoading = false
+      this.$router.push({
+        path: '/'
+      })
     },
     onReset() {
-      this.name = null
-      this.age = null
-      this.accept = false
+      commonUtil.resetObj(this.loginData)
     },
     mouseOver(iconKey, event) {
       this.activeForLoginType(iconKey, 'text-primary')
@@ -297,7 +291,7 @@ export default {
     }
   },
   computed: {
-    loginIcon: function () {
+    loginIcon: function() {
       return this.iconObject
     }
   }
@@ -307,8 +301,10 @@ export default {
 <style scoped>
 /*@import '~assets/icons/iconfont.sass';*/
 @import 'http://at.alicdn.com/t/font_2136554_1fgggi4y4wt.css';
+
 .q-tab-panel {
 }
+
 .flip-list-move {
   transition: transform 1s;
 }

@@ -13,4 +13,6 @@ import lombok.experimental.Accessors;
 public class MailCodeRequest {
     private Integer type;
     private String code;
+    /** 邮件接收者 */
+    private String to;
 }

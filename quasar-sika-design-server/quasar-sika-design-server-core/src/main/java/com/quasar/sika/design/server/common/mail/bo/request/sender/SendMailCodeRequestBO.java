@@ -26,7 +26,7 @@ public abstract class SendMailCodeRequestBO extends BaseStandardRequestBO<SendMa
         // 发送验证码
         SendMailResponse response = mailService().sendMail(request);
         // 缓存请求
-        String cacheKey = mailService().getCacheKey(request.getCode());
+        String cacheKey = mailService().getCacheKey(request);
         mailService().putToCache(cacheKey, request);
         return response;
     }

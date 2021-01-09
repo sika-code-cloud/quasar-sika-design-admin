@@ -1,6 +1,7 @@
 package com.quasar.sika.design.server.common.auth.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -37,13 +38,39 @@ public class AuthServiceImpl implements AuthService {
     private ThirdOauthUserService thirdOauthUserService;
 
     @Override
-    public AuthResponse register(AuthRegisterRequest request) {
-        request.setPassword(SHA256Util.sha256(request));
-        boolean saveSuccess = userService.save(request);
-        if (BooleanUtil.isFalse(saveSuccess)) {
-            throw new BusinessException("保存失败,请校验保存参数");
-        }
-        return AuthResponse.success(request);
+    public boolean checkRegisterEmail(AuthRegisterRequest registerRequest) {
+        Validator.validateEmail(registerRequest.getEmail(), "邮箱格式有误");
+        // 校验邮箱是否存在
+        Assert.verifyDataExistentMsg(userService.findByEmail(registerRequest.getEmail()), "当前邮箱已经被注册");
+        return true;
+    }
+
+    @Override
+    public boolean checkRegisterPhone(AuthRegisterRequest registerRequest) {
+        Validator.validateMobile(registerRequest.getPhone(), "手机格式有误");
+        // 校验手机是否存在
+        Assert.verifyDataExistentMsg(userService.findByPhone(registerRequest.getPhone()), "当前手机号已经被注册");
+        return true;
+    }
+
+    @Override
+    public boolean checkRegisterUsername(AuthRegisterRequest registerRequest) {
+        Assert.verifyStrEmpty(registerRequest.getUsername(), "用户名");
+        // 校验手机是否存在
+        Assert.verifyDataExistentMsg(userService.findByUsername(registerRequest.getUsername()), "当前用户名已经被注册");
+        return true;
+    }
+
+    @Override
+    public AuthResponse loginPhone(AuthLoginPhoneRequest request) {
+        Assert.verifyStrEmpty(request.getPhone(), "手机号");
+        Assert.verifyStrEmpty(request.getPassword(), "密码");
+        // 根据手机查询用户数据
+        UserDTO userDTO = userService.findByPhone(request.getPhone());
+        Assert.verifyDataNotExistent(userDTO, "账号不存在");
+        // 设置用户名
+        request.setUsername(userDTO.getUsername());
+        return login(request);
     }
 
     @Override
@@ -57,15 +84,15 @@ public class AuthServiceImpl implements AuthService {
         // 拿到当前用户(可能还是游客，没有登录)
         Subject currentUser = SecurityUtils.getSubject();
         // 如果用户已经登录,进行登录功能
-        if (BooleanUtil.isTrue(currentUser.isAuthenticated())) {
-            return AuthResponse.success(ShiroUtils.getUserInfo());
-        }
+//        if (BooleanUtil.isTrue(currentUser.isAuthenticated())) {
+//            return AuthResponse.success(ShiroUtils.getUserInfo());
+//        }
         try {
             currentUser.login(token);
         } catch (UnknownAccountException e) {
             throw new BusinessException("账号不存在");
         } catch (IncorrectCredentialsException e) {
-            throw new BusinessException("用户名或者密码错误");
+            throw new BusinessException("登录名或者密码错误");
         } catch (LockedAccountException e) {
             throw new BusinessException("登录失败，该用户已被冻结!");
         } catch (AuthenticationException e) {

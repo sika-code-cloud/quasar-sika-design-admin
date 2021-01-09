@@ -54,6 +54,17 @@ public class UserServiceImpl extends BaseStandardServiceImpl<UserMapper, UserEnt
     }
 
     @Override
+    public UserDTO findByPhone(String phone) {
+        if (StrUtil.isBlank(phone)) {
+            return null;
+        }
+        UserQuery userQuery = new UserQuery();
+        userQuery.setPhone(phone);
+        return find(userQuery);
+    }
+
+
+    @Override
     public UserDTO findByUsername(String username) {
         if (StrUtil.isBlank(username)) {
             return null;

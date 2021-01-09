@@ -24,12 +24,13 @@ public abstract class CheckMailCodeRequestBO extends BaseStandardRequestBO<Check
     protected CheckMailRequest request;
 
     protected void buildRequest(MailCodeEnum mailCodeEnum) {
-        request.setType(MailCodeEnum.BIND_OAUTH_USER.getType());
-        request.setCode(MailCodeEnum.BIND_OAUTH_USER.getCode());
+        request.setType(mailCodeEnum.getType());
+        request.setCode(mailCodeEnum.getCode());
     }
+
     @Override
     protected void verify() {
-        Assert.verifyObjNull(request, "用户请求对象");
+        Assert.verifyObjNull(request, "邮箱请求对象");
         Assert.verifyStrEmpty(request.getClientMailCode(), "客户端验证码");
     }
 
@@ -38,21 +39,38 @@ public abstract class CheckMailCodeRequestBO extends BaseStandardRequestBO<Check
         return CheckMailCodeResponseBO.class;
     }
 
+    /**
+     * 校验验证码 -- 不删除缓存
+     */
     protected SendMailRequest checkCode() {
-        String cacheKey = mailService().getCacheKey(request.getCode());
+        String cacheKey = mailService().getCacheKey(request);
         SendMailRequest requestFromCatch = getFromCache(cacheKey);
         if (BaseUtil.isNull(requestFromCatch) || StrUtil.isBlank(requestFromCatch.getContent())) {
-            throw new BusinessException("授权验证码已失效");
+            throw new BusinessException("邮箱验证码已失效");
         }
         if (!StrUtil.equalsIgnoreCase(requestFromCatch.getContent(), request.getClientMailCode())) {
-            throw new BusinessException("授权验证码有误");
+            throw new BusinessException("邮箱验证码有误");
         }
+        return requestFromCatch;
+    }
+
+    /**
+     * 校验验证码 --- 通过后删除
+     */
+    protected SendMailRequest checkCodeAndRemove() {
+        SendMailRequest requestFromCatch = checkCode();
         // code码移除缓存
+        removeCode();
+        return requestFromCatch;
+    }
+
+    public void removeCode() {
+        // code码移除缓存
+        String cacheKey = mailService().getCacheKey(request);
         boolean bool = mailService().removeToCache(cacheKey);
         if (!bool) {
             throw new BusinessException("系统异常");
         }
-        return requestFromCatch;
     }
 
 }

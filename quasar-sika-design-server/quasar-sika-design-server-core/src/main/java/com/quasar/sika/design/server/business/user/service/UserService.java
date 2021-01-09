@@ -25,6 +25,7 @@ public interface UserService extends BaseStandardService<UserDTO> {
 
     /**
      * 根据username获取用户数据
+     *
      * @param username : 用户名
      * @return
      */
@@ -32,8 +33,17 @@ public interface UserService extends BaseStandardService<UserDTO> {
 
     /**
      * 根据email获取用户数据
+     *
      * @param email : 邮箱
      * @return
      */
     UserDTO findByEmail(String email);
+
+    /**
+     * 根据phone获取用户数据
+     *
+     * @param phone : 手机号
+     * @return
+     */
+    UserDTO findByPhone(String phone);
 }

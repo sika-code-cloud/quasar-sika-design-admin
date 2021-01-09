@@ -1,11 +1,9 @@
 package com.quasar.sika.design.server.common.auth;
 
 
+import com.quasar.sika.design.server.common.auth.bo.request.AuthRegisterRequestBO;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.AuthUpdatePasswordRequest;
-import com.quasar.sika.design.server.common.auth.pojo.request.BindOauthUserRequest;
+import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
@@ -53,7 +51,7 @@ public class AuthController extends BaseStandardController {
     /**
      * 授权用户绑定-校验验证码
      */
-    @RequestMapping("/check_bind_oauth_user_mail_code/anon")
+    @PostMapping("/check_bind_oauth_user_mail_code/anon")
     @ResponseBody
     public Result checkBindOauthUserMailCode(@RequestBody CheckBindOauthUserMailCodeRequestBO requestBO) {
         return success(DomainExecutor.execute(requestBO));
@@ -62,28 +60,86 @@ public class AuthController extends BaseStandardController {
     /**
      * 授权用户绑定-发送验证码
      */
-    @RequestMapping("/send_bind_oauth_user_mail_code/anon")
+    @PostMapping("/send_bind_oauth_user_mail_code/anon")
     @ResponseBody
     public Result sendBindOauthUserMailCode(@RequestBody SendBindOauthUserMailCodeRequestBO requestBo) {
         return success(DomainExecutor.execute(requestBo));
     }
 
     /**
-     * 用户注册 - 发送验证码
+     * 用户登录 - 用户名密码
      */
-    @RequestMapping("/check_user_register_mail_code/anon")
+    @PostMapping("/login_username/anon")
+    @ResponseBody
+    public Result loginUsername(@RequestBody AuthLoginRequest request) {
+        return success(authService.login(request));
+    }
+
+    /**
+     * 用户登录 - 手机号密码
+     */
+    @PostMapping("/login_phone/anon")
+    @ResponseBody
+    public Result loginPhone(@RequestBody AuthLoginPhoneRequest request) {
+        return success(authService.loginPhone(request));
+    }
+
+    @RequestMapping("/get_captcha_verify_code/anon")
+    public void getCaptchaVerifyCode(@RequestBody CaptchaGenerateRequest request) {
+        captchaService.generateAndWriteCaptchaVerifyCodeToResponse(response, request);
+    }
+
+    /**
+     * 校验图片验证码
+     */
+    @RequestMapping("/check_captcha_verify_code/anon")
+    public Result checkCaptchaVerifyCode(@RequestBody CaptchaCheckRequest request) {
+        return success(captchaService.checkCaptchaVerifyCode(request));
+    }
+
+    /**
+     * 用户注册 - 发送邮箱验证码
+     */
+    @PostMapping("/check_user_register_mail_code/anon")
     @ResponseBody
     public Result checkUserRegisterMailCode(@RequestBody CheckUserRegisterMailCodeRequestBO requestBo) {
         return success(DomainExecutor.execute(requestBo));
     }
 
     /**
-     * 用户注册 - 校验验证码
+     * 用户注册 - 校验邮箱验证码
      */
-    @RequestMapping("/send_user_register_mail_code/anon")
+    @PostMapping("/send_user_register_mail_code/anon")
     @ResponseBody
     public Result sendUserRegisterMailCode(@RequestBody SendUserRegisterMailCodeRequestBO requestBo) {
         return success(DomainExecutor.execute(requestBo));
+    }
+
+    /**
+     * 用户注册 - 校验邮箱
+     */
+    @PostMapping("/check_register_email/anon")
+    @ResponseBody
+    public Result checkRegisterEmail(@RequestBody AuthRegisterRequest request) {
+        return success(authService.checkRegisterEmail(request));
+    }
+
+    /**
+     * 用户注册 - 校验手机号
+     */
+    @PostMapping("/check_register_phone/anon")
+    @ResponseBody
+    public Result checkRegisterPhone(@RequestBody AuthRegisterRequest request) {
+        return success(authService.checkRegisterPhone(request));
+    }
+
+    /**
+     * 用户注册 - 校验用户名
+     */
+    @RequestMapping("/check_register_username/anon")
+    @ResponseBody
+    public Result checkRegisterUsername(@RequestBody AuthRegisterRequest request) {
+        return success(authService.checkRegisterUsername(request));
     }
 
     /**
@@ -177,15 +233,9 @@ public class AuthController extends BaseStandardController {
     /**
      * 授权登录-----end
      */
-
     @PostMapping("/register/anon")
-    public Result register(@RequestBody AuthRegisterRequest request) {
-        return super.success(authService.register(request));
-    }
-
-    @PostMapping("/login/anon")
-    public Result login(@RequestBody AuthLoginRequest request) {
-        return super.success(authService.login(request));
+    public Result register(@RequestBody AuthRegisterRequestBO requestBO) {
+        return super.success(DomainExecutor.execute(requestBO));
     }
 
     @PostMapping("/update_current_password")
@@ -203,20 +253,6 @@ public class AuthController extends BaseStandardController {
         return super.success(ShiroUtils.getUserInfo());
     }
 
-    @RequestMapping("/get_captcha_verify_code/anon")
-    public void getCaptchaVerifyCode(@RequestBody CaptchaGenerateRequest request) {
-        CaptchaGenerateRequest doRequest = AuthFactory.loginCaptchaGenerateRequest()
-                .setWidth(request.getWidth())
-                .setHeight(request.getHeight());
-        captchaService.generateAndWriteCaptchaVerifyCodeToResponse(response, doRequest);
-    }
-
-    @RequestMapping("/check_captcha_verify_code/anon")
-    public Result checkCaptchaVerifyCode(@RequestBody CaptchaCheckRequest request) {
-        CaptchaCheckRequest doRequest = AuthFactory.checkLoginCaptchaGenerateRequest()
-                .setClientCode(request.getClientCode());
-        return success(captchaService.checkCaptchaVerifyCode(doRequest));
-    }
 
     @RequestMapping("/logout")
     public Result logout() {

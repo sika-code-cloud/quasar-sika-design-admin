@@ -1,6 +1,5 @@
 package com.quasar.sika.design.server.common.auth.factory;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.SimpleCache;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -8,11 +7,6 @@ import cn.hutool.core.util.StrUtil;
 import com.quasar.sika.design.server.common.auth.cache.AuthStateRedisCache;
 import com.quasar.sika.design.server.common.auth.properties.AuthConfigExp;
 import com.quasar.sika.design.server.common.auth.properties.AuthRequestProperties;
-import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeGeneratorEnum;
-import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeStyleEnum;
-import com.quasar.sika.design.server.common.captcha.constant.CaptchaCodeTypeEnum;
-import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
-import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.common.spring.SpringUtil;
 import com.sika.code.exception.BusinessException;
@@ -82,16 +76,4 @@ public class AuthFactory {
         return AUTH_REQUEST_SIMPLE_CACHE.put(source, authRequest);
     }
 
-    public static CaptchaGenerateRequest loginCaptchaGenerateRequest() {
-        // 算数验证码只需要设置长度为1
-        return new CaptchaGenerateRequest()
-            .setGenerator(CaptchaCodeGeneratorEnum.MATH_GENERATOR.getType())
-            .setStyle(CaptchaCodeStyleEnum.LINE_CAPTCHA.getType())
-            .setType(CaptchaCodeTypeEnum.LOGIN.getType())
-            .setLength(1);
-    }
-
-    public static CaptchaCheckRequest checkLoginCaptchaGenerateRequest() {
-        return BeanUtil.copyProperties(loginCaptchaGenerateRequest(), CaptchaCheckRequest.class);
-    }
 }

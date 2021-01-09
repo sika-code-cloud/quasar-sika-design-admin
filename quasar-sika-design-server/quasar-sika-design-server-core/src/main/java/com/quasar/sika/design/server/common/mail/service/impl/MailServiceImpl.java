@@ -9,6 +9,7 @@ import cn.hutool.extra.template.Template;
 import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.quasar.sika.design.server.business.mailtemplate.pojo.dto.MailTemplateDTO;
 import com.quasar.sika.design.server.business.mailtemplate.service.MailTemplateService;
 import com.quasar.sika.design.server.common.mail.constant.MailCodeEnum;
@@ -17,6 +18,7 @@ import com.quasar.sika.design.server.common.mail.pojo.response.SendMailResponse;
 import com.quasar.sika.design.server.common.mail.service.MailService;
 import com.sika.code.basic.constant.TypeEnumInf;
 import com.sika.code.basic.util.Assert;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
  * @author sikadai
  */
 @Service
+@Slf4j
 public class MailServiceImpl implements MailService {
     @Autowired
     private MailTemplateService mailTemplateService;
@@ -58,6 +61,7 @@ public class MailServiceImpl implements MailService {
         // 使用模板引擎组件邮件内容
         TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig());
         Template template = engine.getTemplate(mailTemplate.getContent());
+        log.info("发送邮件的参数为【{}】", JSONObject.toJSONString(request));
         return template.render(Dict.create().set("model", request));
     }
 

@@ -50,6 +50,7 @@ public class CaptchaFactory {
     }
 
     public static CodeGenerator createCodeGenerator(CaptchaGenerateRequest captchaGenerateRequest) {
+        captchaGenerateRequest.build();
         Integer codeGeneratorType = captchaGenerateRequest.getGenerator();
         Integer length = captchaGenerateRequest.getLength();
         return createCodeGenerator(codeGeneratorType, length);

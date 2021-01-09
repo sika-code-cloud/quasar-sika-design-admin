@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public enum CaptchaCodeTypeEnum implements TypeEnumInf<Integer> {
     LOGIN(10, "登录验证码", 600L, TimeUnit.SECONDS),
+    REGISTER(20, "注册验证码", 600L, TimeUnit.SECONDS),
     ;
     private final Integer type;
     private final String desc;

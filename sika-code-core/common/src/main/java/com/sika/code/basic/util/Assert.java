@@ -37,8 +37,39 @@ public class Assert {
             return;
         }
         boolean isBoolean = (obj instanceof Boolean || boolean.class.equals(obj.getClass()));
+        if (!isBoolean) {
+            throw new BusinessException(BaseErrorCodeEnum.ALREADY_EXISTENT).buildFormatValues(formatValues);
+        }
         if (isBoolean && (Boolean) obj) {
             throw new BusinessException(BaseErrorCodeEnum.ALREADY_EXISTENT).buildFormatValues(formatValues);
+        }
+    }
+
+    /**
+     * <p>
+     * 校验对象是否存在
+     * </p>
+     *
+     * <pre>
+     * 对象不为空即是存在：抛出异常
+     * 若对象为boolean类型则 为true是表示存在 抛出异常，否则表示不存在
+     * </pre>
+     *
+     * @param obj : List : 待校验obj实例
+     * @param msg : 已存在 : 格式化错误信息的的值
+     * @author daiqi
+     * @创建时间 2018年6月9日 下午3:34:46
+     */
+    public static void verifyDataExistentMsg(Object obj, String msg) {
+        if (BaseUtil.isNull(obj)) {
+            return;
+        }
+        boolean isBoolean = (obj instanceof Boolean || boolean.class.equals(obj.getClass()));
+        if (!isBoolean) {
+            throw new BusinessException(BaseErrorCodeEnum.ALREADY_EXISTENT, msg);
+        }
+        if (isBoolean && (Boolean) obj) {
+            throw new BusinessException(BaseErrorCodeEnum.ALREADY_EXISTENT, msg);
         }
     }
 
