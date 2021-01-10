@@ -141,7 +141,7 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     @Override
     public OauthResponse oauthLogin(String source, AuthCallback callback) {
         log.info("开始oauthLogin：" + source + " 请求 params：" + JSONObject.toJSONString(callback));
-        String clientUrl = getFromCache(buildSteteCacheKey(source, callback.getState());
+        String clientUrl = getFromCache(buildSteteCacheKey(source, callback.getState()));
         log.info("clientUrl:{}", clientUrl);
         AuthRequest authRequest = AuthFactory.getAuthRequest(source);
         me.zhyd.oauth.model.AuthResponse<AuthUser> response = authRequest.login(callback);
