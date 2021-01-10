@@ -18,6 +18,7 @@ import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
+import com.sika.code.standard.base.pojo.domain.BaseStandardDomain;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthUser;
@@ -31,11 +32,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     @Autowired
     private UserService userService;
     @Autowired
     private ThirdOauthUserService thirdOauthUserService;
+    private static final String OAUTH_STATE_KEY = "oauth:state:";
 
     @Override
     public boolean checkRegisterEmail(AuthRegisterRequest registerRequest) {
@@ -126,15 +128,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String getAuthorizeUrl(String source) {
+    public String getAuthorizeUrl(String source, String clientUrl) {
         log.info("获取授权URL:getAuthorizeUrl：" + source);
         AuthRequest authRequest = AuthFactory.getAuthRequest(source);
-        return authRequest.authorize(AuthStateUtils.createState());
+        String state = AuthStateUtils.createState();
+        putToCache(buildSteteCacheKey(source, state), clientUrl);
+        String thirdUrl = authRequest.authorize(state);
+        log.info("thirdUrl:{}, authRequest:{}", thirdUrl, JSONObject.toJSONString(authRequest));
+        return thirdUrl;
     }
 
     @Override
     public OauthResponse oauthLogin(String source, AuthCallback callback) {
         log.info("开始oauthLogin：" + source + " 请求 params：" + JSONObject.toJSONString(callback));
+        String clientUrl = getFromCache(buildSteteCacheKey(source, callback.getState());
+        log.info("clientUrl:{}", clientUrl);
         AuthRequest authRequest = AuthFactory.getAuthRequest(source);
         me.zhyd.oauth.model.AuthResponse<AuthUser> response = authRequest.login(callback);
         log.info("授权登录响应参数：{}", JSONObject.toJSONString(response));
@@ -145,9 +153,13 @@ public class AuthServiceImpl implements AuthService {
             AuthResponse authResponse = login(authLoginRequest);
             // 保存或者授权登录数据
             thirdOauthUserService.modifyByAuthUser(authUser);
-            return BeanUtil.toBean(authResponse, OauthResponse.class).setAuthUser(authUser);
+            return BeanUtil.toBean(authResponse, OauthResponse.class).setAuthUser(authUser).setClientUrl(clientUrl);
         }
         throw new BusinessException(response.getMsg());
+    }
+
+    private String buildSteteCacheKey(String source, String state) {
+        return OAUTH_STATE_KEY + source + ":" + state;
     }
 
     @Override

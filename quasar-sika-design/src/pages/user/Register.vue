@@ -398,10 +398,7 @@ export default {
     },
     getCaptchaVerifyCode() {
       getRegisterCaptchaVerifyCode().then(response => {
-        this.captchaVerifyCodeUrl = 'data:image/png;base64,' + btoa(
-          new Uint8Array(response)
-            .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        )
+        this.captchaVerifyCodeUrl = response
       })
     },
     getEmailVerifyCode() {

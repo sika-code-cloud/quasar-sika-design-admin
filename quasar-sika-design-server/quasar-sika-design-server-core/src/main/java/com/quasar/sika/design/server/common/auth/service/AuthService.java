@@ -34,13 +34,14 @@ public interface AuthService {
      *     所需参数示例及其说明
      *     参数名称 : 示例值 : 说明 : 是否必须
      *     source : gitee : 授权登录的source字符串，参考AuthDefaultSource ： 是 参考
+     *     clientUrl : localhost : 前端当前页面的url ： 是 参考
      * </pre>
      * @author daiqi
      * @date 2020/12/30 23:16
      * @param source
      * @return java.lang.String
      */
-    String getAuthorizeUrl(String source);
+    String getAuthorizeUrl(String source, String clientUrl);
 
     /**
      * <p>

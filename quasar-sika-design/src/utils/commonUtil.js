@@ -90,11 +90,17 @@ function confirm(message, title) {
 }
 
 /* confirm - end */
+
+function getUrlRootPath() {
+  return window.location.protocol + '//' + location.host
+}
+
 export default {
   getRandomData,
   getRandomRangeInt,
   getRandomCeilInt,
   getRandomFloorInt,
+  getUrlRootPath,
   notifySuccess,
   notifyInfo,
   notifyWaring,

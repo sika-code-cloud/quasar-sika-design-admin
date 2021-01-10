@@ -1,14 +1,16 @@
 import axios from 'axios'
 import commonUtil from './commonUtil'
+import { getLoginUser } from './localStorage'
 import {
   LoadingBar
 } from 'quasar'
 
+const BASE_URL = process.env.VUE_APP_BASE_API
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: BASE_URL,
   // 超时
   timeout: 30000
 })
@@ -16,6 +18,13 @@ service.defaults.withCredentials = true
 
 // 请求拦截器
 service.interceptors.request.use(function(config) {
+  if (!getLoginUser()) {
+    config.headers.token = getQueryString('token')
+    console.log(getQueryString('token'))
+    // const auth = post('/auth/current_user')
+    // console.log(auth)
+    // return systemError(error)
+  }
   return config
 }, function(error) {
   return systemError(error)
@@ -38,6 +47,15 @@ service.interceptors.response.use(function(response) {
 }, function(error) {
   return systemError(error)
 })
+
+function getQueryString(name) {
+  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+  const r = window.location.search.substr(1).match(reg)
+  if (r != null) {
+    return unescape(r[2])
+  }
+  return null
+}
 
 // 系统错误处理
 function systemError(error) {
@@ -82,15 +100,54 @@ LoadingBar.setDefaults({
   position: 'top'
 })
 
-// 校验用户名
+// 展示错误响应false
+export const showNotifyFalse = {
+  showNotify: false
+}
+export const showNotifyTrue = {
+  showNotify: false
+}
+
+// post请求
 export function post(url, param, config) {
-  const cfg = Object.assign({ showNotify: true }, config)
+  const cfg = Object.assign(showNotifyTrue, config)
   return service({
     url: url,
     method: 'post',
     ...cfg,
     data: param
   })
+}
+
+// post请求图片流
+export function postForImage(url, param, config) {
+  const cfg = Object.assign(showNotifyTrue, config)
+  return service({
+    url: url,
+    method: 'post',
+    ...cfg,
+    responseType: 'arraybuffer',
+    data: param
+  }).then(response => {
+    return 'data:image/png;base64,' + btoa(
+      new Uint8Array(response)
+        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+    )
+  })
+}
+
+// get请求
+export function get(url, config) {
+  const cfg = Object.assign(showNotifyTrue, config)
+  return service({
+    url: url,
+    method: 'post',
+    ...cfg
+  })
+}
+
+export function buildFullUrl(url) {
+  return BASE_URL + url
 }
 
 export default service

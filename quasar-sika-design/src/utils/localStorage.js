@@ -9,6 +9,10 @@ export function setLoginUser(val) {
   set(localStorageKey.loginUser, val)
 }
 
+export function getLoginUser(val) {
+  return getItem(localStorageKey.loginUser)
+}
+
 export function setToken(val) {
   set(localStorageKey.token, val)
 }

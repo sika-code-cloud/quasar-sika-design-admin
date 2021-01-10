@@ -147,8 +147,8 @@ public class AuthController extends BaseStandardController {
      */
     @RequestMapping("/get_authorize_url/{source}/anon")
     @ResponseBody
-    public Result getAuthorizeUrl(@PathVariable("source") String source) {
-        return success(authService.getAuthorizeUrl(source));
+    public Result getAuthorizeUrl(@PathVariable("source") String source, String clientUrl) {
+        return success(authService.getAuthorizeUrl(source, clientUrl));
     }
 
     /**
@@ -166,17 +166,17 @@ public class AuthController extends BaseStandardController {
     }
 
     @RequestMapping("/render/{source}/anon")
-    public void renderAuth(@PathVariable("source") String source) throws IOException {
-        response.sendRedirect(authService.getAuthorizeUrl(source));
+    public ModelAndView renderAuth(@PathVariable("source") String source, String clientUrl) throws IOException {
+        return redirect(authService.getAuthorizeUrl(source, clientUrl));
     }
 
     /**
      * oauth平台中配置的授权回调地址，以本项目为例，在创建github授权应用时的回调地址应为：http://127.0.0.1:8443/oauth/callback/github
      */
     @RequestMapping("/callback/{source}/anon")
-    public ModelAndView login(@PathVariable("source") String source, AuthCallback callback, HttpServletRequest request) {
+    public ModelAndView login(@PathVariable("source") String source, AuthCallback callback, HttpServletRequest request) throws IOException {
         OauthResponse authResponse = authService.oauthLogin(source, callback);
-        return new ModelAndView("redirect:/auth/users/anon");
+        return redirect(authResponse.getClientUrl() + "?token=" + ShiroUtils.getSessionId());
     }
 
     @RequestMapping("/users/anon")
@@ -235,7 +235,7 @@ public class AuthController extends BaseStandardController {
      */
     @PostMapping("/register/anon")
     public Result register(@RequestBody AuthRegisterRequestBO requestBO) {
-        return super.success(DomainExecutor.execute(requestBO));
+        return super.success(DomainExecutor.execute(requestBO).getResponse());
     }
 
     @PostMapping("/update_current_password")

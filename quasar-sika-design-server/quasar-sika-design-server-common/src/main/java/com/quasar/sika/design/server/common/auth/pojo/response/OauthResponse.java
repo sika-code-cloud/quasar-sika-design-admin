@@ -14,4 +14,5 @@ import me.zhyd.oauth.model.AuthUser;
 @Accessors(chain = true)
 public class OauthResponse extends AuthResponse {
     private AuthUser authUser;
+    private String clientUrl;
 }

@@ -32,6 +32,10 @@ public class ShiroUtils {
         return SecurityUtils.getSubject().getSession();
     }
 
+    public static Session getSession(String sessionId) {
+        return getRedisSessionDAO().readSession(sessionId);
+    }
+
     public static String getSessionId() {
         return getSession().getId().toString();
     }
