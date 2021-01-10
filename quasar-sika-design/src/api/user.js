@@ -1,17 +1,11 @@
-import request from 'utils/request'
+import request, { post } from 'utils/request'
 import { setLoginUser, setToken } from 'utils/localStorage'
 
 // 登录方法
 export function loginUsername(data) {
-  return request({
-    url: '/auth/login_username/anon',
-    method: 'post',
-    data: data
-  }).then(response => {
+  return post('/auth/login_username/anon', data).then(response => {
     console.log(response)
     storageUserData(response)
-  }).catch(err => {
-    return Promise.reject(err)
   })
 }
 
@@ -20,7 +14,10 @@ export function loginPhone(data) {
   return request({
     url: '/auth/login_phone/anon',
     method: 'post',
-    data: { phone: data.phone, password: data.phonePassword }
+    data: {
+      phone: data.phone,
+      password: data.phonePassword
+    }
   }).then(response => {
     console.log(response)
     storageUserData(response)
@@ -30,14 +27,19 @@ export function loginPhone(data) {
 }
 
 // 校验用户名
-export function checkRegisterUsername(param) {
-  const data = buildRegisterRequest(param)
-  return request({
-    url: '/auth/check_register_username/anon',
-    method: 'post',
-    data: data
-  })
+export const checkRegisterUsername = (param) => {
+  return post('/auth/check_register_username/anon', buildRegisterRequest(param), { showNotify: false })
 }
+//
+// // 校验用户名
+// export function checkRegisterUsername(param) {
+//   const data = buildRegisterRequest(param)
+//   return request({
+//     url: '/auth/check_register_username/anon',
+//     method: 'post',
+//     data: data
+//   })
+// }
 
 // 校验邮箱
 export function checkRegisterEmail(param) {
@@ -88,7 +90,10 @@ export function checkRegisterCaptchaVerifyCode(param) {
 export function sendUserRegisterMailCode(param) {
   const data = {
     request: { to: param.email },
-    captchaCheckRequest: { clientCode: param.captchaVerifyCode, type: 20 }
+    captchaCheckRequest: {
+      clientCode: param.captchaVerifyCode,
+      type: 20
+    }
   }
   return request({
     url: '/auth/send_user_register_mail_code/anon',
@@ -138,9 +143,15 @@ function buildRegisterRequest(registerData) {
 }
 
 function buildCheckCaptchaRequest(registerData) {
-  return { clientCode: registerData.captchaVerifyCode, type: 20 }
+  return {
+    clientCode: registerData.captchaVerifyCode,
+    type: 20
+  }
 }
 
 function buildCheckMailRequest(registerData) {
-  return { to: registerData.email, clientMailCode: registerData.emailValidateCode }
+  return {
+    to: registerData.email,
+    clientMailCode: registerData.emailValidateCode
+  }
 }

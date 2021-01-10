@@ -23,6 +23,7 @@ service.interceptors.request.use(function(config) {
 // 响应拦截器
 service.interceptors.response.use(function(response) {
   console.log(JSON.stringify(response.headers))
+  const config = response.config
   // 未设置状态码则默认成功状态
   const result = response.data
   if (result.success === undefined) {
@@ -32,7 +33,7 @@ service.interceptors.response.use(function(response) {
   if (result.success) {
     return data
   } else {
-    return bizError(result)
+    return bizError(result, config)
   }
 }, function(error) {
   return systemError(error)
@@ -54,7 +55,7 @@ function systemError(error) {
 }
 
 // 业务逻辑错误处理
-function bizError(result) {
+function bizError(result, config) {
   const code = result.code
   const message = result.message
   if (code === 'AUTH_000001') {
@@ -68,7 +69,9 @@ function bizError(result) {
       // console.log('I am triggered on both OK and Cancel')
     })
   } else {
-    commonUtil.notifyError(message)
+    if (config.showNotify) {
+      commonUtil.notifyError(message)
+    }
     return Promise.reject(message)
   }
 }
@@ -78,5 +81,16 @@ LoadingBar.setDefaults({
   size: '4px',
   position: 'top'
 })
+
+// 校验用户名
+export function post(url, param, config) {
+  const cfg = Object.assign({ showNotify: true }, config)
+  return service({
+    url: url,
+    method: 'post',
+    ...cfg,
+    data: param
+  })
+}
 
 export default service

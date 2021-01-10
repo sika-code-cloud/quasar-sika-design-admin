@@ -63,6 +63,9 @@ public class ShiroUtils {
      * @Param isRemoveSession 是否删除Session，删除后用户需重新登录
      */
     public static void deleteCache(String username, boolean isRemoveSession) {
+        if (!isRemoveSession) {
+            return;
+        }
         //从缓存中获取Session
         Session session = null;
         // 获取当前已登录的用户session列表
