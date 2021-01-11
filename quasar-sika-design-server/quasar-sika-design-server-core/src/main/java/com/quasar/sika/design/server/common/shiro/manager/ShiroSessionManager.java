@@ -1,6 +1,10 @@
-package com.quasar.sika.design.server.common.shiro.util;
+package com.quasar.sika.design.server.common.shiro.manager;
 
+import com.quasar.sika.design.server.common.auth.pojo.dto.OauthStateCacheDTO;
+import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.shiro.constant.ShiroConstant;
+import com.sika.code.common.json.util.JSONUtil;
+import com.sika.code.standard.base.pojo.domain.BaseStandardDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.Session;
@@ -19,7 +23,7 @@ import java.io.Serializable;
  * 自定义获取Token
  */
 @Slf4j
-public class ShiroSessionManager extends DefaultWebSessionManager {
+public class ShiroSessionManager extends DefaultWebSessionManager implements BaseStandardDomain {
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 
     /**
@@ -79,9 +83,21 @@ public class ShiroSessionManager extends DefaultWebSessionManager {
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
             return token;
         } else {
-            // 否则按默认规则从cookie取token
-            token = super.getSessionId(request, response);
+            log.info("回调的参数为：{}", JSONUtil.toJSONString(request.getParameterMap()));
+            log.info("回调的路径为：{}", JSONUtil.toJSONString(WebUtils.toHttp(request).getRequestURI()));
+            String state = request.getParameter("state");
+            OauthStateCacheDTO cacheDTO = authService().getOauthStateCache("gitee", state);
+            if (cacheDTO != null) {
+                token = cacheDTO.getClientSessionId();
+            } else {
+                // 否则按默认规则从cookie取token
+                token = super.getSessionId(request, response);
+            }
         }
         return token;
+    }
+
+    AuthService authService() {
+        return getBean(AuthService.class);
     }
 }

@@ -1,13 +1,10 @@
 import { buildFullUrl, post, postForImage, showNotifyFalse } from 'utils/request'
-import { setLoginUser, setToken } from 'utils/localStorage'
-import commonUtil from 'src/utils/commonUtil'
+import commonUtil from '@/utils/commonUtil'
+import { removeToken } from '@/utils/localStorage'
 // -----------------登录模块:开始----------------------------
 // 登录 --- 用户名密码登录
 export function loginUsername(data) {
-  return post('/auth/login_username/anon', data).then(response => {
-    console.log(response)
-    storageUserData(response)
-  })
+  return post('/auth/login_username/anon', data)
 }
 
 // 登录 --- 手机号密码登录
@@ -16,12 +13,7 @@ export function loginPhone(param) {
     phone: param.phone,
     password: param.phonePassword
   }
-  return post('/auth/login_phone/anon', data).then(response => {
-    console.log(response)
-    storageUserData(response)
-  }).catch(err => {
-    return Promise.reject(err)
-  })
+  return post('/auth/login_phone/anon', data)
 }
 
 // 授权登录
@@ -36,6 +28,12 @@ export function oauthLogin(source, path) {
   return buildFullUrl('/auth/render/' + source + '/anon?clientUrl=' + clientUrl)
 }
 
+// 退出
+export function logout() {
+  return post('/auth/logout').then(response => {
+    removeToken()
+  })
+}
 // -----------------登录功能:结束----------------------------
 
 // -----------------注册功能:开始----------------------------
@@ -96,22 +94,11 @@ export function register(param) {
     checkMailRequest: buildCheckMailRequest(param),
     registerRequest: buildRegisterRequest(param)
   }
-  return post('/auth/register/anon', data).then(response => {
-    console.log(response)
-    storageUserData(response)
-  })
+  return post('/auth/register/anon', data)
 }
 
-export function currentUser(data) {
-  return post('/auth/current_user', data).then(response => {
-    console.log(response)
-    storageUserData(response)
-  })
-}
-
-function storageUserData(data) {
-  setLoginUser(data.user)
-  setToken(data.token)
+export function currentUser() {
+  return post('/auth/current_user')
 }
 
 function buildRegisterRequest(registerData) {

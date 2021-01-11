@@ -1,28 +1,25 @@
 package com.quasar.sika.design.server.common.auth.pojo.request;
 
 import com.quasar.sika.design.server.common.auth.token.OauthLoginToken;
-import lombok.Getter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import me.zhyd.oauth.model.AuthUser;
 
 /**
  * @author daiqi
  * @create 2020-12-31 0:54
  */
-@Getter
+@Data
+@Accessors(chain = true)
 public class OauthLoginRequest extends AuthLoginRequest {
-    private boolean oauthLogin;
     private AuthUser authUser;
-    public OauthLoginRequest build(AuthUser authUser) {
-        this.authUser = authUser;
-        this.oauthLogin = true;
-        return this;
-    }
+    private String state;
 
     @Override
     public AuthLoginRequest build() {
         this.username = authUser.getSource() + "-" + authUser.getUuid();
         this.password = username;
-        token = new OauthLoginToken(username, password).setAuthUser(authUser);
+        token = new OauthLoginToken(username, password).setAuthUser(authUser).setState(state);
         return this;
     }
 }

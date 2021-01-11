@@ -14,6 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 @Accessors(chain = true)
 public class OauthLoginToken extends UsernamePasswordToken {
     private AuthUser authUser;
+    private String state;
     public OauthLoginToken() {
     }
 

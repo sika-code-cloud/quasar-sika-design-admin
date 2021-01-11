@@ -104,7 +104,7 @@
                     <q-item-section>个人设置</q-item-section>
                   </q-item>
                   <q-separator color="grey-4" />
-                  <q-item clickable v-close-popup to="/user/login">
+                  <q-item clickable v-close-popup @click="logout">
                     <q-item-section
                       avatar
                       class="q-mr-sm q-pa-none"
@@ -777,8 +777,8 @@
           :offset="rightOffsetGithub"
         >
           <q-btn type="a" target="_blank" color="primary" style="width: 40px;height: 40px" unelevated dense round
-                    href="https://github.com/dq-open-cloud/quasar-sika-design">
-            <q-icon name="ti-github"  />
+                 href="https://github.com/dq-open-cloud/quasar-sika-design">
+            <q-icon name="ti-github" />
           </q-btn>
         </q-page-sticky>
         <q-page-sticky
@@ -814,6 +814,8 @@
 import MenuTree from 'components/tree/MenuTree'
 import LAYOUT_DATA from '@/mock/data/layout/layoutData'
 import { morph, colors, copyToClipboard } from 'quasar'
+import { currentUser, logout } from '@/api/user'
+import commonUtil from 'src/utils/commonUtil'
 
 export default {
   name: 'StandardLayout',
@@ -846,6 +848,13 @@ export default {
     MenuTree
   },
   methods: {
+    logout() {
+      logout().then(response => {
+        console.log(response)
+        commonUtil.notifySuccess('退出成功')
+        this.$router.push('/user/login')
+      })
+    },
     buildTabRoute() {
       this.currentPath = LAYOUT_DATA.addTab(this.$route.path).to
     },
@@ -1015,6 +1024,7 @@ export default {
   },
   mounted: function() {
     this.buildTabRoute()
+    currentUser()
   }
 }
 </script>

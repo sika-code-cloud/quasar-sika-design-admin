@@ -5,11 +5,11 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
+import com.quasar.sika.design.server.common.auth.pojo.dto.OauthStateCacheDTO;
 import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
@@ -30,8 +30,6 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -135,39 +133,50 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
         log.info("获取授权URL:getAuthorizeUrl：" + source);
         AuthRequest authRequest = AuthFactory.getAuthRequest(source);
         String state = AuthStateUtils.createState();
-        Map<String, String> stateValue = Maps.newHashMap();
-        stateValue.put("clientUrl", clientUrl);
-        stateValue.put("clientSessionId", ShiroUtils.getSessionId());
-        putToCache(buildSteteCacheKey(source, state), stateValue);
+        // 绑定state的缓存对象
+        setOauthStateCache(source, state, clientUrl);
         String thirdUrl = authRequest.authorize(state);
         log.info("thirdUrl:{}, authRequest:{}", thirdUrl, JSONObject.toJSONString(authRequest));
         return thirdUrl;
     }
 
+    private void setOauthStateCache(String source, String state, String clientUrl) {
+        OauthStateCacheDTO cacheDTO = new OauthStateCacheDTO()
+                .setClientUrl(clientUrl)
+                .setClientSessionId(ShiroUtils.getSessionId());
+        log.info("缓存的数据为：{}", JSONObject.toJSONString(cacheDTO));
+        putToCache(buildStateCacheKey(source, state), cacheDTO);
+    }
+
+    @Override
+    public OauthStateCacheDTO getOauthStateCache(String source, String state) {
+        return getFromCache(buildStateCacheKey(source, state));
+    }
+
     @Override
     public OauthResponse oauthLogin(String source, AuthCallback callback) {
         log.info("开始oauthLogin：" + source + " 请求 params：" + JSONObject.toJSONString(callback));
-        Map<String, String> stateValue = getFromCache(buildSteteCacheKey(source, callback.getState()));
-        log.info("clientUrl:{}", stateValue);
         AuthRequest authRequest = AuthFactory.getAuthRequest(source);
         me.zhyd.oauth.model.AuthResponse<AuthUser> response = authRequest.login(callback);
         log.info("授权登录响应参数：{}", JSONObject.toJSONString(response));
         if (response.ok()) {
             AuthUser authUser = response.getData();
             // 执行登录
-            AuthLoginRequest authLoginRequest = new OauthLoginRequest().build(authUser);
+            AuthLoginRequest authLoginRequest = new OauthLoginRequest().setAuthUser(authUser).setState(callback.getState());
             AuthResponse authResponse = login(authLoginRequest);
             // 保存或者授权登录数据
             thirdOauthUserService.modifyByAuthUser(authUser);
-            String clientUrl = stateValue.get("clientUrl");
-            String clientSessionId = stateValue.get("clientSessionId");
-            return BeanUtil.toBean(authResponse, OauthResponse.class).setAuthUser(authUser).setClientUrl(clientUrl).setClientSessionId(clientSessionId);
+            OauthStateCacheDTO cacheDTO = getOauthStateCache(source, callback.getState());
+            return BeanUtil.toBean(authResponse, OauthResponse.class)
+                    .setAuthUser(authUser)
+                    .setClientUrl(cacheDTO.getClientUrl())
+                    .setClientSessionId(cacheDTO.getClientSessionId());
         }
         throw new BusinessException(response.getMsg());
     }
 
-    private String buildSteteCacheKey(String source, String state) {
-        return OAUTH_STATE_KEY + source + ":" + state;
+    private String buildStateCacheKey(String source, String state) {
+        return OAUTH_STATE_KEY + source.toLowerCase() + ":" + state;
     }
 
     @Override

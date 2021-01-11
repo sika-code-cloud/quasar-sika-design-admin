@@ -4,16 +4,16 @@ import com.quasar.sika.design.server.common.shiro.constant.ShiroConstant;
 import com.quasar.sika.design.server.common.shiro.filter.PermissionsAuthFilter;
 import com.quasar.sika.design.server.common.shiro.filter.RolesAuthFilter;
 import com.quasar.sika.design.server.common.shiro.filter.TokenCheckFilter;
+import com.quasar.sika.design.server.common.shiro.manager.CustomerWebSecurityManager;
 import com.quasar.sika.design.server.common.shiro.realm.ShiroRealm;
 import com.quasar.sika.design.server.common.shiro.service.ShiroService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroSessionIdGenerator;
-import com.quasar.sika.design.server.common.shiro.util.ShiroSessionManager;
+import com.quasar.sika.design.server.common.shiro.manager.ShiroSessionManager;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -82,7 +82,7 @@ public class ShiroConfig {
      */
     @Bean
     public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        CustomerWebSecurityManager securityManager = new CustomerWebSecurityManager();
         // 自定义session管理
         securityManager.setSessionManager(sessionManager());
         // 自定义Cache实现缓存管理

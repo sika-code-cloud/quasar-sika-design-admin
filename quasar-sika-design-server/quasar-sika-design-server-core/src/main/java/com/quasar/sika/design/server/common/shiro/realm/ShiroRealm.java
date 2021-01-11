@@ -74,6 +74,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         if (authenticationToken instanceof OauthLoginToken) {
+            log.info("授权登录的sessionId：{}", ShiroUtils.getSessionId());
             return oauthLogin((OauthLoginToken) authenticationToken);
         } else {
             return usernamePasswordLogin((UsernamePasswordToken) authenticationToken);

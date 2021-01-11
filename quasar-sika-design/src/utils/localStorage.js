@@ -13,6 +13,10 @@ export function getLoginUser(val) {
   return getItem(localStorageKey.loginUser)
 }
 
+export function removeToken() {
+  LocalStorage.remove(localStorageKey.token)
+}
+
 export function setToken(val) {
   set(localStorageKey.token, val)
 }
@@ -24,6 +28,7 @@ export function getToken() {
   }
   return getItem(localStorageKey.token)
 }
+
 function getQueryString(name) {
   const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
   const r = window.location.search.substr(1).match(reg)

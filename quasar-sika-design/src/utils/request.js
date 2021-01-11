@@ -110,7 +110,7 @@ export const showNotifyFalse = {
   showNotify: false
 }
 export const showNotifyTrue = {
-  showNotify: false
+  showNotify: true
 }
 
 // post请求

@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.auth.service;
 
+import com.quasar.sika.design.server.common.auth.pojo.dto.OauthStateCacheDTO;
 import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
@@ -11,6 +12,7 @@ public interface AuthService {
      * 登录
      */
     AuthResponse loginPhone(AuthLoginPhoneRequest request);
+
     /**
      * 登录
      */
@@ -84,5 +86,24 @@ public interface AuthService {
      * 校验注册用户名
      */
     boolean checkRegisterUsername(AuthRegisterRequest registerRequest);
+
+    /**
+     * <p>
+     * 获取授权登录state对应的缓存值
+     * </p>
+     * <pre>
+     *     所需参数示例及其说明
+     *     参数名称 : 示例值 : 说明 : 是否必须
+     *     source : github : 登录来源 ： 是
+     *     state : rtrt : 授权登录成功后返回的state ： 是
+     * </pre>
+     *
+     * @param source
+     * @param state
+     * @return com.quasar.sika.design.server.common.auth.pojo.dto.OauthStateCacheDTO
+     * @author daiqi
+     * @date 2021/1/12 0:48
+     */
+    OauthStateCacheDTO getOauthStateCache(String source, String state);
 
 }
