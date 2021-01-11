@@ -4,7 +4,7 @@ public interface ShiroConstant {
     /**
      * 请求头 - token  【注：ShiroConfig中放行】
      */
-    String REQUEST_HEADER = "token";
+    String REQUEST_HEADER = "authorization";
     /**
      * TOKEN前缀
      */

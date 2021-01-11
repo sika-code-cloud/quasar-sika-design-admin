@@ -13,6 +13,7 @@ import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckBindOau
 import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckUserRegisterMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.bo.request.sender.SendBindOauthUserMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.bo.request.sender.SendUserRegisterMailCodeRequestBO;
+import com.quasar.sika.design.server.common.shiro.constant.ShiroConstant;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
@@ -176,7 +177,7 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/callback/{source}/anon")
     public ModelAndView login(@PathVariable("source") String source, AuthCallback callback, HttpServletRequest request) throws IOException {
         OauthResponse authResponse = authService.oauthLogin(source, callback);
-        return redirect(authResponse.getClientUrl() + "?token=" + ShiroUtils.getSessionId());
+        return redirect(authResponse.getClientUrl() + "?"+ ShiroConstant.REQUEST_HEADER+"=" + authResponse.getClientSessionId());
     }
 
     @RequestMapping("/users/anon")
@@ -250,7 +251,7 @@ public class AuthController extends BaseStandardController {
 
     @RequestMapping("/current_user")
     public Result currentUser() {
-        return super.success(ShiroUtils.getUserInfo());
+        return super.success(new com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse().build());
     }
 
 

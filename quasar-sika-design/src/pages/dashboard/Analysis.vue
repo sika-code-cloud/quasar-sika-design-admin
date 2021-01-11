@@ -469,6 +469,7 @@ import eline from 'components/echarts/Eline'
 import epie from 'components/echarts/Epie'
 import { date } from 'quasar'
 import ScDateRange from 'components/common/ScDateRange'
+import { currentUser } from '@/api/user'
 
 export default {
   name: 'Analysis',
@@ -534,6 +535,7 @@ export default {
     ANALYSIS_DATA.buildElineItems(this.searchUserLineData, 100, 2000)
     ANALYSIS_DATA.buildElineItems(this.perPersonSearchLineData, 5, 20)
     ANALYSIS_DATA.buildEpieItems(this.salePieData)
+    currentUser()
   }
 }
 </script>

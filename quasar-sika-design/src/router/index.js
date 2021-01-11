@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { getToken } from '@/utils/localStorage'
 
 import routes from './routes'
 
@@ -16,7 +17,10 @@ Vue.use(VueRouter)
 
 export default function(/* { store, ssrContext } */) {
   const Router = new VueRouter({
-    scrollBehavior: () => ({ x: 0, y: 0 }),
+    scrollBehavior: () => ({
+      x: 0,
+      y: 0
+    }),
     routes,
 
     // Leave these as they are and change in quasar.conf.js instead!
@@ -34,5 +38,18 @@ export default function(/* { store, ssrContext } */) {
     })
   })
 
+  Router.beforeEach((to, from, next) => {
+    console.log('---------------路由前置-------------------')
+    if (to.path === '/user/login' || to.path === '/user/register') {
+      next()
+    } else {
+      const token = getToken()
+      if (token === null || token === '') {
+        next('/user/login')
+      } else {
+        next()
+      }
+    }
+  })
   return Router
 }

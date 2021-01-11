@@ -2,7 +2,7 @@ import { LocalStorage } from 'quasar'
 
 export const localStorageKey = {
   loginUser: 'user',
-  token: 'token'
+  token: 'authorization'
 }
 
 export function setLoginUser(val) {
@@ -15,6 +15,22 @@ export function getLoginUser(val) {
 
 export function setToken(val) {
   set(localStorageKey.token, val)
+}
+
+export function getToken() {
+  const token = getQueryString(localStorageKey.token)
+  if (token) {
+    setToken(token)
+  }
+  return getItem(localStorageKey.token)
+}
+function getQueryString(name) {
+  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+  const r = window.location.search.substr(1).match(reg)
+  if (r != null) {
+    return unescape(r[2])
+  }
+  return null
 }
 
 export function set(key, val) {

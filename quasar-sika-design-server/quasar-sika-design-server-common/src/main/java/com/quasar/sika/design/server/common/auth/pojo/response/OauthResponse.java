@@ -15,4 +15,5 @@ import me.zhyd.oauth.model.AuthUser;
 public class OauthResponse extends AuthResponse {
     private AuthUser authUser;
     private String clientUrl;
+    private String clientSessionId;
 }

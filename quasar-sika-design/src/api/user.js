@@ -99,8 +99,13 @@ export function register(param) {
   return post('/auth/register/anon', data).then(response => {
     console.log(response)
     storageUserData(response)
-  }).catch(err => {
-    return Promise.reject(err)
+  })
+}
+
+export function currentUser(data) {
+  return post('/auth/current_user', data).then(response => {
+    console.log(response)
+    storageUserData(response)
   })
 }
 

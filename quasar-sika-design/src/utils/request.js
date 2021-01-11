@@ -1,6 +1,6 @@
 import axios from 'axios'
 import commonUtil from './commonUtil'
-import { getLoginUser } from './localStorage'
+import { getToken, setToken, localStorageKey } from './localStorage'
 import {
   LoadingBar
 } from 'quasar'
@@ -18,20 +18,25 @@ service.defaults.withCredentials = true
 
 // 请求拦截器
 service.interceptors.request.use(function(config) {
-  if (!getLoginUser()) {
-    config.headers.token = getQueryString('token')
-    console.log(getQueryString('token'))
+  if (!getToken()) {
+    config.headers[localStorageKey.token] = getQueryString(localStorageKey.token)
     // const auth = post('/auth/current_user')
     // console.log(auth)
     // return systemError(error)
+  } else {
+    config.headers[localStorageKey.token] = getToken()
   }
+  console.log(config.headers[localStorageKey.token])
   return config
 }, function(error) {
   return systemError(error)
 })
 // 响应拦截器
 service.interceptors.response.use(function(response) {
-  console.log(JSON.stringify(response.headers))
+  console.log('interceptors.response-------------------' + JSON.stringify(response.headers))
+  if (response.headers[localStorageKey.token]) {
+    setToken(response.headers[localStorageKey.token])
+  }
   const config = response.config
   // 未设置状态码则默认成功状态
   const result = response.data
