@@ -1598,7 +1598,7 @@ animate.css@^4.1.1:
   resolved "https://registry.npm.taobao.org/animate.css/download/animate.css-4.1.1.tgz#614ec5a81131d7e4dc362a58143f7406abd68075"
   integrity sha1-YU7FqBEx1+TcNipYFD90BqvWgHU=
 
-animejs@^3.1.0:
+animejs@^3.1.0, animejs@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npm.taobao.org/animejs/download/animejs-3.2.1.tgz#de9fe2e792f44a777a7fdf6ae160e26604b0cdda"
   integrity sha1-3p/i55L0Snd6f99q4WDiZgSwzdo=

@@ -1,6 +1,5 @@
 package com.quasar.sika.design.server.common.auth.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
@@ -17,6 +16,7 @@ import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
+import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     @Autowired
     private ThirdOauthUserService thirdOauthUserService;
 
-    private static final String OAUTH_STATE_KEY = "oauth:state:authuser";
+    private static final String OAUTH_STATE_KEY = "oauth:state:";
 
     @Override
     public boolean checkRegisterEmail(AuthRegisterRequest registerRequest) {
@@ -177,6 +177,13 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     public AuthResponse doOauthLogin(AuthOauthLoginRequest request) {
         log.info("开始doOauthLogin：" + request.getSource() + " 请求 params：" + JSONObject.toJSONString(request));
         ThirdOauthUserDTO oauthUserDTO = thirdOauthUserService.findByStateAndSource(request.getOauthToken(), request.getSource());
+        if (oauthUserDTO == null) {
+            // 已经登录直接返回成功
+            if (SecurityUtils.getSubject().isAuthenticated()) {
+                return new AuthResponse().build();
+            }
+            throw new BusinessException(BaseErrorCodeEnum.UN_AUTH);
+        }
         // 执行登录
         AuthLoginRequest authLoginRequest = new OauthLoginRequest().setOauthUser(oauthUserDTO).build();
         return login(authLoginRequest);

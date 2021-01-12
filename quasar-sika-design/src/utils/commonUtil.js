@@ -88,8 +88,20 @@ function confirm(message, title) {
     persistent: true
   })
 }
-
-/* confirm - end */
+/* alert - end */
+/* confirm - begin */
+function alert(message, title) {
+  if (!title) {
+    title = '系统提示'
+  }
+  return Dialog.create({
+    title: title,
+    message: message,
+    ok: '确认',
+    persistent: true
+  })
+}
+/* alert - end */
 
 function getUrlRootPath() {
   return window.location.protocol + '//' + location.host
@@ -107,5 +119,6 @@ export default {
   notifyAlert,
   notifyError,
   confirm,
+  alert,
   resetObj
 }
