@@ -5,6 +5,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
@@ -38,7 +39,8 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     private UserService userService;
     @Autowired
     private ThirdOauthUserService thirdOauthUserService;
-    private static final String OAUTH_STATE_KEY = "oauth:state:";
+
+    private static final String OAUTH_STATE_KEY = "oauth:state:authuser";
 
     @Override
     public boolean checkRegisterEmail(AuthRegisterRequest registerRequest) {
@@ -133,9 +135,8 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
         log.info("获取授权URL:getAuthorizeUrl：" + source);
         AuthRequest authRequest = AuthFactory.getAuthRequest(source);
         String state = AuthStateUtils.createState();
-        // 绑定state的缓存对象
-        setOauthStateCache(source, state, clientUrl);
         String thirdUrl = authRequest.authorize(state);
+        setOauthStateCache(source, state, clientUrl);
         log.info("thirdUrl:{}, authRequest:{}", thirdUrl, JSONObject.toJSONString(authRequest));
         return thirdUrl;
     }
@@ -161,18 +162,24 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
         log.info("授权登录响应参数：{}", JSONObject.toJSONString(response));
         if (response.ok()) {
             AuthUser authUser = response.getData();
-            // 执行登录
-            AuthLoginRequest authLoginRequest = new OauthLoginRequest().setAuthUser(authUser).setState(callback.getState());
-            AuthResponse authResponse = login(authLoginRequest);
             // 保存或者授权登录数据
-            thirdOauthUserService.modifyByAuthUser(authUser);
+            thirdOauthUserService.modifyByAuthUser(authUser, callback.getState());
             OauthStateCacheDTO cacheDTO = getOauthStateCache(source, callback.getState());
-            return BeanUtil.toBean(authResponse, OauthResponse.class)
-                    .setAuthUser(authUser)
+            return new OauthResponse()
+                    .setSource(source)
                     .setClientUrl(cacheDTO.getClientUrl())
-                    .setClientSessionId(cacheDTO.getClientSessionId());
+                    .setOauthToken(callback.getState());
         }
         throw new BusinessException(response.getMsg());
+    }
+
+    @Override
+    public AuthResponse doOauthLogin(AuthOauthLoginRequest request) {
+        log.info("开始doOauthLogin：" + request.getSource() + " 请求 params：" + JSONObject.toJSONString(request));
+        ThirdOauthUserDTO oauthUserDTO = thirdOauthUserService.findByStateAndSource(request.getOauthToken(), request.getSource());
+        // 执行登录
+        AuthLoginRequest authLoginRequest = new OauthLoginRequest().setOauthUser(oauthUserDTO).build();
+        return login(authLoginRequest);
     }
 
     private String buildStateCacheKey(String source, String state) {

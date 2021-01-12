@@ -83,21 +83,9 @@ public class ShiroSessionManager extends DefaultWebSessionManager implements Bas
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
             return token;
         } else {
-            log.info("回调的参数为：{}", JSONUtil.toJSONString(request.getParameterMap()));
-            log.info("回调的路径为：{}", JSONUtil.toJSONString(WebUtils.toHttp(request).getRequestURI()));
-            String state = request.getParameter("state");
-            OauthStateCacheDTO cacheDTO = authService().getOauthStateCache("gitee", state);
-            if (cacheDTO != null) {
-                token = cacheDTO.getClientSessionId();
-            } else {
-                // 否则按默认规则从cookie取token
-                token = super.getSessionId(request, response);
-            }
+            token = super.getSessionId(request, response);
         }
         return token;
     }
 
-    AuthService authService() {
-        return getBean(AuthService.class);
-    }
 }

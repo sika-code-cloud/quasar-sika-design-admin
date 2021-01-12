@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import { loginPhone, loginUsername, oauthLogin } from '@/api/user'
+import { loginPhone, loginUsername, toOauthLogin } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
 
 const iconObject = {
@@ -283,7 +283,7 @@ export default {
       this.iconObject[iconKey].class.color = targetColor
     },
     thirdLogin(iconKey, event) {
-      window.open(oauthLogin('gitee', '/'), '_self')
+      window.open(toOauthLogin('gitee', '/'), '_self')
     }
   },
   computed: {

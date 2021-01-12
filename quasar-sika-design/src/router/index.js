@@ -40,7 +40,7 @@ export default function(/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     console.log('---------------路由前置-------------------')
-    if (to.path === '/user/login' || to.path === '/user/register') {
+    if (unAuthRoute.indexOf(to.path) > -1) {
       next()
     } else {
       const token = getToken()
@@ -51,5 +51,11 @@ export default function(/* { store, ssrContext } */) {
       }
     }
   })
+
+  const unAuthRoute = [
+    '/user/login',
+    '/user/register',
+    '/user/oauth-login'
+  ]
   return Router
 }

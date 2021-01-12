@@ -31,6 +31,10 @@ public class ThirdOauthUserDTO extends BaseStandardDTO implements Serializable {
      */
     private String uuid;
     /**
+     * 授权登录后的state
+     */
+    private String state;
+    /**
      * 第三方用户名称
      */
     private String username;
@@ -79,4 +83,10 @@ public class ThirdOauthUserDTO extends BaseStandardDTO implements Serializable {
      */
     private Long userId;
 
+    public String getState() {
+        if (state != null) {
+            return state.toUpperCase();
+        }
+        return null;
+    }
 }

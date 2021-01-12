@@ -64,6 +64,8 @@ public interface AuthService {
      */
     OauthResponse oauthLogin(String source, AuthCallback callback);
 
+    AuthResponse doOauthLogin(AuthOauthLoginRequest request);
+
     /**
      * 绑定授权用户
      *

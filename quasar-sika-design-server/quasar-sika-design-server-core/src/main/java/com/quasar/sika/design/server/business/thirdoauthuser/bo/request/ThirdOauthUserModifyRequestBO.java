@@ -20,6 +20,7 @@ import me.zhyd.oauth.model.AuthUser;
 @Accessors(chain = true)
 public class ThirdOauthUserModifyRequestBO extends BaseStandardRequestBO<ThirdOauthUserModifyResponseBO> implements BaseStandardDomain {
     private AuthUser authUser;
+    private String state;
 
     @Override
     protected void init() {
@@ -45,6 +46,7 @@ public class ThirdOauthUserModifyRequestBO extends BaseStandardRequestBO<ThirdOa
         if (BaseUtil.isNotNull(oauthUserFromDb)) {
             oauthUserDTO.setId(oauthUserFromDb.getId());
         }
+        oauthUserDTO.setState(this.state);
         ThirdOauthUserDTO oauthUserUpdated = getThirdOauthUserService().saveOrUpdateAndRet(oauthUserDTO);
         return BeanFactory.newResponseBO(this, oauthUserUpdated);
     }

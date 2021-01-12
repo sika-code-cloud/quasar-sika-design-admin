@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.auth.pojo.request;
 
+import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
 import com.quasar.sika.design.server.common.auth.token.OauthLoginToken;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,14 +13,13 @@ import me.zhyd.oauth.model.AuthUser;
 @Data
 @Accessors(chain = true)
 public class OauthLoginRequest extends AuthLoginRequest {
-    private AuthUser authUser;
-    private String state;
+    private ThirdOauthUserDTO oauthUser;
 
     @Override
     public AuthLoginRequest build() {
-        this.username = authUser.getSource() + "-" + authUser.getUuid();
+        this.username = oauthUser.getSource() + "-" + oauthUser.getUuid();
         this.password = username;
-        token = new OauthLoginToken(username, password).setAuthUser(authUser).setState(state);
+        token = new OauthLoginToken(username, password).setOauthUser(oauthUser);
         return this;
     }
 }

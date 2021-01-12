@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.business.user.pojo.dto;
 
+import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
 import com.sika.code.standard.base.pojo.dto.BaseStandardDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -67,11 +68,6 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
      * 用户类型：1：游客，2：系统用户
      */
     private Integer type;
-    private AuthUser authUser;
-
-    public UserDTO build(AuthUser authUser) {
-        this.authUser = authUser;
-        return this;
-    }
+    private ThirdOauthUserDTO oauthUser;
 
 }

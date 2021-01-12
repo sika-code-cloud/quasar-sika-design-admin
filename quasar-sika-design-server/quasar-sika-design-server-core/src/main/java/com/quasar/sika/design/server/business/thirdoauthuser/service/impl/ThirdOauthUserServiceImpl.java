@@ -38,9 +38,17 @@ public class ThirdOauthUserServiceImpl extends BaseStandardServiceImpl<ThirdOaut
     }
 
     @Override
-    public ThirdOauthUserDTO modifyByAuthUser(AuthUser authUser) {
+    public ThirdOauthUserDTO findByStateAndSource(String state, String source) {
+        if (StrUtil.isBlank(state) || StrUtil.isBlank(source)) {
+            return null;
+        }
+        return find(new ThirdOauthUserQuery().setState(state).setSource(source.toUpperCase()));
+    }
+
+    @Override
+    public ThirdOauthUserDTO modifyByAuthUser(AuthUser authUser, String state) {
         // 参数设置
-        ThirdOauthUserModifyRequestBO request = new ThirdOauthUserModifyRequestBO().setAuthUser(authUser);
+        ThirdOauthUserModifyRequestBO request = new ThirdOauthUserModifyRequestBO().setAuthUser(authUser).setState(state);
         // 执行
         ThirdOauthUserModifyResponseBO responseBO = DomainExecutor.execute(request);
         // 响应

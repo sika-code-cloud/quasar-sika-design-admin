@@ -53,7 +53,7 @@ service.interceptors.response.use(function(response) {
   return systemError(error)
 })
 
-function getQueryString(name) {
+export function getQueryString(name) {
   const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
   const r = window.location.search.substr(1).match(reg)
   if (r != null) {

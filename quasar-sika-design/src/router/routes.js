@@ -264,6 +264,17 @@ const routes = [
     ]
   },
   {
+    path: '/user/oauth-login',
+    name: '/user/oauth-login',
+    component: () => import('layouts/UserLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/user/OauthLogin.vue')
+      }
+    ]
+  },
+  {
     path: '/user/register',
     name: '/user/register',
     component: () => import('layouts/UserLayout.vue'),

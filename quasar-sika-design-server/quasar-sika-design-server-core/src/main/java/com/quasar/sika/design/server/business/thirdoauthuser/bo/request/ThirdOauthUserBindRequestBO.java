@@ -45,7 +45,7 @@ public class ThirdOauthUserBindRequestBO extends BaseStandardAlterRequestBO<Thir
         // 校验
         Assert.verifyObjNull(userFromSession, "当前用户尚未登录，登录用户");
         // 校验授权用户
-        Assert.verifyObjNull(userFromSession.getAuthUser(), "用户尚未授权登录，授权用户");
+        Assert.verifyObjNull(userFromSession.getOauthUser(), "用户尚未授权登录，授权用户");
 
         return newResponseBO(userFromDb);
     }

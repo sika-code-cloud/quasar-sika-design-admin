@@ -177,7 +177,12 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/callback/{source}/anon")
     public ModelAndView login(@PathVariable("source") String source, AuthCallback callback, HttpServletRequest request) throws IOException {
         OauthResponse authResponse = authService.oauthLogin(source, callback);
-        return redirect(authResponse.getClientUrl() + "?"+ ShiroConstant.REQUEST_HEADER+"=" + authResponse.getClientSessionId());
+        return redirect(authResponse.getClientUrl() + "?" + "oauthToken=" + authResponse.getOauthToken() + "&source=" + authResponse.getSource());
+    }
+
+    @RequestMapping("/do_oauth_login/anon")
+    public Result doOauthLogin(@RequestBody AuthOauthLoginRequest request) {
+        return success(authService.doOauthLogin(request));
     }
 
     @RequestMapping("/users/anon")

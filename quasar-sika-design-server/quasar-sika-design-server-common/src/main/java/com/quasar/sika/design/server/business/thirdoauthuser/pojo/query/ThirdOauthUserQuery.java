@@ -35,6 +35,10 @@ public class ThirdOauthUserQuery extends BaseStandardQuery implements Serializab
      */
     protected String username;
     /**
+     * 授权登录后的state
+     */
+    private String state;
+    /**
      * 第三方昵称
      */
     protected String nickname;
@@ -83,5 +87,11 @@ public class ThirdOauthUserQuery extends BaseStandardQuery implements Serializab
      */
     protected Set<Long> ids;
 
+    public String getState() {
+        if (state != null) {
+            return state.toUpperCase();
+        }
+        return null;
+    }
 }
 

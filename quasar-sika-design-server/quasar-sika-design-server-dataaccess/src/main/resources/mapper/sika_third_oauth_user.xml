@@ -26,11 +26,12 @@
         <result column="token" property="token" />
         <result column="raw_user_info" property="rawUserInfo" />
         <result column="user_id" property="userId" />
+        <result column="state" property="state" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="columnList">
-        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, uuid, username, nickname, avatar, blog, company, location, email, gender, source, token, raw_user_info, user_id
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, uuid, username, nickname, avatar, blog, company, location, email, gender, source, token, raw_user_info, user_id, state
     </sql>
 
     <!-- 根据查询条件获取列表信息 -->
@@ -113,6 +114,7 @@
         <if test="query.token != null">AND token = #{query.token}</if>
         <if test="query.rawUserInfo != null">AND raw_user_info = #{query.rawUserInfo}</if>
         <if test="query.userId != null">AND user_id = #{query.userId}</if>
+        <if test="query.state != null">AND state = #{query.state}</if>
         <if test="query.ids != null and query.ids.size() > 0">
             AND id in
             <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">

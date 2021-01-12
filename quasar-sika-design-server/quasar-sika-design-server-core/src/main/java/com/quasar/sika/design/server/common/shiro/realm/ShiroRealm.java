@@ -85,7 +85,7 @@ public class ShiroRealm extends AuthorizingRealm {
         String password256 = SHA256Util.sha256(oauthLoginToken.getUsername(), oauthLoginToken.getUsername());
         UserDTO userDTO = new UserDTO()
                 .setUsername(oauthLoginToken.getUsername())
-                .build(oauthLoginToken.getAuthUser());
+                .setOauthUser(oauthLoginToken.getOauthUser());
         return new SimpleAuthenticationInfo(userDTO, password256, ByteSource.Util.bytes(oauthLoginToken.getUsername()), getName());
     }
 

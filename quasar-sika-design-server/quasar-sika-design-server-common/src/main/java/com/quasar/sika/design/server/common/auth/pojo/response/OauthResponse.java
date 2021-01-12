@@ -2,7 +2,6 @@ package com.quasar.sika.design.server.common.auth.pojo.response;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import me.zhyd.oauth.model.AuthUser;
 
 /**
  * 授权登录响应类
@@ -12,8 +11,8 @@ import me.zhyd.oauth.model.AuthUser;
  */
 @Data
 @Accessors(chain = true)
-public class OauthResponse extends AuthResponse {
-    private AuthUser authUser;
+public class OauthResponse {
+    private String source;
+    private String oauthToken;
     private String clientUrl;
-    private String clientSessionId;
 }

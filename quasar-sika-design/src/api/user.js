@@ -1,4 +1,4 @@
-import { buildFullUrl, post, postForImage, showNotifyFalse } from 'utils/request'
+import { buildFullUrl, post, postForImage, showNotifyFalse, getQueryString } from 'utils/request'
 import commonUtil from '@/utils/commonUtil'
 import { removeToken } from '@/utils/localStorage'
 // -----------------登录模块:开始----------------------------
@@ -16,16 +16,26 @@ export function loginPhone(param) {
   return post('/auth/login_phone/anon', data)
 }
 
-// 授权登录
-export function oauthLogin(source, path) {
+// 去授权登录
+export function toOauthLogin(source, path) {
   let clientUrl
   if (path) {
     clientUrl = commonUtil.getUrlRootPath() + path
   } else {
     clientUrl = window.location.href
   }
+  clientUrl = commonUtil.getUrlRootPath() + '/user/oauth-login'
   console.log(clientUrl)
   return buildFullUrl('/auth/render/' + source + '/anon?clientUrl=' + clientUrl)
+}
+
+// 登录 --- 执行授权登录
+export function doOauthLogin(param) {
+  const data = {
+    oauthToken: getQueryString('oauthToken'),
+    source: getQueryString('source')
+  }
+  return post('/auth/do_oauth_login/anon', data)
 }
 
 // 退出
@@ -34,6 +44,7 @@ export function logout() {
     removeToken()
   })
 }
+
 // -----------------登录功能:结束----------------------------
 
 // -----------------注册功能:开始----------------------------

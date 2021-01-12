@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.auth.token;
 
+import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import me.zhyd.oauth.model.AuthUser;
@@ -13,7 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 @Data
 @Accessors(chain = true)
 public class OauthLoginToken extends UsernamePasswordToken {
-    private AuthUser authUser;
+    private ThirdOauthUserDTO oauthUser;
     private String state;
     public OauthLoginToken() {
     }

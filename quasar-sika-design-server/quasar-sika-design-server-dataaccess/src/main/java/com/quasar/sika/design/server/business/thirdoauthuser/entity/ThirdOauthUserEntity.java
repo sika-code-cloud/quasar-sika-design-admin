@@ -1,6 +1,7 @@
 package com.quasar.sika.design.server.business.thirdoauthuser.entity;
 
 import java.io.Serializable;
+
 import com.sika.code.standard.base.pojo.entity.BaseStandardEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -37,6 +38,11 @@ public class ThirdOauthUserEntity extends BaseStandardEntity implements Serializ
      * 第三方昵称
      */
     private String nickname;
+
+    /**
+     * 授权登录后的state
+     */
+    private String state;
 
     /**
      * 头像链接
@@ -88,5 +94,11 @@ public class ThirdOauthUserEntity extends BaseStandardEntity implements Serializ
      */
     private Long userId;
 
+    public String getState() {
+        if (state != null) {
+            return state.toUpperCase();
+        }
+        return null;
+    }
 
 }
