@@ -3,7 +3,7 @@ import '@/css/main.sass'
 import '@/assets/js/sc-common.js'
 import Vue from 'vue'
 import numeral from 'vue-numeral-filter'
-import Vuenime from 'vuenime'
+import anime from 'animejs'
 
 Vue.use(numeral, { locale: 'en-gb' })
-Vue.use(Vuenime)
+Vue.use(anime)

@@ -182,27 +182,32 @@ import { loginPhone, loginUsername, toOauthLogin } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
 
 const iconObject = {
-  weixin: {
-    class: { iconName: 'iconweixin', color: 'text-grey' },
-    size: '22px'
-  },
-  zhifubao: {
-    class: {
-      iconName: 'iconzhifubao',
-      color: 'text-grey'
-    },
-    size: '20px'
-  },
-  taobao: {
-    class: { iconName: 'icontaobao', color: 'text-grey' },
-    size: '22px'
-  },
-  weibo: {
-    class: { iconName: 'iconweibo', color: 'text-grey' },
-    size: '20px'
-  },
+  // weixin: {
+  //   class: { iconName: 'iconweixin', color: 'text-grey' },
+  //   size: '22px'
+  // },
+  // zhifubao: {
+  //   class: {
+  //     iconName: 'iconzhifubao',
+  //     color: 'text-grey'
+  //   },
+  //   size: '20px'
+  // },
+  // taobao: {
+  //   class: { iconName: 'icontaobao', color: 'text-grey' },
+  //   size: '22px'
+  // },
+  // weibo: {
+  //   class: { iconName: 'iconweibo', color: 'text-grey' },
+  //   size: '20px'
+  // },
   github: {
     class: { iconName: 'iconhuaban88', color: 'text-grey' },
+    size: '23px',
+    type: 'link'
+  },
+  gitee: {
+    class: { iconName: 'icongitee', color: 'text-grey' },
     size: '23px',
     type: 'link'
   }
@@ -283,7 +288,7 @@ export default {
       this.iconObject[iconKey].class.color = targetColor
     },
     thirdLogin(iconKey, event) {
-      window.open(toOauthLogin('gitee', '/'), '_self')
+      window.open(toOauthLogin(iconKey, '/'), '_self')
     }
   },
   computed: {
@@ -296,7 +301,7 @@ export default {
 
 <style scoped>
 /*@import '~assets/icons/iconfont.sass';*/
-@import 'http://at.alicdn.com/t/font_2136554_1fgggi4y4wt.css';
+@import 'http://at.alicdn.com/t/font_2136554_lg2i8x34x6.css';
 
 .q-tab-panel {
 }

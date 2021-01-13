@@ -4,7 +4,6 @@ import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauth
 import com.quasar.sika.design.server.common.auth.token.OauthLoginToken;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import me.zhyd.oauth.model.AuthUser;
 
 /**
  * @author daiqi

@@ -82,7 +82,7 @@ function bizError(result, config) {
   const code = result.code
   const message = result.message
   if (code === 'AUTH_000001') {
-    commonUtil.confirm('登录状态已过期，重新登录').onOk(() => {
+    commonUtil.alert('登录状态已过期，重新登录').onOk(() => {
       location.href = '/user/login'
     }).onOk(() => {
       // console.log('>>>> second OK catcher')
@@ -91,6 +91,7 @@ function bizError(result, config) {
     }).onDismiss(() => {
       // console.log('I am triggered on both OK and Cancel')
     })
+    return Promise.reject(message)
   } else {
     if (config.showNotify) {
       commonUtil.notifyError(message)

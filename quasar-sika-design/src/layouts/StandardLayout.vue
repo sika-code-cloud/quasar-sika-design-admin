@@ -66,7 +66,7 @@
               <q-avatar size="sm">
                 <q-img src="~assets/sikacode-logo.png" />
               </q-avatar>
-              <span
+              <div
                 class="inline-block"
                 style="
                   max-width: 50px;
@@ -74,8 +74,10 @@
                   text-overflow: ellipsis;
                   overflow: hidden;
                 "
-              >Emailseeeeee</span
               >
+                <span>{{ userInfo.showUsername }}</span>
+                <q-tooltip>{{ userInfo.showUsername }} </q-tooltip>
+              </div>
               <q-menu
                 :offset="[0, 26]"
                 transition-show="jump-down"
@@ -822,6 +824,7 @@ export default {
   props: {},
   data() {
     return {
+      userInfo: {},
       informs: LAYOUT_DATA.informsData,
       notifies: LAYOUT_DATA.notifyDatas,
       menuData: LAYOUT_DATA.routeDatas,
@@ -1024,7 +1027,10 @@ export default {
   },
   mounted: function() {
     this.buildTabRoute()
-    currentUser()
+    currentUser().then(response => {
+      this.userInfo = response.user
+      console.log(JSON.stringify(this.userInfo) + '--------------------')
+    })
   }
 }
 </script>

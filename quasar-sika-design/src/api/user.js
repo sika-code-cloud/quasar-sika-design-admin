@@ -35,7 +35,9 @@ export function doOauthLogin(param) {
     oauthToken: getQueryString('oauthToken'),
     source: getQueryString('source')
   }
-  return post('/auth/do_oauth_login/anon', data)
+  return post('/auth/do_oauth_login/anon', data).then(response => {
+    console.log('----------------------user' + response)
+  })
 }
 
 // 退出
