@@ -1,4 +1,4 @@
-import { LocalStorage } from 'quasar'
+import { Cookies, LocalStorage } from 'quasar'
 
 export const localStorageKey = {
   loginUser: 'user',
@@ -39,11 +39,19 @@ function getQueryString(name) {
 }
 
 export function set(key, val) {
-  LocalStorage.set(key, val)
+  if (isLocalStorageSupported()) {
+    LocalStorage.set(key, val)
+  } else {
+    Cookies.set(key, val, { expires: 24 * 3600 })
+  }
 }
 
 export function getItem(key) {
-  return LocalStorage.getItem(key)
+  if (isLocalStorageSupported()) {
+    return LocalStorage.getItem(key)
+  } else {
+    return Cookies.get(key)
+  }
 }
 
 export function getAll() {
@@ -68,4 +76,30 @@ export function getLength() {
 
 export function isEmpty() {
   return LocalStorage.isEmpty()
+}
+
+export function remove(key) {
+  return LocalStorage.remove(key)
+}
+
+// LocalStorage支持检测
+function isLocalStorageSupported() {
+  let isSupport = true
+  try {
+    isSupport = window.localStorage
+    if (isSupport) {
+      const key = 'local_storage_test'
+      LocalStorage.set(key, '1')
+      const value = LocalStorage.getItem(key)
+      if (!value) {
+        isSupport = false
+      }
+      LocalStorage.remove(key)
+    } else {
+      isSupport = false
+    }
+  } catch (e) {
+    isSupport = false
+  }
+  return isSupport
 }

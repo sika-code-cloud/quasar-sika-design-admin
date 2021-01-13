@@ -1,6 +1,6 @@
 <template>
   <div class="sc-design">
-    <div class="q-px-md">
+    <div class="q-px-md q-mb-lg">
       <q-form @submit="onSubmit" @reset="onReset" ref="registerForm">
         <div class="q-gutter-y-md">
           <div class="text-left text-body1">注册</div>
