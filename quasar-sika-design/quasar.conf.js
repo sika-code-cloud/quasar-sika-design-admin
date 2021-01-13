@@ -10,6 +10,8 @@ const path = require('path')
 
 module.exports = function (ctx) {
   return {
+    modeName: 'dist-quasar-admin',
+    targetName: 'dist-quasar-admin',
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
 
@@ -61,7 +63,7 @@ module.exports = function (ctx) {
             VUE_APP_BASE_API: 'http://localhost:8101'
           }
         : {
-            VUE_APP_BASE_API: 'http://prod.api.com'
+            VUE_APP_BASE_API: 'http://quasar.admin.sikacode.com/api'
           },
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack(cfg, { isServer, isClient }) {
@@ -222,7 +224,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'blog-admin-vue'
+        appId: 'quasar-sika-design-admin'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
