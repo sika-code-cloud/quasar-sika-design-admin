@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quasar.sika.design.server.business.dictdata.mapper.DictDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="com.quasar.sika.design.server.business.dictdata.entity.DictDataEntity">
+        <result column="id" property="id" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="version" property="version" />
+        <result column="available" property="available" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="remark" property="remark" />
+        <result column="dict_sort" property="dictSort" />
+        <result column="dict_label" property="dictLabel" />
+        <result column="dict_value" property="dictValue" />
+        <result column="dict_type" property="dictType" />
+        <result column="css_class" property="cssClass" />
+        <result column="list_class" property="listClass" />
+        <result column="is_default" property="isDefault" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="columnList">
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, dict_sort, dict_label, dict_value, dict_type, css_class, list_class, is_default
+    </sql>
+
+    <!-- 根据查询条件获取列表信息 -->
+    <select id="listByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.dictdata.pojo.query.DictDataQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_dict_data
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取Id列表信息 -->
+    <select id="listIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.dictdata.pojo.query.DictDataQuery" >
+        SELECT id
+        FROM sika_dict_data
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取实体信息 -->
+    <select id="findByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.dictdata.pojo.query.DictDataQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_dict_data
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取表id -->
+    <select id="findIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.dictdata.pojo.query.DictDataQuery" >
+        SELECT id
+        FROM sika_dict_data
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取分页信息 -->
+    <select id="pageByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.dictdata.pojo.query.DictDataQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_dict_data
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        <include refid="order_by_sql"/>
+    </select>
+
+    <!-- 根据查询条件获取总数量信息 -->
+    <select id="totalCountByQuery" resultType="Integer" parameterType="com.quasar.sika.design.server.business.dictdata.pojo.query.DictDataQuery" >
+        SELECT count(*)
+        FROM sika_dict_data
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件SQL -->
+    <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
+        <if test="query.dictDataId != null">AND id = #{query.dictDataId}</if>
+        <if test="query.dictSort != null">AND dict_sort = #{query.dictSort}</if>
+        <if test="query.dictLabel != null">AND dict_label = #{query.dictLabel}</if>
+        <if test="query.dictValue != null">AND dict_value = #{query.dictValue}</if>
+        <if test="query.dictType != null">AND dict_type = #{query.dictType}</if>
+        <if test="query.cssClass != null">AND css_class = #{query.cssClass}</if>
+        <if test="query.listClass != null">AND list_class = #{query.listClass}</if>
+        <if test="query.isDefault != null">AND is_default = #{query.isDefault}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- 排序的sql -->
+    <sql id="order_by_sql">
+        <if test="query.sortColumn != null and query.sortType != null" >
+            ORDER BY
+            <include refid="order_by_column_sql"/>
+            <include refid="order_by_type_sql"/>
+        </if>
+    </sql>
+
+    <!-- 排序列名的sql -->
+    <sql id="order_by_column_sql">
+        <choose>
+            <when test="query.sortColumn == 'dictDataId'">
+                id
+            </when>
+            <otherwise>
+                id
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 排序类型的sql -->
+    <sql id="order_by_type_sql">
+        <choose>
+            <when test="query.sortType == 'DESC'">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>

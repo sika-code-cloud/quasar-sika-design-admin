@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quasar.sika.design.server.business.useronline.mapper.UserOnlineMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="com.quasar.sika.design.server.business.useronline.entity.UserOnlineEntity">
+        <result column="id" property="id" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="version" property="version" />
+        <result column="available" property="available" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="remark" property="remark" />
+        <result column="sessionId" property="sessionid" />
+        <result column="login_name" property="loginName" />
+        <result column="dept_name" property="deptName" />
+        <result column="ipaddr" property="ipaddr" />
+        <result column="login_location" property="loginLocation" />
+        <result column="browser" property="browser" />
+        <result column="os" property="os" />
+        <result column="status" property="status" />
+        <result column="start_timestamp" property="startTimestamp" />
+        <result column="last_access_time" property="lastAccessTime" />
+        <result column="expire_time" property="expireTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="columnList">
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, sessionId, login_name, dept_name, ipaddr, login_location, browser, os, status, start_timestamp, last_access_time, expire_time
+    </sql>
+
+    <!-- 根据查询条件获取列表信息 -->
+    <select id="listByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.useronline.pojo.query.UserOnlineQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_user_online
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取Id列表信息 -->
+    <select id="listIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.useronline.pojo.query.UserOnlineQuery" >
+        SELECT id
+        FROM sika_user_online
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取实体信息 -->
+    <select id="findByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.useronline.pojo.query.UserOnlineQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_user_online
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取表id -->
+    <select id="findIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.useronline.pojo.query.UserOnlineQuery" >
+        SELECT id
+        FROM sika_user_online
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取分页信息 -->
+    <select id="pageByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.useronline.pojo.query.UserOnlineQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_user_online
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        <include refid="order_by_sql"/>
+    </select>
+
+    <!-- 根据查询条件获取总数量信息 -->
+    <select id="totalCountByQuery" resultType="Integer" parameterType="com.quasar.sika.design.server.business.useronline.pojo.query.UserOnlineQuery" >
+        SELECT count(*)
+        FROM sika_user_online
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件SQL -->
+    <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
+        <if test="query.userOnlineId != null">AND id = #{query.userOnlineId}</if>
+        <if test="query.sessionid != null">AND sessionId = #{query.sessionid}</if>
+        <if test="query.loginName != null">AND login_name = #{query.loginName}</if>
+        <if test="query.deptName != null">AND dept_name = #{query.deptName}</if>
+        <if test="query.ipaddr != null">AND ipaddr = #{query.ipaddr}</if>
+        <if test="query.loginLocation != null">AND login_location = #{query.loginLocation}</if>
+        <if test="query.browser != null">AND browser = #{query.browser}</if>
+        <if test="query.os != null">AND os = #{query.os}</if>
+        <if test="query.status != null">AND status = #{query.status}</if>
+        <if test="query.startTimestamp != null">AND start_timestamp = #{query.startTimestamp}</if>
+        <if test="query.lastAccessTime != null">AND last_access_time = #{query.lastAccessTime}</if>
+        <if test="query.expireTime != null">AND expire_time = #{query.expireTime}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- 排序的sql -->
+    <sql id="order_by_sql">
+        <if test="query.sortColumn != null and query.sortType != null" >
+            ORDER BY
+            <include refid="order_by_column_sql"/>
+            <include refid="order_by_type_sql"/>
+        </if>
+    </sql>
+
+    <!-- 排序列名的sql -->
+    <sql id="order_by_column_sql">
+        <choose>
+            <when test="query.sortColumn == 'userOnlineId'">
+                id
+            </when>
+            <otherwise>
+                id
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 排序类型的sql -->
+    <sql id="order_by_type_sql">
+        <choose>
+            <when test="query.sortType == 'DESC'">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>

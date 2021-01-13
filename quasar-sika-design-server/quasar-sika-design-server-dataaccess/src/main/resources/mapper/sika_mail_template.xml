@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quasar.sika.design.server.business.mailtemplate.mapper.MailTemplateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="com.quasar.sika.design.server.business.mailtemplate.entity.MailTemplateEntity">
+        <result column="id" property="id" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="version" property="version" />
+        <result column="available" property="available" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="remark" property="remark" />
+        <result column="type" property="type" />
+        <result column="code" property="code" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="columnList">
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, type, code, title, content
+    </sql>
+
+    <!-- 根据查询条件获取列表信息 -->
+    <select id="listByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.mailtemplate.pojo.query.MailTemplateQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_mail_template
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取Id列表信息 -->
+    <select id="listIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.mailtemplate.pojo.query.MailTemplateQuery" >
+        SELECT id
+        FROM sika_mail_template
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取实体信息 -->
+    <select id="findByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.mailtemplate.pojo.query.MailTemplateQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_mail_template
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取表id -->
+    <select id="findIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.mailtemplate.pojo.query.MailTemplateQuery" >
+        SELECT id
+        FROM sika_mail_template
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取分页信息 -->
+    <select id="pageByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.mailtemplate.pojo.query.MailTemplateQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_mail_template
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        <include refid="order_by_sql"/>
+    </select>
+
+    <!-- 根据查询条件获取总数量信息 -->
+    <select id="totalCountByQuery" resultType="Integer" parameterType="com.quasar.sika.design.server.business.mailtemplate.pojo.query.MailTemplateQuery" >
+        SELECT count(*)
+        FROM sika_mail_template
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件SQL -->
+    <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
+        <if test="query.mailTemplateId != null">AND id = #{query.mailTemplateId}</if>
+        <if test="query.type != null">AND type = #{query.type}</if>
+        <if test="query.code != null">AND code = #{query.code}</if>
+        <if test="query.title != null">AND title = #{query.title}</if>
+        <if test="query.content != null">AND content = #{query.content}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- 排序的sql -->
+    <sql id="order_by_sql">
+        <if test="query.sortColumn != null and query.sortType != null" >
+            ORDER BY
+            <include refid="order_by_column_sql"/>
+            <include refid="order_by_type_sql"/>
+        </if>
+    </sql>
+
+    <!-- 排序列名的sql -->
+    <sql id="order_by_column_sql">
+        <choose>
+            <when test="query.sortColumn == 'mailTemplateId'">
+                id
+            </when>
+            <otherwise>
+                id
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 排序类型的sql -->
+    <sql id="order_by_type_sql">
+        <choose>
+            <when test="query.sortType == 'DESC'">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>
