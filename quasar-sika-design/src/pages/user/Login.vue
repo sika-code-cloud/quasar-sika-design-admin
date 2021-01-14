@@ -210,6 +210,11 @@ const iconObject = {
     class: { iconName: 'icongitee', color: 'text-grey' },
     size: '23px',
     type: 'link'
+  },
+  baidu: {
+    class: { iconName: 'iconbaidu', color: 'text-grey' },
+    size: '23px',
+    type: 'link'
   }
 }
 const loginTypes = {
@@ -301,7 +306,7 @@ export default {
 
 <style scoped>
 /*@import '~assets/icons/iconfont.sass';*/
-@import 'http://at.alicdn.com/t/font_2136554_lg2i8x34x6.css';
+@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
 
 .q-tab-panel {
 }

@@ -168,9 +168,10 @@ me:
           clientSecret:
           redirectUri:
         baidu:
-          clientId:
-          clientSecret:
-          redirectUri:
+          requestClassName: me.zhyd.oauth.request.AuthBaiduRequest
+          clientId: VCgfYwoGjvtdiWe60qWwbLSk
+          clientSecret: OhGKutO24BUGP7i46085bQWC9KdreExm
+          redirectUri: http://localhost:8101/auth/callback/baidu/anon
         coding:
           clientId:
           clientSecret:
