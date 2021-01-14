@@ -74,7 +74,7 @@ public class ShiroServiceImpl implements ShiroService {
             });
         }
         // ⑤ 认证登录  【注：map不能存放相同key】
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "token");
         return filterChainDefinitionMap;
     }
 
