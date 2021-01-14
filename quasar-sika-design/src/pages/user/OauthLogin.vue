@@ -1,9 +1,29 @@
 <template>
   <div>
     <q-card class="no-border-radius shadow-0">
-      <q-img src="imgs/waiting.png" style="margin-top: -50px">
-      </q-img>
-      <div class="bg-primary row items-center" style="height: 50px">
+      <!--      <q-img src="imgs/waiting.png" style="margin-top: -50px">-->
+      <!--      </q-img>-->
+      <div>
+        <q-spinner-box
+          color="primary"
+          size="5em"
+        />
+        <q-spinner-box
+          color="positive"
+          size="5em"
+        />
+      </div>
+      <div>
+        <q-spinner-box
+          color="negative"
+          size="5em"
+        />
+        <q-spinner-box
+          color="warning"
+          size="5em"
+        />
+      </div>
+      <div class="bg-primary row items-center q-mt-xl" style="height: 50px">
         <div class="col">
           <div style="width: 150px" class="text-white oauth-login text-body1">
             授权登陆中。。。
