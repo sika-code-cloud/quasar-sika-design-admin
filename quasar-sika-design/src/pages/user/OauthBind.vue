@@ -56,7 +56,7 @@
               <q-checkbox v-model="loginData.rememberMe" label="自动登录" />
             </div>
             <div class="col text-right">
-              <q-btn color="primary" flat label="忘记密码" />
+              <q-btn color="primary" to="/user/register" flat label="绑定新用户" />
             </div>
           </div>
           <div class="row">
@@ -76,30 +76,6 @@
                   绑定...
                 </template>
               </q-btn>
-            </div>
-          </div>
-          <div class="row q-pt-md">
-            <div class="col-auto text-left q-pt-sm">
-              <span>其他登录方式</span>
-              <q-icon
-                v-for="(val, key) in loginIcon"
-                v-bind:key="key"
-                :size="val.size"
-                :class="[val.class.iconName, val.class.color]"
-                @click="thirdLogin(key)"
-                @mouseover="mouseOver(key, $event)"
-                @mouseleave="mouseLeave(key, $event)"
-                style="cursor: pointer"
-                class="iconfont q-ml-sm"
-              />
-            </div>
-            <div class="col text-right">
-              <q-btn
-                to="/user/register"
-                color="primary"
-                flat
-                label="注册用户"
-              />
             </div>
           </div>
         </div>

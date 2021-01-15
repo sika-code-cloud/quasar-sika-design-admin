@@ -33,8 +33,8 @@
     </q-card>
   </div>
 </template>
-
 <script>
+
 import { doOauthLogin } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
 import anime from 'animejs'
