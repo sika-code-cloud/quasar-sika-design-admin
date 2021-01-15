@@ -12,11 +12,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 public class AuthLoginRequest {
     protected String username;
     protected String password;
+    protected boolean rememberMe;
 
     protected UsernamePasswordToken token;
 
     public AuthLoginRequest build() {
-        token = new UsernamePasswordToken(username, password);
+        token = new UsernamePasswordToken(username, password, rememberMe);
         return this;
     }
 }

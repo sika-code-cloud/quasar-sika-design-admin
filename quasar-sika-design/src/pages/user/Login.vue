@@ -121,7 +121,7 @@
           <div class="q-mx-md">
             <div class="row">
               <div class="col text-left">
-                <q-checkbox v-model="autoLogin" label="自动登录" />
+                <q-checkbox v-model="loginData.rememberMe" label="自动登录" />
               </div>
               <div class="col text-right">
                 <q-btn color="primary" flat label="忘记密码" />
@@ -235,11 +235,11 @@ export default {
         username: null,
         password: null,
         phone: null,
+        rememberMe: true,
         phonePassword: null
       },
       accept: false,
       isPwd: true,
-      autoLogin: true,
       loginLoading: false
     }
   },

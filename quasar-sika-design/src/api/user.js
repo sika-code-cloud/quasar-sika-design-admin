@@ -11,7 +11,8 @@ export function loginUsername(data) {
 export function loginPhone(param) {
   const data = {
     phone: param.phone,
-    password: param.phonePassword
+    password: param.phonePassword,
+    rememberMe: param.rememberMe
   }
   return post('/auth/login_phone/anon', data)
 }
