@@ -1,7 +1,6 @@
 package com.quasar.sika.design.server.common.auth.pojo.request;
 
 import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
-import com.quasar.sika.design.server.common.auth.token.OauthLoginToken;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -16,9 +15,6 @@ public class OauthLoginRequest extends AuthLoginRequest {
 
     @Override
     public AuthLoginRequest build() {
-        this.username = oauthUser.getSource() + "-" + oauthUser.getUuid();
-        this.password = username;
-        token = new OauthLoginToken(username, password).setOauthUser(oauthUser);
         return this;
     }
 }

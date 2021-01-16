@@ -286,13 +286,13 @@ const routes = [
     ]
   },
   {
-    path: '/user/register',
-    name: '/user/register',
+    path: '/user/forget-password',
+    name: '/user/forget-password',
     component: () => import('layouts/UserLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('pages/user/Register.vue')
+        component: () => import('pages/user/ForgetPassword.vue')
       }
     ]
   },

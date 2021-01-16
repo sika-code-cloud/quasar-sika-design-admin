@@ -17,6 +17,8 @@ import java.util.Set;
  */
 public class CommonUtil {
     private static final String ID_KEY = "id";
+    public static final Long ZERO_LONG = 0L;
+    public static final Integer ZERO = 0;
 
     /**
      * <p>

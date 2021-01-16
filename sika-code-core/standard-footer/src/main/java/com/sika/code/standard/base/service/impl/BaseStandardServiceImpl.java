@@ -12,7 +12,6 @@ import com.sika.code.standard.base.basemapper.BaseStandardMapper;
 import com.sika.code.standard.base.convert.BaseConvert;
 import com.sika.code.standard.base.pojo.dto.BaseStandardDTO;
 import com.sika.code.standard.base.pojo.entity.BaseStandardEntity;
-import com.sika.code.standard.base.pojo.query.BaseStandardQuery;
 import com.sika.code.standard.base.service.BaseStandardService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,9 +39,8 @@ public abstract class BaseStandardServiceImpl<M extends BaseStandardMapper<Entit
         if (BaseUtil.isNull(primaryKey)) {
             return null;
         }
-        BaseStandardQuery standardQuery = new BaseStandardQuery();
-        standardQuery.setId(primaryKey);
-        return find(standardQuery);
+        Entity entity = super.getById(primaryKey);
+        return convertToDTO(entity);
     }
 
     @Override

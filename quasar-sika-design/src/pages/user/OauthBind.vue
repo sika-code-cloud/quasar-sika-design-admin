@@ -56,7 +56,7 @@
               <q-checkbox v-model="loginData.rememberMe" label="自动登录" />
             </div>
             <div class="col text-right">
-              <q-btn color="primary" to="/user/register" flat label="绑定新用户" />
+              <q-btn color="primary" to="/user/register?bindOauthUser=1" flat label="绑定新用户" />
             </div>
           </div>
           <div class="row">
@@ -85,16 +85,13 @@
 </template>
 
 <script>
-import { loginPhone, loginUsername, toOauthLogin } from '@/api/user'
+import { bindOauthUser } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
 
 export default {
   name: 'OauthBind',
   data() {
     return {
-      iconActive: {
-        weibo: 'grey'
-      },
       loginData: {
         loginName: null,
         password: null,
@@ -106,32 +103,21 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.login()
+      this.bindOauthUser()
     },
-    login() {
+    bindOauthUser() {
       this.loginLoading = true
       setTimeout(() => {
-        this.loginUsername()
+        bindOauthUser(this.loginData).then(response => {
+          this.success()
+        }).catch(err => {
+          console.log(err)
+          this.loginLoading = false
+        })
       }, 1000)
     },
-    loginPhone() {
-      loginPhone(this.loginData).then(response => {
-        this.success()
-      }).catch(err => {
-        console.log(err)
-        this.loginLoading = false
-      })
-    },
-    loginUsername() {
-      loginUsername(this.loginData).then(response => {
-        this.success()
-      }).catch(err => {
-        console.log(err)
-        this.loginLoading = false
-      })
-    },
     success() {
-      commonUtil.notifySuccess('登录成功')
+      commonUtil.notifySuccess('绑定成功')
       this.loginLoading = false
       this.$router.push({
         path: '/'
@@ -139,18 +125,6 @@ export default {
     },
     onReset() {
       commonUtil.resetObj(this.loginData)
-    },
-    mouseOver(iconKey, event) {
-      this.activeForLoginType(iconKey, 'text-primary')
-    },
-    mouseLeave(iconKey, event) {
-      this.activeForLoginType(iconKey, 'text-grey')
-    },
-    activeForLoginType(iconKey, targetColor) {
-      this.iconObject[iconKey].class.color = targetColor
-    },
-    thirdLogin(iconKey, event) {
-      window.open(toOauthLogin(iconKey, '/'), '_self')
     }
   },
   computed: {
@@ -162,13 +136,5 @@ export default {
 </script>
 
 <style scoped>
-/*@import '~assets/icons/iconfont.sass';*/
-@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
 
-.q-tab-panel {
-}
-
-.flip-list-move {
-  transition: transform 1s;
-}
 </style>

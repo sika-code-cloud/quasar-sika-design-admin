@@ -124,7 +124,7 @@
                 <q-checkbox v-model="loginData.rememberMe" label="自动登录" />
               </div>
               <div class="col text-right">
-                <q-btn color="primary" flat label="忘记密码" />
+                <q-btn color="primary" to="/user/forget-password" flat label="忘记密码" />
               </div>
             </div>
             <div class="row">

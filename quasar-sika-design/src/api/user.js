@@ -2,7 +2,10 @@ import { buildFullUrl, post, postForImage, showNotifyFalse, getQueryString } fro
 import commonUtil from '@/utils/commonUtil'
 import { removeToken } from '@/utils/localStorage'
 // -----------------登录模块:开始----------------------------
-// 登录 --- 用户名密码登录
+// 登录 --- 绑定用户
+export function bindOauthUser(data) {
+  return post('/auth/bind_oauth_user/anon', data)
+}
 export function loginUsername(data) {
   return post('/auth/login_username/anon', data)
 }
@@ -36,9 +39,7 @@ export function doOauthLogin(param) {
     oauthToken: getQueryString('oauthToken'),
     source: getQueryString('source')
   }
-  return post('/auth/do_oauth_login/anon', data).then(response => {
-    console.log('----------------------user' + response)
-  })
+  return post('/auth/do_oauth_login/anon', data)
 }
 
 // 退出
@@ -103,10 +104,16 @@ export function checkUserRegisterMailCode(param) {
 
 // 注册方法
 export function register(param) {
+  let bindOauthUser = false
+  if (getQueryString('bindOauthUser') === '1') {
+    bindOauthUser = true
+  }
+  console.log('bindOauthUser----' + bindOauthUser)
   const data = {
     captchaCheckRequest: buildCheckCaptchaRequest(param),
     checkMailRequest: buildCheckMailRequest(param),
-    registerRequest: buildRegisterRequest(param)
+    registerRequest: buildRegisterRequest(param),
+    bindOauthUser: bindOauthUser
   }
   return post('/auth/register/anon', data)
 }

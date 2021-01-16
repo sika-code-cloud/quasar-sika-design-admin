@@ -3,89 +3,9 @@
     <div class="q-px-md q-mb-lg">
       <q-form @submit="onSubmit" @reset="onReset" ref="registerForm">
         <div class="q-gutter-y-md">
-          <div class="text-left text-body1">注册</div>
+          <div class="text-left text-body1">找回密码</div>
           <div class="row">
             <div class="col-12 q-gutter-y-sm">
-              <q-input
-                outlined
-                clearable
-                clear-icon="cancel"
-                v-model="registerData.username"
-                debounce="1000"
-                dense
-                placeholder="用户名"
-                maxlength="32"
-                type="text"
-                square
-                :rules="[
-                  (val) => (val && val.length > 0) || '请输入用户名',
-                  (val) => (val && val.length >= 4) || '用户名必须大于等于4位',
-                  checkRegisterUsername
-                  ]"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="person" />
-                </template>
-                <template v-slot:hint>
-                  <div class="text-positive">
-                    {{ registerHintData.usernameHint }}
-                  </div>
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                clearable
-                clear-icon="cancel"
-                :type="isPwd ? 'password' : 'text'"
-                v-model="registerData.password"
-                dense
-                debounce="1000"
-                placeholder="密码"
-                maxlength="32"
-                square
-                :rules="[
-                  (val) => (val && val.length > 0) || '请输入密码',
-                  (val) => (val && val.length >= 6) || '密码长度必须大于等于6位'
-                ]"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="lock" />
-                </template>
-                <template v-slot:append>
-                  <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="isPwd = !isPwd"
-                  />
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                clearable
-                clear-icon="cancel"
-                :type="isPwd ? 'password' : 'text'"
-                v-model="registerData.confirmPassword"
-                dense
-                debounce="1000"
-                placeholder="确认密码"
-                maxlength="32"
-                square
-                :rules="[
-                  (val) => (val && val.length > 0) || '请输入确认密码',
-                  (val) => (passwordValida) || '两次密码不一致'
-                ]"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="lock" />
-                </template>
-                <template v-slot:append>
-                  <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="isPwd = !isPwd"
-                  />
-                </template>
-              </q-input>
               <q-input
                 outlined
                 clearable
@@ -105,55 +25,6 @@
                 <template v-slot:hint>
                   <div class="text-positive">
                     {{ registerHintData.emailHint }}
-                  </div>
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                clearable
-                clear-icon="cancel"
-                v-model="registerData.phone"
-                maxlength="11"
-                type="tel"
-                dense
-                placeholder="手机号"
-                debounce="1000"
-                square
-                :rules="[(val) => (val && val.length > 0) || '请输入手机号', checkRegisterPhone]"
-              >
-                <template v-slot:prepend>
-                  <q-btn-dropdown
-                    color="secondary"
-                    flat
-                    :label="phonePrefix"
-                    style="margin-left: -12px"
-                  >
-                    <q-list>
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="onItemClick('+86')"
-                      >
-                        <q-item-section>
-                          <q-item-label>+86</q-item-label>
-                        </q-item-section>
-                      </q-item>
-
-                      <q-item
-                        clickable
-                        v-close-popup
-                        @click="onItemClick('+87')"
-                      >
-                        <q-item-section>
-                          <q-item-label>+87</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-btn-dropdown>
-                </template>
-                <template v-slot:hint>
-                  <div class="text-positive">
-                    {{ registerHintData.phoneHint }}
                   </div>
                 </template>
               </q-input>
@@ -224,6 +95,67 @@
                   </div>
                 </template>
               </q-input>
+              <transition appear
+                          :animation-duration="2"
+                          enter-active-class="animated fadeInDown"
+                          leave-active-class="animated fadeOutUp">
+                <div v-if="showPassword" class="q-gutter-y-sm " style="animation-duration: 0.5s;">
+                  <q-input
+                    outlined
+                    clearable
+                    clear-icon="cancel"
+                    :type="isPwd ? 'password' : 'text'"
+                    v-model="registerData.password"
+                    dense
+                    debounce="1000"
+                    placeholder="密码"
+                    maxlength="32"
+                    square
+                    :rules="[
+                  (val) => (val && val.length > 0) || '请输入密码',
+                  (val) => (val && val.length >= 6) || '密码长度必须大于等于6位'
+                ]"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="lock" />
+                    </template>
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd = !isPwd"
+                      />
+                    </template>
+                  </q-input>
+                  <q-input
+                    outlined
+                    clearable
+                    clear-icon="cancel"
+                    :type="isPwd ? 'password' : 'text'"
+                    v-model="registerData.confirmPassword"
+                    dense
+                    debounce="1000"
+                    placeholder="确认密码"
+                    maxlength="32"
+                    square
+                    :rules="[
+                  (val) => (val && val.length > 0) || '请输入确认密码',
+                  (val) => (passwordValida) || '两次密码不一致'
+                ]"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="lock" />
+                    </template>
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd = !isPwd"
+                      />
+                    </template>
+                  </q-input>
+                </div>
+              </transition>
               <div class="row">
                 <div class="col text-left">
                   <q-btn
@@ -232,12 +164,12 @@
                     type="submit"
                     :loading="registerLoading"
                     color="primary full-width"
-                    label="注 册"
+                    label="提 交"
                     size="md"
                   >
                     <template v-slot:loading>
                       <q-spinner-hourglass class="on-left" />
-                      注册...
+                      提交...
                     </template>
                   </q-btn>
                 </div>
@@ -285,7 +217,9 @@
 
 <script>
 import {
+  checkRegisterUsername,
   checkRegisterEmail,
+  checkRegisterPhone,
   sendUserRegisterMailCode,
   getRegisterCaptchaVerifyCode,
   checkRegisterCaptchaVerifyCode,
@@ -296,26 +230,23 @@ import commonUtil from '@/utils/commonUtil'
 import _ from 'lodash'
 
 export default {
-  name: 'Register',
+  name: 'ForgetPassword',
   data() {
     return {
       registerHintData: {
-        usernameHint: null,
         emailHint: null,
-        phoneHint: null,
         captchaVerifyCodeHint: null,
         emailValidateCodeHint: null
       },
       registerData: {
-        username: null,
         email: null,
         password: null,
         confirmPassword: null,
-        phone: null,
         captchaVerifyCode: null,
         emailValidateCode: null
       },
       usernameForShow: null,
+      showPassword: false,
       phonePrefix: '+86',
       captchaVerifyCodeUrl: '',
       isPwd: true,
@@ -344,11 +275,31 @@ export default {
     onItemClick(value) {
       this.phonePrefix = value
     },
+    checkRegisterUsername(val) {
+      return new Promise((resolve, reject) => {
+        checkRegisterUsername(this.registerData).then(response => {
+          resolve(true)
+          this.registerHintData.usernameHint = '用户名可用'
+        }).catch(err => {
+          resolve(err)
+        })
+      })
+    },
     checkRegisterEmail(val) {
       return new Promise((resolve, reject) => {
         checkRegisterEmail(this.registerData).then(response => {
           resolve(true)
           this.registerHintData.emailHint = '邮箱可用'
+        }).catch(err => {
+          resolve(err)
+        })
+      })
+    },
+    checkRegisterPhone(val) {
+      return new Promise((resolve, reject) => {
+        checkRegisterPhone(this.registerData).then(response => {
+          resolve(true)
+          this.registerHintData.phoneHint = '手机号可用'
         }).catch(err => {
           resolve(err)
         })
@@ -365,11 +316,15 @@ export default {
       })
     },
     checkEmailCode(val) {
+      this.showPassword = (val === '1')
+      console.log(this.showPassword)
       return new Promise((resolve, reject) => {
         checkUserRegisterMailCode(this.registerData).then(response => {
           resolve(true)
           this.registerHintData.emailValidateCodeHint = '邮箱验证码正确'
+          // this.showPassword = true
         }).catch(err => {
+          // this.showPassword = false
           resolve(err)
         })
       })

@@ -59,11 +59,20 @@ export default {
     doOauthLogin() {
       doOauthLogin().then(response => {
         console.log('-------------' + response)
-        this.success()
+        if (response.success) {
+          this.success()
+        } else {
+          this.error(response.message)
+        }
+      })
+    },
+    error(message) {
+      commonUtil.notifyWaring(message)
+      this.$router.push({
+        path: '/user/oauth-bind'
       })
     },
     success() {
-      console.log('-------------------succces')
       commonUtil.notifySuccess('登录成功')
       this.$router.push({
         path: '/'

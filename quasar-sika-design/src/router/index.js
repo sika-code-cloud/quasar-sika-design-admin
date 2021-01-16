@@ -55,7 +55,9 @@ export default function(/* { store, ssrContext } */) {
   const unAuthRoute = [
     '/user/login',
     '/user/register',
-    '/user/oauth-login'
+    '/user/oauth-login',
+    '/user/forget-password',
+    '/user/oauth-bind'
   ]
   return Router
 }

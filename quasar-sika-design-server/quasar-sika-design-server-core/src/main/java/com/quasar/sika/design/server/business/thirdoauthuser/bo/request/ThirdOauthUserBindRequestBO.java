@@ -1,6 +1,5 @@
 package com.quasar.sika.design.server.business.thirdoauthuser.bo.request;
 
-import cn.hutool.core.util.StrUtil;
 import com.quasar.sika.design.server.business.thirdoauthuser.bo.response.ThirdOauthUserBindResponseBO;
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
@@ -29,17 +28,17 @@ public class ThirdOauthUserBindRequestBO extends BaseStandardAlterRequestBO<Thir
     @Override
     protected void verify() {
         Assert.verifyObjNull(request, "绑定请求对象");
-        Assert.verifyStrEmpty(request.getClientOauthCode(), "绑定的授权码");
-        Assert.verifyStrEmpty(request.getEmail(), "绑定的邮箱");
+//        Assert.verifyStrEmpty(request.getClientOauthCode(), "绑定的授权码");
+//        Assert.verifyStrEmpty(request.getEmail(), "绑定的邮箱");
     }
 
     @Override
     protected ThirdOauthUserBindResponseBO doExecute() {
 
-        // 根据邮箱查询用户信息
-        UserDTO userFromDb = userService().findByEmail(request.getEmail());
-        // 校验
-        Assert.verifyDataNotExistent(userFromDb, StrUtil.format("邮箱【{}】对应的用户数据", request.getEmail()));
+//        // 根据邮箱查询用户信息
+//        UserDTO userFromDb = userService().findByEmail(request.getEmail());
+//        // 校验
+//        Assert.verifyDataNotExistent(userFromDb, StrUtil.format("邮箱【{}】对应的用户数据", request.getEmail()));
         // session获取user信息
         UserDTO userFromSession = ShiroUtils.getUserInfo();
         // 校验
@@ -47,7 +46,7 @@ public class ThirdOauthUserBindRequestBO extends BaseStandardAlterRequestBO<Thir
         // 校验授权用户
         Assert.verifyObjNull(userFromSession.getOauthUser(), "用户尚未授权登录，授权用户");
 
-        return newResponseBO(userFromDb);
+        return newResponseBO(null);
     }
 
     @Override

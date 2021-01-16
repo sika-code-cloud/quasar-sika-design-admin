@@ -27,14 +27,11 @@ public class AuthRegisterRequestBO extends BaseStandardRequestBO<AuRegisterRespo
     private AuthRegisterRequest registerRequest;
     private CheckMailRequest checkMailRequest;
     protected CaptchaCheckRequest captchaCheckRequest;
-
     private CheckMailCodeRequestBO checkMailCodeRequestBO;
-    private String clientPassword;
+    private Boolean bindOauthUser;
     @Override
     protected void init() {
         checkMailCodeRequestBO = new CheckUserRegisterMailCodeRequestBO().setRequest(checkMailRequest);
-        // 初始化密码
-        clientPassword = registerRequest.getPassword();
         registerRequest.setPassword(SHA256Util.sha256(registerRequest));
     }
 
@@ -65,10 +62,13 @@ public class AuthRegisterRequestBO extends BaseStandardRequestBO<AuRegisterRespo
 
     private void executeAfter() {
         // 自动登录
-        AuthLoginRequest request = new AuthLoginRequest()
-                .setUsername(registerRequest.getUsername())
-                .setPassword(clientPassword);
-        authService().login(request);
+        AuthLoginRequest request = new AuthLoginRequest(registerRequest.getUsername(), registerRequest.getPassword());
+        request.setEncryptedPassword(true);
+        if (BooleanUtil.isTrue(bindOauthUser)) {
+            authService().bindOauthUser(request);
+        } else {
+            authService().login(request);
+        }
         // 移除缓存
         captchaService().removeCaptchaVerifyCode(captchaCheckRequest);
         checkMailCodeRequestBO.removeCode();

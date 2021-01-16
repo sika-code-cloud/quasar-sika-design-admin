@@ -13,7 +13,6 @@ import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckBindOau
 import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckUserRegisterMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.bo.request.sender.SendBindOauthUserMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.bo.request.sender.SendUserRegisterMailCodeRequestBO;
-import com.quasar.sika.design.server.common.shiro.constant.ShiroConstant;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
@@ -161,8 +160,8 @@ public class AuthController extends BaseStandardController {
         return success(authService.oauthLogin(source, callback));
     }
 
-    @RequestMapping("/bind_oauth_user")
-    public Result bindOauthUser(BindOauthUserRequest request) {
+    @RequestMapping("/bind_oauth_user/anon")
+    public Result bindOauthUser(@RequestBody BindOauthUserRequest request) {
         return success(authService.bindOauthUser(request));
     }
 
