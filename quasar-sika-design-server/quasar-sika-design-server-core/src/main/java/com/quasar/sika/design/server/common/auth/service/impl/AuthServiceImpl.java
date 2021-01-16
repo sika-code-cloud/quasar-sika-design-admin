@@ -78,6 +78,11 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
         return login(request);
     }
 
+    public AuthResponse bindOauth(AuthLoginRequest request) {
+
+        return login(request);
+    }
+
     @Override
     public AuthResponse login(AuthLoginRequest request) {
         // 验证身份和登陆
@@ -177,6 +182,14 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     public AuthResponse doOauthLogin(AuthOauthLoginRequest request) {
         log.info("开始doOauthLogin：" + request.getSource() + " 请求 params：" + JSONObject.toJSONString(request));
         ThirdOauthUserDTO oauthUserDTO = thirdOauthUserService.findByStateAndSource(request.getOauthToken(), request.getSource());
+        UserDTO userDTO = ShiroUtils.getUserInfo();
+        // 绑定当前登录的用户
+        if (userDTO != null && userDTO.getId() != null) {
+            ThirdOauthUserDTO thirdOauthUserForUpdate = new ThirdOauthUserDTO();
+            thirdOauthUserForUpdate.setUserId(userDTO.getId());
+            thirdOauthUserForUpdate.setId(oauthUserDTO.getId());
+            thirdOauthUserService.updateAndRet(thirdOauthUserForUpdate);
+        }
         if (oauthUserDTO == null) {
             // 已经登录直接返回成功
             if (SecurityUtils.getSubject().isAuthenticated()) {
