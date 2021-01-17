@@ -6,12 +6,13 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * @author daiqi
- * @create 2021-01-09 18:02
+ * @author sikadai
+ * @Description:
+ * @date 2021/1/1722:03
  */
 @Data
 @Accessors(chain = true)
-public class AuRegisterResponseBO implements BaseStandardResponseBO<AuthResponse> {
+public class AuthResponseBO implements BaseStandardResponseBO<AuthResponse> {
     private AuthResponse response;
     @Override
     public void build(AuthResponse authResponse) {

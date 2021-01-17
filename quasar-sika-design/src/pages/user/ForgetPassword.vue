@@ -10,21 +10,21 @@
                 outlined
                 clearable
                 clear-icon="cancel"
-                v-model="registerData.email"
+                v-model="forgetPasswordData.email"
                 debounce="1000"
                 dense
                 placeholder="邮箱"
                 maxlength="128"
                 type="email"
                 square
-                :rules="[(val) => (val && val.length > 0) || '请输入邮箱',checkRegisterEmail]"
+                :rules="[(val) => (val && val.length > 0) || '请输入邮箱',checkForgetPasswordEmail]"
               >
                 <template v-slot:prepend>
                   <q-icon name="mail" />
                 </template>
                 <template v-slot:hint>
                   <div class="text-positive">
-                    {{ registerHintData.emailHint }}
+                    {{ forgetPasswordHintData.emailHint }}
                   </div>
                 </template>
               </q-input>
@@ -33,7 +33,7 @@
                 clearable
                 type="text"
                 maxlength="6"
-                v-model="registerData.captchaVerifyCode"
+                v-model="forgetPasswordData.captchaVerifyCode"
                 dense
                 placeholder="图片验证码"
                 square
@@ -55,7 +55,7 @@
                 </template>
                 <template v-slot:hint>
                   <div class="text-positive">
-                    {{ registerHintData.captchaVerifyCodeHint }}
+                    {{ forgetPasswordHintData.captchaVerifyCodeHint }}
                   </div>
                 </template>
               </q-input>
@@ -64,7 +64,7 @@
                 clearable
                 type="text"
                 maxlength="6"
-                v-model="registerData.emailValidateCode"
+                v-model="forgetPasswordData.emailValidateCode"
                 dense
                 placeholder="邮箱验证码"
                 debounce="1000"
@@ -91,7 +91,7 @@
                 </template>
                 <template v-slot:hint>
                   <div class="text-positive">
-                    {{ registerHintData.emailValidateCodeHint }}
+                    {{ forgetPasswordHintData.emailValidateCodeHint }}
                   </div>
                 </template>
               </q-input>
@@ -105,10 +105,10 @@
                     clearable
                     clear-icon="cancel"
                     :type="isPwd ? 'password' : 'text'"
-                    v-model="registerData.password"
+                    v-model="forgetPasswordData.password"
                     dense
                     debounce="1000"
-                    placeholder="密码"
+                    placeholder="新密码"
                     maxlength="32"
                     square
                     :rules="[
@@ -132,7 +132,7 @@
                     clearable
                     clear-icon="cancel"
                     :type="isPwd ? 'password' : 'text'"
-                    v-model="registerData.confirmPassword"
+                    v-model="forgetPasswordData.confirmPassword"
                     dense
                     debounce="1000"
                     placeholder="确认密码"
@@ -162,7 +162,7 @@
                     class="no-border-radius"
                     unelevated
                     type="submit"
-                    :loading="registerLoading"
+                    :loading="loading"
                     color="primary full-width"
                     label="提 交"
                     size="md"
@@ -186,45 +186,18 @@
           </div>
         </div>
       </q-form>
-      <q-dialog v-model="successCard" persistent>
-        <q-card
-          class="my-card text-center q-col-gutter-y-lg q-px-md"
-          style="width: 600px; max-width: 80vw"
-        >
-          <q-icon
-            class="q-mt-md text-h4"
-            name="check_circle"
-            color="positive"
-            size="60px"
-          />
-          <div>
-            <div class="text-h6">
-              恭喜！账户：<span>{{ usernameForShow }} </span> 注册成功
-            </div>
-            <div class="text-grey">
-              已经为您自动登录，赶快加入QuasarSikaDesign享受极致纵享丝滑的体验吧！
-            </div>
-          </div>
-          <q-card-actions align="center" class="q-mb-md">
-            <q-btn v-close-popup glossy color="primary" to="/account/center" label="个人中心" />
-            <q-btn v-close-popup glossy color="secondary" to="/" label="进入首页" />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
     </div>
   </div>
 </template>
 
 <script>
 import {
-  checkRegisterUsername,
-  checkRegisterEmail,
-  checkRegisterPhone,
-  sendUserRegisterMailCode,
-  getRegisterCaptchaVerifyCode,
-  checkRegisterCaptchaVerifyCode,
-  checkUserRegisterMailCode,
-  register
+  getCaptchaVerifyCode,
+  checkCaptchaVerifyCode,
+  sendMailCode,
+  checkMailCode,
+  checkForgetPasswordEmail,
+  findBackPassword
 } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
 import _ from 'lodash'
@@ -233,27 +206,28 @@ export default {
   name: 'ForgetPassword',
   data() {
     return {
-      registerHintData: {
+      forgetPasswordHintData: {
         emailHint: null,
         captchaVerifyCodeHint: null,
         emailValidateCodeHint: null
       },
-      registerData: {
+      forgetPasswordData: {
         email: null,
         password: null,
         confirmPassword: null,
         captchaVerifyCode: null,
-        emailValidateCode: null
+        emailValidateCode: null,
+        emailCode: 'MC_00003',
+        captchaType: 30
       },
       usernameForShow: null,
       showPassword: false,
-      phonePrefix: '+86',
       captchaVerifyCodeUrl: '',
       isPwd: true,
       validateCodeLoading: false,
       successCard: false,
       emailCountDown: 60,
-      registerLoading: false
+      loading: false
     }
   },
   created() {
@@ -261,81 +235,42 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.register()
-      // this.$router.push({
-      //   path: '/user/registerResult',
-      //   query: { email: this.email }
-      // })
+      this.findBackPassword()
     },
     onReset() {
-      this.usernameForShow = this.registerData.username
-      commonUtil.resetObj(this.registerData)
-      commonUtil.resetObj(this.registerHintData)
-    },
-    onItemClick(value) {
-      this.phonePrefix = value
-    },
-    checkRegisterUsername(val) {
-      return new Promise((resolve, reject) => {
-        checkRegisterUsername(this.registerData).then(response => {
-          resolve(true)
-          this.registerHintData.usernameHint = '用户名可用'
-        }).catch(err => {
-          resolve(err)
-        })
-      })
-    },
-    checkRegisterEmail(val) {
-      return new Promise((resolve, reject) => {
-        checkRegisterEmail(this.registerData).then(response => {
-          resolve(true)
-          this.registerHintData.emailHint = '邮箱可用'
-        }).catch(err => {
-          resolve(err)
-        })
-      })
-    },
-    checkRegisterPhone(val) {
-      return new Promise((resolve, reject) => {
-        checkRegisterPhone(this.registerData).then(response => {
-          resolve(true)
-          this.registerHintData.phoneHint = '手机号可用'
-        }).catch(err => {
-          resolve(err)
-        })
-      })
+      this.usernameForShow = this.forgetPasswordData.username
+      commonUtil.resetObj(this.forgetPasswordData)
+      commonUtil.resetObj(this.forgetPasswordHintData)
     },
     checkCaptchaVerifyCode(val) {
       return new Promise((resolve, reject) => {
-        checkRegisterCaptchaVerifyCode(this.registerData).then(response => {
+        checkCaptchaVerifyCode(this.forgetPasswordData).then(response => {
           resolve(true)
-          this.registerHintData.captchaVerifyCodeHint = '图片验证码正确'
+          this.forgetPasswordHintData.captchaVerifyCodeHint = '图片验证码正确'
         }).catch(err => {
           resolve(err)
         })
       })
     },
     checkEmailCode(val) {
-      this.showPassword = (val === '1')
-      console.log(this.showPassword)
       return new Promise((resolve, reject) => {
-        checkUserRegisterMailCode(this.registerData).then(response => {
+        checkMailCode(this.forgetPasswordData).then(response => {
           resolve(true)
-          this.registerHintData.emailValidateCodeHint = '邮箱验证码正确'
-          // this.showPassword = true
+          this.forgetPasswordHintData.emailValidateCodeHint = '邮箱验证码正确'
+          this.showPassword = true
         }).catch(err => {
-          // this.showPassword = false
+          this.showPassword = false
           resolve(err)
         })
       })
     },
     getCaptchaVerifyCode() {
-      getRegisterCaptchaVerifyCode().then(response => {
+      getCaptchaVerifyCode(this.forgetPasswordData).then(response => {
         this.captchaVerifyCodeUrl = response
       })
     },
     getEmailVerifyCode() {
-      if (_.isEmpty(this.registerData.email)) {
+      if (_.isEmpty(this.forgetPasswordData.email)) {
         commonUtil.notifyAlert('请输入邮箱')
         return
       }
@@ -349,7 +284,7 @@ export default {
           clearInterval(interval)
         }
       }, 1000)
-      sendUserRegisterMailCode(this.registerData).then(response => {
+      sendMailCode(this.forgetPasswordData).then(response => {
         commonUtil.notifySuccess('验证码发送成功')
       }).catch(err => {
         console.log(err)
@@ -358,30 +293,42 @@ export default {
         clearInterval(interval)
       })
     },
-    register(callBack) {
+    checkForgetPasswordEmail(val) {
+      return new Promise((resolve, reject) => {
+        checkForgetPasswordEmail(this.forgetPasswordData).then(response => {
+          resolve(true)
+          this.forgetPasswordHintData.emailHint = '邮箱正确'
+        }).catch(err => {
+          resolve(err)
+        })
+      })
+    },
+    findBackPassword() {
       // we set loading state
-      this.registerLoading = true
+      this.loading = true
       // simulate a delay
       setTimeout(() => {
-        register(this.registerData).then(response => {
+        findBackPassword(this.forgetPasswordData).then(response => {
           // we're done, we reset loading state
           this.success()
         }).catch(err => {
           console.log(err)
-          this.registerLoading = false
+          this.loading = false
         })
       }, 1000)
     },
     success() {
-      commonUtil.notifySuccess('注册成功')
-      this.registerLoading = false
+      commonUtil.alert('重置密码成功，返回登录').onOk(() => {
+        location.href = '/user/login'
+      })
+      this.loading = false
       this.successCard = true
       this.$refs.registerForm.reset()
     }
   },
   computed: {
     passwordValida: function() {
-      return this.registerData.password === this.registerData.confirmPassword
+      return this.forgetPasswordData.password === this.forgetPasswordData.confirmPassword
     }
   }
 }

@@ -1,11 +1,13 @@
 import { buildFullUrl, post, postForImage, showNotifyFalse, getQueryString } from 'utils/request'
 import commonUtil from '@/utils/commonUtil'
 import { removeToken } from '@/utils/localStorage'
+
 // -----------------登录模块:开始----------------------------
 // 登录 --- 绑定用户
 export function bindOauthUser(data) {
   return post('/auth/bind_oauth_user/anon', data)
 }
+
 export function loginUsername(data) {
   return post('/auth/login_username/anon', data)
 }
@@ -54,61 +56,76 @@ export function logout() {
 // -----------------注册功能:开始----------------------------
 // 校验用户名
 export const checkRegisterUsername = (param) => {
-  return post('/auth/check_register_username/anon', buildRegisterRequest(param), showNotifyFalse)
+  return postForFalse('/auth/check_register_username/anon', buildRegisterRequest(param))
 }
 
+// 校验邮箱 -- 忘記密碼
+export const checkForgetPasswordEmail = (param) => {
+  return postForFalse('/auth/check_forget_password_email/anon', param)
+}
 // 校验邮箱
 export const checkRegisterEmail = (param) => {
-  return post('/auth/check_register_email/anon', buildRegisterRequest(param), showNotifyFalse)
+  return postForFalse('/auth/check_register_email/anon', buildRegisterRequest(param))
 }
 
 // 注册用户-校验手机号
 export const checkRegisterPhone = (param) => {
-  return post('/auth/check_register_phone/anon', buildRegisterRequest(param), showNotifyFalse)
+  return postForFalse('/auth/check_register_phone/anon', buildRegisterRequest(param))
 }
 
 // 获取注册图片验证码
-export function getRegisterCaptchaVerifyCode() {
+export function getCaptchaVerifyCode(param) {
   const data = {
     width: 100,
     height: 30,
-    type: 20
+    type: param.captchaType
   }
   return postForImage('/auth/get_captcha_verify_code/anon', data)
 }
 
 // 校验注册图片验证码
-export function checkRegisterCaptchaVerifyCode(param) {
-  return post('/auth/check_captcha_verify_code/anon', buildCheckCaptchaRequest(param), showNotifyFalse)
+export function checkCaptchaVerifyCode(param) {
+  return postForFalse('/auth/check_captcha_verify_code/anon', buildCheckCaptchaRequest(param))
 }
 
 // 发送用户注册验证码
-export function sendUserRegisterMailCode(param) {
+export function sendMailCode(param) {
   const data = {
-    request: { to: param.email },
+    request: {
+      to: param.email,
+      code: param.emailCode
+    },
     captchaCheckRequest: {
       clientCode: param.captchaVerifyCode,
-      type: 20
+      type: param.captchaType
     }
   }
-  return post('/auth/send_user_register_mail_code/anon', data, showNotifyFalse)
+  return post('/auth/send_mail_code/anon', data)
 }
 
 // 校验注册验证码
-export function checkUserRegisterMailCode(param) {
+export function checkMailCode(param) {
   const data = {
     request: buildCheckMailRequest(param)
   }
-  return post('/auth/check_user_register_mail_code/anon', data, showNotifyFalse)
+  return post('/auth/check_mail_code/anon', data, showNotifyFalse())
 }
 
+// 修改密码
+export function findBackPassword(param) {
+  const data = {
+    captchaCheckRequest: buildCheckCaptchaRequest(param),
+    checkMailRequest: buildCheckMailRequest(param),
+    findBackPasswordRequest: param
+  }
+  return post('/auth/find_back_password/anon', data)
+}
 // 注册方法
 export function register(param) {
   let bindOauthUser = false
   if (getQueryString('bindOauthUser') === '1') {
     bindOauthUser = true
   }
-  console.log('bindOauthUser----' + bindOauthUser)
   const data = {
     captchaCheckRequest: buildCheckCaptchaRequest(param),
     checkMailRequest: buildCheckMailRequest(param),
@@ -126,18 +143,23 @@ function buildRegisterRequest(registerData) {
   return registerData
 }
 
-function buildCheckCaptchaRequest(registerData) {
+function buildCheckCaptchaRequest(data) {
   return {
-    clientCode: registerData.captchaVerifyCode,
-    type: 20
+    clientCode: data.captchaVerifyCode,
+    type: data.captchaType
   }
 }
 
-function buildCheckMailRequest(registerData) {
+function buildCheckMailRequest(data) {
   return {
-    to: registerData.email,
-    clientMailCode: registerData.emailValidateCode
+    to: data.email,
+    code: data.emailCode,
+    clientMailCode: data.emailValidateCode
   }
+}
+
+function postForFalse(url, data) {
+  return post(url, data, showNotifyFalse())
 }
 
 // -----------------注册功能:结束----------------------------

@@ -107,16 +107,18 @@ LoadingBar.setDefaults({
 })
 
 // 展示错误响应false
-export const showNotifyFalse = {
-  showNotify: false
+export function showNotifyFalse() {
+  return { showNotify: false }
 }
-export const showNotifyTrue = {
-  showNotify: true
+
+export function showNotifyTrue() {
+  return { showNotify: true }
 }
 
 // post请求
 export function post(url, param, config) {
-  const cfg = Object.assign(showNotifyTrue, config)
+  const cfg = Object.assign(showNotifyTrue(), config)
+  console.log(cfg + '----------')
   return service({
     url: url,
     method: 'post',

@@ -75,6 +75,14 @@ public interface AuthService {
     AuthResponse bindOauthUser(AuthLoginRequest request);
 
     /**
+     * 校验忘记密码的邮箱
+     * @author : sikadai
+     * @param request
+     * @return
+     */
+    boolean checkForgetPasswordEmail(AuthForgetPasswordRequest request);
+
+    /**
      * 校验注册的邮箱
      */
     boolean checkRegisterEmail(AuthRegisterRequest registerRequest);

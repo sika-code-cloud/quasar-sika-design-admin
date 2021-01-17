@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.quasar.sika.design.server.business.mailtemplate.pojo.dto.MailTemplateDTO;
 import com.quasar.sika.design.server.business.mailtemplate.service.MailTemplateService;
 import com.quasar.sika.design.server.common.mail.constant.MailCodeEnum;
+import com.quasar.sika.design.server.common.mail.pojo.request.MailCodeRequest;
 import com.quasar.sika.design.server.common.mail.pojo.request.SendMailRequest;
 import com.quasar.sika.design.server.common.mail.pojo.response.SendMailResponse;
 import com.quasar.sika.design.server.common.mail.service.MailService;
@@ -30,6 +31,22 @@ import org.springframework.stereotype.Service;
 public class MailServiceImpl implements MailService {
     @Autowired
     private MailTemplateService mailTemplateService;
+
+    @Override
+    public boolean setMailCode(SendMailRequest request) {
+        putToCache(getCacheKey(request), request.getContent());
+        return true;
+    }
+
+    @Override
+    public boolean removeMailCode(MailCodeRequest request) {
+        return removeToCache(getCacheKey(request));
+    }
+
+    @Override
+    public String getMailCode(MailCodeRequest request) {
+        return getFromCache(getCacheKey(request));
+    }
 
     @Override
     public SendMailResponse sendMail(SendMailRequest request) {

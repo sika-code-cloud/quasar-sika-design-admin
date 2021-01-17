@@ -285,11 +285,13 @@
 
 <script>
 import {
+  checkRegisterUsername,
   checkRegisterEmail,
-  sendUserRegisterMailCode,
-  getRegisterCaptchaVerifyCode,
-  checkRegisterCaptchaVerifyCode,
-  checkUserRegisterMailCode,
+  checkRegisterPhone,
+  sendMailCode,
+  getCaptchaVerifyCode,
+  checkCaptchaVerifyCode,
+  checkMailCode,
   register
 } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
@@ -313,7 +315,9 @@ export default {
         confirmPassword: null,
         phone: null,
         captchaVerifyCode: null,
-        emailValidateCode: null
+        emailValidateCode: null,
+        emailCode: 'MC_00002',
+        captchaType: 20
       },
       usernameForShow: null,
       phonePrefix: '+86',
@@ -344,6 +348,16 @@ export default {
     onItemClick(value) {
       this.phonePrefix = value
     },
+    checkRegisterUsername(val) {
+      return new Promise((resolve, reject) => {
+        checkRegisterUsername(this.registerData).then(response => {
+          resolve(true)
+          this.registerHintData.usernameHint = '用户名可用'
+        }).catch(err => {
+          resolve(err)
+        })
+      })
+    },
     checkRegisterEmail(val) {
       return new Promise((resolve, reject) => {
         checkRegisterEmail(this.registerData).then(response => {
@@ -354,9 +368,19 @@ export default {
         })
       })
     },
+    checkRegisterPhone(val) {
+      return new Promise((resolve, reject) => {
+        checkRegisterPhone(this.registerData).then(response => {
+          resolve(true)
+          this.registerHintData.phoneHint = '手机号可用'
+        }).catch(err => {
+          resolve(err)
+        })
+      })
+    },
     checkCaptchaVerifyCode(val) {
       return new Promise((resolve, reject) => {
-        checkRegisterCaptchaVerifyCode(this.registerData).then(response => {
+        checkCaptchaVerifyCode(this.registerData).then(response => {
           resolve(true)
           this.registerHintData.captchaVerifyCodeHint = '图片验证码正确'
         }).catch(err => {
@@ -366,7 +390,7 @@ export default {
     },
     checkEmailCode(val) {
       return new Promise((resolve, reject) => {
-        checkUserRegisterMailCode(this.registerData).then(response => {
+        checkMailCode(this.registerData).then(response => {
           resolve(true)
           this.registerHintData.emailValidateCodeHint = '邮箱验证码正确'
         }).catch(err => {
@@ -375,7 +399,7 @@ export default {
       })
     },
     getCaptchaVerifyCode() {
-      getRegisterCaptchaVerifyCode().then(response => {
+      getCaptchaVerifyCode(this.registerData).then(response => {
         this.captchaVerifyCodeUrl = response
       })
     },
@@ -394,8 +418,8 @@ export default {
           clearInterval(interval)
         }
       }, 1000)
-      sendUserRegisterMailCode(this.registerData).then(response => {
-        commonUtil.notifySuccess('验证码发送成功')
+      sendMailCode(this.registerData).then(response => {
+        commonUtil.notifySuccess('验证码发发送成功')
       }).catch(err => {
         console.log(err)
         this.validateCodeLoading = false

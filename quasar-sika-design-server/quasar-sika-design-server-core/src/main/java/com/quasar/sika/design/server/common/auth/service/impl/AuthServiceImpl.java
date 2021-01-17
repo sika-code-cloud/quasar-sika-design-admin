@@ -48,6 +48,14 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     private static final String OAUTH_USER_KEY = "oauth:user:";
 
     @Override
+    public boolean checkForgetPasswordEmail(AuthForgetPasswordRequest request) {
+        Validator.validateEmail(request.getEmail(), "邮箱格式有误");
+        // 校验邮箱是否存在
+        Assert.verifyDataNotExistentMsg(userService.findByEmail(request.getEmail()), "当前邮箱不存在");
+        return true;
+    }
+
+    @Override
     public boolean checkRegisterEmail(AuthRegisterRequest registerRequest) {
         Validator.validateEmail(registerRequest.getEmail(), "邮箱格式有误");
         // 校验邮箱是否存在

@@ -1,6 +1,7 @@
 package com.quasar.sika.design.server.common.auth;
 
 
+import com.quasar.sika.design.server.common.auth.bo.request.AuthFindBackPasswordRequestBO;
 import com.quasar.sika.design.server.common.auth.bo.request.AuthRegisterRequestBO;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
 import com.quasar.sika.design.server.common.auth.pojo.request.*;
@@ -9,10 +10,8 @@ import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
-import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckBindOauthUserMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckUserRegisterMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.sender.SendBindOauthUserMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.sender.SendUserRegisterMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckMailCodeRequestBO;
+import com.quasar.sika.design.server.common.mail.bo.request.sender.SendMailCodeRequestBO;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
@@ -47,25 +46,26 @@ public class AuthController extends BaseStandardController {
     @Autowired
     private CaptchaService captchaService;
 
-    /** 授权登录-----begin */
+    /** 忘记密码-----begin */
     /**
-     * 授权用户绑定-校验验证码
+     * 忘记密码 - 校验邮箱
      */
-    @PostMapping("/check_bind_oauth_user_mail_code/anon")
+    @PostMapping("/check_forget_password_email/anon")
     @ResponseBody
-    public Result checkBindOauthUserMailCode(@RequestBody CheckBindOauthUserMailCodeRequestBO requestBO) {
+    public Result checkForgetPasswordEmail(@RequestBody AuthForgetPasswordRequest request) {
+        return success(authService.checkForgetPasswordEmail(request));
+    }
+
+    /**
+     * 找回密码 - 校验邮箱
+     */
+    @PostMapping("/find_back_password/anon")
+    @ResponseBody
+    public Result findBackPassword(@RequestBody AuthFindBackPasswordRequestBO requestBO) {
         return success(DomainExecutor.execute(requestBO));
     }
-
-    /**
-     * 授权用户绑定-发送验证码
-     */
-    @PostMapping("/send_bind_oauth_user_mail_code/anon")
-    @ResponseBody
-    public Result sendBindOauthUserMailCode(@RequestBody SendBindOauthUserMailCodeRequestBO requestBo) {
-        return success(DomainExecutor.execute(requestBo));
-    }
-
+    /** 忘记密码-----end */
+    /** 授权登录-----begin */
     /**
      * 用户登录 - 用户名密码
      */
@@ -100,18 +100,18 @@ public class AuthController extends BaseStandardController {
     /**
      * 用户注册 - 发送邮箱验证码
      */
-    @PostMapping("/check_user_register_mail_code/anon")
+    @PostMapping("/check_mail_code/anon")
     @ResponseBody
-    public Result checkUserRegisterMailCode(@RequestBody CheckUserRegisterMailCodeRequestBO requestBo) {
+    public Result checkMailCode(@RequestBody CheckMailCodeRequestBO requestBo) {
         return success(DomainExecutor.execute(requestBo));
     }
 
     /**
      * 用户注册 - 校验邮箱验证码
      */
-    @PostMapping("/send_user_register_mail_code/anon")
+    @PostMapping("/send_mail_code/anon")
     @ResponseBody
-    public Result sendUserRegisterMailCode(@RequestBody SendUserRegisterMailCodeRequestBO requestBo) {
+    public Result sendUserRegisterMailCode(@RequestBody SendMailCodeRequestBO requestBo) {
         return success(DomainExecutor.execute(requestBo));
     }
 
