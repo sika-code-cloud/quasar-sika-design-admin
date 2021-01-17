@@ -1,5 +1,5 @@
 server:
-  port: 8102
+  port: 8101
   tomcat:
     accept-count: 1024
     max-threads: 1024
@@ -151,27 +151,34 @@ me:
       oauthConfig:
         gitee:
           requestClassName: me.zhyd.oauth.request.AuthGiteeRequest
-          clientId: 427f193cd6a3319e8f84570a21cecc563ed80c4cd4d46e647312306fa7d74329
-          clientSecret: 4ec7e3ab06fbda68414bc250a28858ec51f6e6e888f692760db3c1cc578e0900
-          redirectUri: http://127.0.0.1:8101/auth/callback/gitee/anon
+          clientId: e2dc551133ef22c69b988c944f0e35f8e83a8776f6ce883d0bd124b558d359db
+          clientSecret: 79c5c3855d748a40b37dc86991ba170f1ff89d27b1bdfe36c6a7b46204eea142
+          redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/gitee/anon
         github:
           requestClassName: me.zhyd.oauth.request.AuthGithubRequest
-          clientId: a60f78e6b3f5dcd39510
-          clientSecret: a952fb6de66b6d96fd1719d53d03a6d6b03d0113
-          redirectUri: http://localhost:8101/auth/callback/github/anon
-        weibo:
-          clientId:
-          clientSecret:
-          redirectUri:
-        dingtalk:
-          clientId:
-          clientSecret:
-          redirectUri:
+          clientId: eb1a1a1521f1583dca82
+          clientSecret: 7c3c1b41ec67280053f1b7767ec5e7123bd10a46
+          redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/github/anon
         baidu:
           requestClassName: me.zhyd.oauth.request.AuthBaiduRequest
-          clientId: VCgfYwoGjvtdiWe60qWwbLSk
-          clientSecret: OhGKutO24BUGP7i46085bQWC9KdreExm
-          redirectUri: http://localhost:8101/auth/callback/baidu/anon
+          clientId: I4Ua5P1v39TlOmHQN02e8rtU
+          clientSecret: BD9hqSz3kfk2eAI2a58saHEM2d7IrQFA
+          redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/baidu/anon
+        weibo:
+          requestClassName: me.zhyd.oauth.request.AuthWeiboRequest
+          clientId: 3627966137
+          clientSecret: f105f965b7f944847204ace0c0a2f3a2
+          redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/weibo/anon
+        qq:
+          requestClassName: me.zhyd.oauth.request.AuthQqRequest
+          clientId: 101930496
+          clientSecret: 6cb64c801e65e50dfb8d2d26194c3533
+          redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/qq/anon
+        dingtalk:
+          requestClassName:
+          clientId:
+          clientSecret:
+          redirectUri:
         coding:
           clientId:
           clientSecret:
@@ -189,10 +196,6 @@ me:
           clientSecret:
           redirectUri:
           alipayPublicKey:
-        qq:
-          clientId:
-          clientSecret:
-          redirectUri:
         wechat:
           clientId:
           clientSecret:

@@ -121,10 +121,10 @@
           <div class="q-mx-md">
             <div class="row">
               <div class="col text-left">
-                <q-checkbox v-model="autoLogin" label="自动登录" />
+                <q-checkbox v-model="loginData.rememberMe" label="自动登录" />
               </div>
               <div class="col text-right">
-                <q-btn color="primary" flat label="忘记密码" />
+                <q-btn color="primary" to="/user/forget-password" flat label="忘记密码" />
               </div>
             </div>
             <div class="row">
@@ -210,6 +210,11 @@ const iconObject = {
     class: { iconName: 'icongitee', color: 'text-grey' },
     size: '23px',
     type: 'link'
+  },
+  baidu: {
+    class: { iconName: 'iconbaidu', color: 'text-grey' },
+    size: '23px',
+    type: 'link'
   }
 }
 const loginTypes = {
@@ -230,11 +235,11 @@ export default {
         username: null,
         password: null,
         phone: null,
+        rememberMe: true,
         phonePassword: null
       },
       accept: false,
       isPwd: true,
-      autoLogin: true,
       loginLoading: false
     }
   },
@@ -301,7 +306,7 @@ export default {
 
 <style scoped>
 /*@import '~assets/icons/iconfont.sass';*/
-@import 'http://at.alicdn.com/t/font_2136554_lg2i8x34x6.css';
+@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
 
 .q-tab-panel {
 }

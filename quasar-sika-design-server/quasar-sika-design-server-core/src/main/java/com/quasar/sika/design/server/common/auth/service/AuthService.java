@@ -72,7 +72,15 @@ public interface AuthService {
      * @param request : 绑定授权用户请求对象
      * @return
      */
-    OauthResponse bindOauthUser(BindOauthUserRequest request);
+    AuthResponse bindOauthUser(AuthLoginRequest request);
+
+    /**
+     * 校验忘记密码的邮箱
+     * @author : sikadai
+     * @param request
+     * @return
+     */
+    boolean checkForgetPasswordEmail(AuthForgetPasswordRequest request);
 
     /**
      * 校验注册的邮箱

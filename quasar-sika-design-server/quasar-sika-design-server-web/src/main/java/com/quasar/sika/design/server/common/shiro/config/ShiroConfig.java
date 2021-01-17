@@ -1,9 +1,11 @@
 package com.quasar.sika.design.server.common.shiro.config;
 
+import cn.hutool.core.codec.Base64;
 import com.quasar.sika.design.server.common.shiro.constant.ShiroConstant;
 import com.quasar.sika.design.server.common.shiro.filter.PermissionsAuthFilter;
 import com.quasar.sika.design.server.common.shiro.filter.RolesAuthFilter;
 import com.quasar.sika.design.server.common.shiro.filter.TokenCheckFilter;
+import com.quasar.sika.design.server.common.shiro.filter.UserCheckFilter;
 import com.quasar.sika.design.server.common.shiro.realm.ShiroRealm;
 import com.quasar.sika.design.server.common.shiro.service.ShiroService;
 import com.quasar.sika.design.server.common.shiro.util.ShiroSessionIdGenerator;
@@ -13,7 +15,9 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -63,7 +67,8 @@ public class ShiroConfig {
         // 定义过滤器名称 【注：map里面key值对于的value要为authc才能使用自定义的过滤器】
         filtersMap.put("scPerms", new PermissionsAuthFilter());
         filtersMap.put("scRoles", new RolesAuthFilter());
-        filtersMap.put("token", new TokenCheckFilter());
+        filtersMap.put("authc", new TokenCheckFilter());
+        filtersMap.put("user", new UserCheckFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 登录的路径: 如果你没有登录则会跳到这个页面中 - 如果没有设置值则会默认跳转到工程根目录下的"/login.jsp"页面 或 "/login" 映射
@@ -78,6 +83,35 @@ public class ShiroConfig {
     }
 
     /**
+     * cookie对象;
+     * rememberMeCookie()方法是设置Cookie的生成模版，比如cookie的name，cookie的有效时间等等。
+     * @return
+     */
+    @Bean
+    public SimpleCookie rememberMeCookie(){
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        simpleCookie.setMaxAge(259200);
+        return simpleCookie;
+    }
+
+
+    /**
+     * cookie管理对象;
+     * rememberMeManager()方法是生成rememberMe管理器，而且要将这个rememberMe管理器设置到securityManager中
+     * @return
+     */
+    @Bean
+    public CookieRememberMeManager rememberMeManager(){
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));
+        return cookieRememberMeManager;
+    }
+
+    /**
      * 安全管理器
      */
     @Bean
@@ -89,6 +123,8 @@ public class ShiroConfig {
         securityManager.setCacheManager(cacheManager());
         // 自定义Realm验证
         securityManager.setRealm(shiroRealm());
+        // 设置remember
+        securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 

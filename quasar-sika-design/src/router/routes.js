@@ -275,13 +275,24 @@ const routes = [
     ]
   },
   {
-    path: '/user/register',
-    name: '/user/register',
+    path: '/user/oauth-bind',
+    name: '/user/oauth-bind',
     component: () => import('layouts/UserLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('pages/user/Register.vue')
+        component: () => import('pages/user/OauthBind.vue')
+      }
+    ]
+  },
+  {
+    path: '/user/forget-password',
+    name: '/user/forget-password',
+    component: () => import('layouts/UserLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/user/ForgetPassword.vue')
       }
     ]
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="sc-design">
-    <div class="q-px-md">
+    <div class="q-px-md q-mb-lg">
       <q-form @submit="onSubmit" @reset="onReset" ref="registerForm">
         <div class="q-gutter-y-md">
           <div class="text-left text-body1">注册</div>
@@ -288,10 +288,10 @@ import {
   checkRegisterUsername,
   checkRegisterEmail,
   checkRegisterPhone,
-  sendUserRegisterMailCode,
-  getRegisterCaptchaVerifyCode,
-  checkRegisterCaptchaVerifyCode,
-  checkUserRegisterMailCode,
+  sendMailCode,
+  getCaptchaVerifyCode,
+  checkCaptchaVerifyCode,
+  checkMailCode,
   register
 } from '@/api/user'
 import commonUtil from '@/utils/commonUtil'
@@ -315,7 +315,9 @@ export default {
         confirmPassword: null,
         phone: null,
         captchaVerifyCode: null,
-        emailValidateCode: null
+        emailValidateCode: null,
+        emailCode: 'MC_00002',
+        captchaType: 20
       },
       usernameForShow: null,
       phonePrefix: '+86',
@@ -378,7 +380,7 @@ export default {
     },
     checkCaptchaVerifyCode(val) {
       return new Promise((resolve, reject) => {
-        checkRegisterCaptchaVerifyCode(this.registerData).then(response => {
+        checkCaptchaVerifyCode(this.registerData).then(response => {
           resolve(true)
           this.registerHintData.captchaVerifyCodeHint = '图片验证码正确'
         }).catch(err => {
@@ -388,7 +390,7 @@ export default {
     },
     checkEmailCode(val) {
       return new Promise((resolve, reject) => {
-        checkUserRegisterMailCode(this.registerData).then(response => {
+        checkMailCode(this.registerData).then(response => {
           resolve(true)
           this.registerHintData.emailValidateCodeHint = '邮箱验证码正确'
         }).catch(err => {
@@ -397,7 +399,7 @@ export default {
       })
     },
     getCaptchaVerifyCode() {
-      getRegisterCaptchaVerifyCode().then(response => {
+      getCaptchaVerifyCode(this.registerData).then(response => {
         this.captchaVerifyCodeUrl = response
       })
     },
@@ -416,7 +418,7 @@ export default {
           clearInterval(interval)
         }
       }, 1000)
-      sendUserRegisterMailCode(this.registerData).then(response => {
+      sendMailCode(this.registerData).then(response => {
         commonUtil.notifySuccess('验证码发发送成功')
       }).catch(err => {
         console.log(err)

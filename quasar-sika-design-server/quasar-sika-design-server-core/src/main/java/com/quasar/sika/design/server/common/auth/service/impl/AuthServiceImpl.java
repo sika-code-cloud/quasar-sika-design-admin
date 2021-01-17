@@ -1,6 +1,7 @@
 package com.quasar.sika.design.server.common.auth.service.impl;
 
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -8,6 +9,7 @@ import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauth
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
+import com.quasar.sika.design.server.common.auth.constant.AuthErrorCodeEnum;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
 import com.quasar.sika.design.server.common.auth.pojo.dto.OauthStateCacheDTO;
 import com.quasar.sika.design.server.common.auth.pojo.request.*;
@@ -16,7 +18,6 @@ import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
-import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.exception.BusinessException;
@@ -27,7 +28,10 @@ import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +45,15 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     private ThirdOauthUserService thirdOauthUserService;
 
     private static final String OAUTH_STATE_KEY = "oauth:state:";
+    private static final String OAUTH_USER_KEY = "oauth:user:";
+
+    @Override
+    public boolean checkForgetPasswordEmail(AuthForgetPasswordRequest request) {
+        Validator.validateEmail(request.getEmail(), "邮箱格式有误");
+        // 校验邮箱是否存在
+        Assert.verifyDataNotExistentMsg(userService.findByEmail(request.getEmail()), "当前邮箱不存在");
+        return true;
+    }
 
     @Override
     public boolean checkRegisterEmail(AuthRegisterRequest registerRequest) {
@@ -69,7 +82,6 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     @Override
     public AuthResponse loginPhone(AuthLoginPhoneRequest request) {
         Assert.verifyStrEmpty(request.getPhone(), "手机号");
-        Assert.verifyStrEmpty(request.getPassword(), "密码");
         // 根据手机查询用户数据
         UserDTO userDTO = userService.findByPhone(request.getPhone());
         Assert.verifyDataNotExistent(userDTO, "账号不存在");
@@ -78,22 +90,21 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
         return login(request);
     }
 
+    public AuthResponse bindOauth(AuthLoginRequest request) {
+
+        return login(request);
+    }
+
     @Override
     public AuthResponse login(AuthLoginRequest request) {
-        // 验证身份和登陆
-        UsernamePasswordToken token = request.build().getToken();
         // 账号登录
-        if (StrUtil.isBlank(request.getUsername()) || StrUtil.isBlank(request.getPassword())) {
+        if (StrUtil.isBlank(request.getUsername()) || ArrayUtil.isEmpty(request.getPassword())) {
             throw new BusinessException("用户名或者密码为空");
         }
         // 拿到当前用户(可能还是游客，没有登录)
         Subject currentUser = SecurityUtils.getSubject();
-        // 如果用户已经登录,进行登录功能
-//        if (BooleanUtil.isTrue(currentUser.isAuthenticated())) {
-//            return AuthResponse.success(ShiroUtils.getUserInfo());
-//        }
         try {
-            currentUser.login(token);
+            currentUser.login(request);
         } catch (UnknownAccountException e) {
             throw new BusinessException("账号不存在");
         } catch (IncorrectCredentialsException e) {
@@ -177,16 +188,7 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     public AuthResponse doOauthLogin(AuthOauthLoginRequest request) {
         log.info("开始doOauthLogin：" + request.getSource() + " 请求 params：" + JSONObject.toJSONString(request));
         ThirdOauthUserDTO oauthUserDTO = thirdOauthUserService.findByStateAndSource(request.getOauthToken(), request.getSource());
-        if (oauthUserDTO == null) {
-            // 已经登录直接返回成功
-            if (SecurityUtils.getSubject().isAuthenticated()) {
-                return new AuthResponse().build();
-            }
-            throw new BusinessException(BaseErrorCodeEnum.UN_AUTH);
-        }
-        // 执行登录
-        AuthLoginRequest authLoginRequest = new OauthLoginRequest().setOauthUser(oauthUserDTO).build();
-        return login(authLoginRequest);
+        return oauthLoginCore(oauthUserDTO);
     }
 
     private String buildStateCacheKey(String source, String state) {
@@ -194,8 +196,50 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     }
 
     @Override
-    public OauthResponse bindOauthUser(BindOauthUserRequest request) {
-        return null;
+    public AuthResponse bindOauthUser(AuthLoginRequest request) {
+        ThirdOauthUserDTO oauthUser = ShiroUtils.getAttributeFromSession(OAUTH_USER_KEY);
+        Assert.verifyObjNullMsg(oauthUser, "授权信息已经失效，请返回登录重新授权");
+        // 执行登录
+        login(request);
+        // 没有异常-登录成功 执行核心授权登录逻辑
+        AuthResponse authResponse = oauthLoginCore(oauthUser);
+        if (authResponse.getSuccess()) {
+            // 移除缓存
+            ShiroUtils.removeAttributeFromSession(OAUTH_USER_KEY);
+        }
+        return authResponse;
+    }
+
+    /**
+     * 授权登录核心逻辑
+     * 1. 已经登录 更新授权用户绑定的用户信息
+     * 2. 没有登录-已经绑定 根据绑定的userId查询用户信息，执行登录
+     * 3. 没有登录-没有绑定 返回错误码-授权用户没有绑定-前端跳转至绑定页面
+     * @param oauthUserDTO
+     * @return
+     */
+    private AuthResponse oauthLoginCore(ThirdOauthUserDTO oauthUserDTO) {
+        Assert.verifyObjNullMsg(oauthUserDTO, "授权用户信息为空");
+        Assert.verifyObjNullMsg(oauthUserDTO.getId(), "授权用户信息异常");
+        Subject subject = SecurityUtils.getSubject();
+        // 已经登录
+        if (subject.isAuthenticated()) {
+            UserDTO user = ShiroUtils.getUserInfo();
+            ThirdOauthUserDTO oauthUserForUpdate = new ThirdOauthUserDTO();
+            oauthUserForUpdate.setId(oauthUserDTO.getId());
+            oauthUserForUpdate.setUserId(user.getId());
+            thirdOauthUserService.updateById(oauthUserForUpdate);
+            return AuthResponse.success(user);
+        }
+        UserDTO userFromDb = userService.findByPrimaryKey(oauthUserDTO.getUserId());
+        if (BaseUtil.isNotNull(userFromDb)) {
+            AuthLoginRequest authLoginRequest = new AuthLoginRequest(userFromDb.getUsername(), userFromDb.getPassword());
+            authLoginRequest.setEncryptedPassword(true);
+            return login(authLoginRequest);
+        }
+        // 如果既没有登录又没有绑定 --- 需要缓存授权信息至会话中
+        ShiroUtils.setAttributeToSession(OAUTH_USER_KEY, oauthUserDTO);
+        return AuthResponse.error(AuthErrorCodeEnum.OAUTH_USER_NOT_AUTH).build();
     }
 
     /**

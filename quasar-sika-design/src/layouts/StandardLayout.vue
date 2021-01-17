@@ -75,8 +75,8 @@
                   overflow: hidden;
                 "
               >
-                <span>{{ userInfo.showUsername }}</span>
-                <q-tooltip>{{ userInfo.showUsername }} </q-tooltip>
+                <span v-if="userInfo">{{  userInfo.showUsername }}</span>
+                <q-tooltip v-if="userInfo">{{ userInfo.showUsername }} </q-tooltip>
               </div>
               <q-menu
                 :offset="[0, 26]"
@@ -1027,9 +1027,10 @@ export default {
   },
   mounted: function() {
     this.buildTabRoute()
+  },
+  created() {
     currentUser().then(response => {
       this.userInfo = response.user
-      console.log(JSON.stringify(this.userInfo) + '--------------------')
     })
   }
 }

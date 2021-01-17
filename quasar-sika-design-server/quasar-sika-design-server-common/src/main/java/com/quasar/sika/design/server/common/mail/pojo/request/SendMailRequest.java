@@ -16,5 +16,5 @@ public class SendMailRequest extends MailCodeRequest{
     /** 邮件内容 */
     private String content;
     private String operate;
-    private boolean isHtml;
+    private boolean isHtml = true;
 }

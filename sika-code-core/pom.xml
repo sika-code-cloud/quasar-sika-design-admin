@@ -20,6 +20,7 @@
         <module>standard-footer</module>
         <module>mq</module>
         <module>lock</module>
+        <module>code-generator</module>
     </modules>
 
     <properties>

@@ -6,16 +6,16 @@
         <property name="LOG_HOME" value="./logs/quasar-sika-design-server/"/>
     </springProfile>
     <springProfile name="develop-debug">
-        <property name="LOG_HOME" value="/lxserver/logs/DEVELOP/quasar-sika-design-server/"/>
+        <property name="LOG_HOME" value="/quasar-sika-design/logs/DEVELOP/quasar-sika-design-server/"/>
     </springProfile>
     <springProfile name="test">
-        <property name="LOG_HOME" value="/lxserver/logs/TEST/quasar-sika-design-server/"/>
+        <property name="LOG_HOME" value="/quasar-sika-design/logs/TEST/quasar-sika-design-server/"/>
     </springProfile>
     <springProfile name="advance">
-        <property name="LOG_HOME" value="/lxserver/logs/ADVANCE/quasar-sika-design-server/"/>
+        <property name="LOG_HOME" value="/quasar-sika-design/logs/ADVANCE/quasar-sika-design-server/"/>
     </springProfile>
     <springProfile name="product">
-        <property name="LOG_HOME" value="/lxserver/logs/PROD/quasar-sika-design-server/"/>
+        <property name="LOG_HOME" value="/quasar-sika-design/logs/PROD/quasar-sika-design-server/"/>
     </springProfile>
     <!-- 环境配置 -->
 

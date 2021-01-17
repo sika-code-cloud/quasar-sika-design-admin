@@ -15,11 +15,13 @@ public enum MailCodeEnum implements TypeEnumInf<Integer> {
     /**
      * 邮箱授权码编码
      */
-    BIND_OAUTH_USER(10, "BIND_OAUTH_USER_00001","授权用户绑定"),
+    BIND_OAUTH_USER(10, "MC_00001","授权用户绑定"),
     /**
      * 邮箱授权码编码
      */
-    USER_REGISTER(10, "USER_REGISTER_00001","用户注册"),
+    USER_REGISTER(10, "MC_00002","注册用户"),
+
+    FORGET_PASSWORD(10, "MC_00003","找回密码"),
     ;
     private final Integer type;
     private final String code;

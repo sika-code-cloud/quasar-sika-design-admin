@@ -1,5 +1,6 @@
 package com.quasar.sika.design.server.common.shiro.realm;
 
+import cn.hutool.core.util.StrUtil;
 import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
 import com.quasar.sika.design.server.business.menu.service.MenuService;
 import com.quasar.sika.design.server.business.role.pojo.dto.RoleDTO;
@@ -8,6 +9,7 @@ import com.quasar.sika.design.server.business.user.entity.UserEntity;
 import com.quasar.sika.design.server.business.user.pojo.dto.UserDTO;
 import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.auth.token.OauthLoginToken;
+import com.quasar.sika.design.server.common.auth.token.ScUsernamePasswordToken;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.constant.BaseConstant;
@@ -77,7 +79,7 @@ public class ShiroRealm extends AuthorizingRealm {
             log.info("授权登录的sessionId：{}", ShiroUtils.getSessionId());
             return oauthLogin((OauthLoginToken) authenticationToken);
         } else {
-            return usernamePasswordLogin((UsernamePasswordToken) authenticationToken);
+            return usernamePasswordLogin((ScUsernamePasswordToken) authenticationToken);
         }
     }
 
@@ -89,7 +91,7 @@ public class ShiroRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(userDTO, password256, ByteSource.Util.bytes(oauthLoginToken.getUsername()), getName());
     }
 
-    private SimpleAuthenticationInfo usernamePasswordLogin(UsernamePasswordToken tokenInfo) {
+    private SimpleAuthenticationInfo usernamePasswordLogin(ScUsernamePasswordToken tokenInfo) {
         // 获取用户输入的账号
         String username = tokenInfo.getUsername();
         // 获取用户输入的密码
@@ -104,8 +106,18 @@ public class ShiroRealm extends AuthorizingRealm {
             return null;
         }
         // 验证密码 【注：这里不采用shiro自身密码验证 ， 采用的话会导致用户登录密码错误时，已登录的账号也会自动下线！  如果采用，移除下面的清除缓存到登录处 处理】
-        if (BaseUtil.notEquals(SHA256Util.sha256(password, username), user.getPassword())) {
+        String encryptedPassword = password;
+        String passwordForDb = user.getPassword();
+        // 如果登录的密码不是已经加密的则需要加密
+        if (!tokenInfo.isEncryptedPassword()) {
+            encryptedPassword = SHA256Util.sha256(password, username);
+        }
+        if (!StrUtil.equals(encryptedPassword, passwordForDb)) {
             throw new IncorrectCredentialsException("用户名或者密码错误");
+        }
+        // 如果客户端已经加密，则需要对加密密码再次加密
+        if (tokenInfo.isEncryptedPassword()) {
+            passwordForDb = SHA256Util.sha256(passwordForDb, username);
         }
         // 判断账号是否被冻结
         if (user.getAvailable() == null || BaseConstant.AvailableEnum.notAvailable(user.getAvailable())) {
@@ -121,16 +133,7 @@ public class ShiroRealm extends AuthorizingRealm {
         user.setToken(ShiroUtils.getSessionId());
         // 验证成功开始踢人(清除缓存和Session)
         ShiroUtils.deleteCache(username, false);
-        // 认证成功后更新token
-        updateToken(user);
-        return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getUsername()), getName());
+        return new SimpleAuthenticationInfo(user, passwordForDb, ByteSource.Util.bytes(username), getName());
     }
 
-    private void updateToken(UserDTO userFromDb) {
-        // 认证成功后更新token
-        UserDTO userForUpdate = new UserDTO();
-        userForUpdate.setId(userFromDb.getId());
-        userForUpdate.setToken(userFromDb.getToken());
-        userService.updateById(userForUpdate);
-    }
 }

@@ -1,4 +1,4 @@
-package com.quasar.sika.design.server.common.mail.bo.reqsponse;
+package com.quasar.sika.design.server.common.mail.bo.response;
 
 import com.quasar.sika.design.server.common.mail.domain.MailDomain;
 import com.quasar.sika.design.server.common.mail.pojo.response.SendMailResponse;

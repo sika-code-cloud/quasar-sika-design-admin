@@ -76,7 +76,7 @@
     </profiles>
 
     <build>
-        <finalName>standard-footer-demo-server</finalName>
+        <finalName>quasar-sika-design-admin</finalName>
         <filters>
             <filter>src/main/resources/application-${profileActive}.yml</filter>
         </filters>

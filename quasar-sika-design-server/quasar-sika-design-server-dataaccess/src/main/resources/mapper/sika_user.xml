@@ -95,7 +95,7 @@
 
     <!-- 根据查询条件SQL -->
     <sql id="query_sql" >
-        <if test="query.userId != null">AND id = #{query.userId}</if>
+        <if test="query.id != null">AND id = #{query.id}</if>
         <if test="query.username != null">AND username = #{query.username}</if>
         <if test="query.password != null">AND password = #{query.password}</if>
         <if test="query.oauthPwd != null">AND oauth_pwd = #{query.oauthPwd}</if>
