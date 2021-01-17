@@ -13,7 +13,6 @@
 
     <modules>
         <module>common</module>
-        <module>code-generator</module>
         <module>database</module>
         <module>cache</module>
         <module>starter</module>
@@ -21,6 +20,7 @@
         <module>standard-footer</module>
         <module>mq</module>
         <module>lock</module>
+        <module>code-generator</module>
     </modules>
 
     <properties>
