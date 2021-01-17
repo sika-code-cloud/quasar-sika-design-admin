@@ -13,6 +13,7 @@
 
     <modules>
         <module>common</module>
+        <module>code-generator</module>
         <module>database</module>
         <module>cache</module>
         <module>starter</module>
