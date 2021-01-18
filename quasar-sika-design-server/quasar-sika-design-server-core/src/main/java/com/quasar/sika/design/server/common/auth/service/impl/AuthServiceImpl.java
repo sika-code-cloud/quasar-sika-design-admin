@@ -48,6 +48,13 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
     private static final String OAUTH_USER_KEY = "oauth:user:";
 
     @Override
+    public AuthResponse currentUser() {
+        UserDTO user = ShiroUtils.getUserInfo();
+        UserDTO userFromDb = userService.findByPrimaryKey(user.getId());
+        return AuthResponse.success(userFromDb).build();
+    }
+
+    @Override
     public boolean checkForgetPasswordEmail(AuthForgetPasswordRequest request) {
         Validator.validateEmail(request.getEmail(), "邮箱格式有误");
         // 校验邮箱是否存在

@@ -255,7 +255,7 @@ public class AuthController extends BaseStandardController {
 
     @RequestMapping("/current_user")
     public Result currentUser() {
-        return super.success(new com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse().build());
+        return super.success(authService.currentUser());
     }
 
 

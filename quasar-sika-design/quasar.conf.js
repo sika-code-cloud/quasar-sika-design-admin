@@ -60,7 +60,7 @@ module.exports = function (ctx) {
       // extractCSS: false,
       env: ctx.dev
         ? {
-            VUE_APP_BASE_API: 'http://localhost:8102'
+            VUE_APP_BASE_API: 'http://localhost:8101'
           }
         : {
             VUE_APP_BASE_API: 'http://quasar.admin.sikacode.com/api'

@@ -23,10 +23,6 @@ public class UserQuery extends BaseStandardQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     * 数据表id
-     */
-    protected Long userId;
-    /**
      * 用户名
      */
     protected String username;

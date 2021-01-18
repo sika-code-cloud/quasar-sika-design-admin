@@ -24,10 +24,6 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 数据表id
-     */
-    private Long userId;
-    /**
      * 用户名
      */
     private String username;

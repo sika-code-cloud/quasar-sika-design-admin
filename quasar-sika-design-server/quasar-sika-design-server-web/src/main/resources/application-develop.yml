@@ -1,5 +1,5 @@
 server:
-  port: 8102
+  port: 8101
   tomcat:
     accept-count: 1024
     max-threads: 1024
@@ -148,6 +148,7 @@ logging:
 me:
   zhyd:
     oauth:
+      timeout: 15000
       oauthConfig:
         gitee:
           requestClassName: me.zhyd.oauth.request.AuthGiteeRequest

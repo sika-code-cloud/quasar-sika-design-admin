@@ -72,14 +72,14 @@
                   dense
                   square
                   label="邮箱"
-                  v-model="accountSettingsData.basicSetting.email"
+                  v-model="userBasicData.email"
                 />
                 <q-input
                   outlined
                   dense
                   square
                   label="昵称"
-                  v-model="accountSettingsData.basicSetting.nickName"
+                  v-model="userBasicData.nickname"
                 />
                 <q-input
                   type="textarea"
@@ -87,7 +87,7 @@
                   dense
                   square
                   label="个人简介"
-                  v-model="accountSettingsData.basicSetting.personDesc"
+                  v-model="userBasicData.remark"
                 />
                 <q-select
                   outlined
@@ -149,7 +149,7 @@
                     dense
                     square
                     label="联系电话"
-                    v-model="accountSettingsData.basicSetting.phone"
+                    v-model="userBasicData.phone"
                   />
                 </span>
                 <q-btn label="更新基本信息" color="primary" unelevated />
@@ -179,7 +179,7 @@
                   <q-item-section>
                     <q-item-label>账户密码</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >当前密码强度：强
+                    >当前密码强度：强
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -191,7 +191,7 @@
                   <q-item-section>
                     <q-item-label>密保手机</q-item-label>
                     <q-item-label class="text-grey-6">
-                      已绑定手机：{{ accountSettingsData.safeData.phone }}
+                      已绑定手机：{{ safeData.phone }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -203,7 +203,7 @@
                   <q-item-section>
                     <q-item-label>密保问题</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >{{ accountSettingsData.safeData.passwordQuestion }}
+                    >{{ accountSettingsData.safeData.passwordQuestion }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -221,9 +221,10 @@
                         square
                         class="bg-green-1"
                         size="sm"
-                        >已绑定</q-chip
+                      >已绑定
+                      </q-chip
                       >
-                      {{ accountSettingsData.safeData.slaveEmail }}
+                      {{ safeData.email }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -235,7 +236,7 @@
                   <q-item-section>
                     <q-item-label><strong>MFA 设备</strong></q-item-label>
                     <q-item-label class="text-grey-6"
-                      >未绑定 MFA 设备，绑定后，可以进行二次确认
+                    >未绑定 MFA 设备，绑定后，可以进行二次确认
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -254,17 +255,17 @@
                       size="xl"
                       color="orange"
                       style="cursor: pointer"
-                      class="iconfont icontaobao q-ml-sm"
+                      class="iconfont iconhuaban88 q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定淘宝</q-item-label>
+                    <q-item-label>绑定Github</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >{{ accountSettingsData.accountBindData.bindTaoBaoNo }}
+                    >{{ accountSettingsData.accountBindData.bindTaoBaoNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" />
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('github')" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -274,17 +275,17 @@
                       size="xl"
                       color="primary"
                       style="cursor: pointer"
-                      class="iconfont iconzhifubao q-ml-sm"
+                      class="iconfont icongitee q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定支付宝</q-item-label>
+                    <q-item-label>绑定Gitee</q-item-label>
                     <q-item-label class="text-grey-6">
                       {{ accountSettingsData.accountBindData.bindZfbNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" />
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('gitee')" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -294,17 +295,17 @@
                       size="xl"
                       color="info"
                       style="cursor: pointer"
-                      class="iconfont iconweixin q-ml-sm"
+                      class="iconfont iconbaidu q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定微信</q-item-label>
+                    <q-item-label>绑定百度</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >{{ accountSettingsData.accountBindData.bindWechatNo }}
+                    >{{ accountSettingsData.accountBindData.bindWechatNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" />
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('baidu')" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -317,7 +318,7 @@
                   <q-item-section>
                     <q-item-label>账户密码</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >其他用户的消息将以站内信的形式通知
+                    >其他用户的消息将以站内信的形式通知
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -351,7 +352,7 @@
                   <q-item-section>
                     <q-item-label>待办任务</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >待办任务将以站内信的形式通知
+                    >待办任务将以站内信的形式通知
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -375,18 +376,59 @@
 
 <script>
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
+import { getLoginData } from '@/utils/localStorage'
+import { toOauthLogin } from '@/api/user'
+
+const userBasicData = {
+  email: null,
+  nickname: null,
+  remark: null,
+  phone: null
+}
+
+const safeData = {
+  phone: null,
+  email: null
+}
 
 export default {
   name: 'Settings',
   data() {
     return {
       accountSettingsData: ACCOUNT_SETTINGS_DATA,
-      settingsTab: 'basicSettings'
+      settingsTab: 'basicSettings',
+      userBasicData,
+      safeData,
+      loginUser: {}
     }
+  },
+  methods: {
+    thirdLogin(iconKey, event) {
+      window.open(toOauthLogin(iconKey, '/account/settings'), '_self')
+    },
+    buildSafeData() {
+      const loginUser = this.loginUser
+      safeData.email = loginUser.email
+      safeData.phone = loginUser.phone
+    },
+    buildUserBasicData() {
+      const loginUser = this.loginUser
+      userBasicData.email = loginUser.email
+      userBasicData.nickname = loginUser.nickname
+      userBasicData.remark = loginUser.remark
+      userBasicData.phone = loginUser.phone
+    }
+  },
+  created() {
+    this.loginUser = getLoginData().user
+  },
+  mounted() {
+    this.buildUserBasicData()
+    this.buildSafeData()
   }
 }
 </script>
 
 <style scoped>
-@import 'http://at.alicdn.com/t/font_2136554_1fgggi4y4wt.css';
+@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
 </style>

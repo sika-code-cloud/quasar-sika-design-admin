@@ -304,7 +304,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 /*@import '~assets/icons/iconfont.sass';*/
 @import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
 
