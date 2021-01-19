@@ -13,7 +13,7 @@ sika:
       sender:
         log-fire: true
         ack: true
-    ## ==========================凌雄restTemplate配置begin=====================================
+    ## ==========================restTemplate配置begin=====================================
     rest:
       template:
         maxTotal: 1500
@@ -22,7 +22,7 @@ sika:
         readTimeout: 90000
         connectionRequestTimeout: 200
         bufferRequestBody: false
-    ## ==========================凌雄restTemplate配置end=====================================
+    ## ==========================restTemplate配置end=====================================
     auth:
       # jwt秘钥
       jwt-secret: ETZZN3KX194HXI82
