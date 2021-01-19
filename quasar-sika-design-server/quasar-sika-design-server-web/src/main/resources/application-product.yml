@@ -172,8 +172,8 @@ me:
           redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/weibo/anon
         qq:
           requestClassName: me.zhyd.oauth.request.AuthQqRequest
-          clientId: 101930496
-          clientSecret: 6cb64c801e65e50dfb8d2d26194c3533
+          clientId: 101931120
+          clientSecret: d73650b6f64203a45bd3c503a4afa644
           redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/qq/anon
         dingtalk:
           requestClassName:

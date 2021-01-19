@@ -215,6 +215,11 @@ const iconObject = {
     class: { iconName: 'iconbaidu', color: 'text-grey' },
     size: '23px',
     type: 'link'
+  },
+  qq: {
+    class: { iconName: 'iconqq', color: 'text-grey' },
+    size: '23px',
+    type: 'link'
   }
 }
 const loginTypes = {
@@ -306,7 +311,7 @@ export default {
 
 <style>
 /*@import '~assets/icons/iconfont.sass';*/
-@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
+@import 'http://at.alicdn.com/t/font_2136554_95kmewdgocg.css';
 
 .q-tab-panel {
 }
