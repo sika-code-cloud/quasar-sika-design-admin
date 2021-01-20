@@ -21,13 +21,16 @@
         <result column="phone" property="phone" />
         <result column="email" property="email" />
         <result column="avatar" property="avatar" />
+        <result column="province_code" property="provinceCode" />
+        <result column="city_code" property="cityCode" />
+        <result column="county_code" property="countyCode" />
         <result column="token" property="token" />
         <result column="type" property="type" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="columnList">
-        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, username, password, oauth_pwd, nickname, sex, phone, email, avatar, token, type
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, username, password, oauth_pwd, nickname, sex, phone, email, avatar,province_code,city_code,county_code token, type
     </sql>
 
     <!-- 根据查询条件获取列表信息 -->
@@ -104,6 +107,10 @@
         <if test="query.phone != null">AND phone = #{query.phone}</if>
         <if test="query.email != null">AND email = #{query.email}</if>
         <if test="query.avatar != null">AND avatar = #{query.avatar}</if>
+        <if test="query.avatar != null">AND avatar = #{query.avatar}</if>
+        <if test="query.provinceCode != null">AND province_code = #{query.provinceCode}</if>
+        <if test="query.cityCode != null">AND city_code = #{query.cityCode}</if>
+        <if test="query.countyCode != null">AND county_code = #{query.countyCode}</if>
         <if test="query.token != null">AND token = #{query.token}</if>
         <if test="query.type != null">AND type = #{query.type}</if>
         <if test="query.ids != null and query.ids.size() > 0">

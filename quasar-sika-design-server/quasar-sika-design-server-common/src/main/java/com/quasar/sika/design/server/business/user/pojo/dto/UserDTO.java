@@ -56,6 +56,18 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
      */
     private String avatar;
     /**
+     * 省份编码
+     */
+    private String provinceCode;
+    /**
+     * 城市编码
+     */
+    private String cityCode;
+    /**
+     * 乡编码
+     */
+    private String countyCode;
+    /**
      * token
      */
     private String token;

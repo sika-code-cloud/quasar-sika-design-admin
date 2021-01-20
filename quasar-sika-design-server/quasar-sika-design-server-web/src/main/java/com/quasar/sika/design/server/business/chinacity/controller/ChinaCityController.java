@@ -1,16 +1,17 @@
 package com.quasar.sika.design.server.business.chinacity.controller;
 
 
-import java.util.List;
-import com.sika.code.result.Result;
-import com.sika.code.standard.base.controller.BaseStandardController;
-import com.quasar.sika.design.server.business.chinacity.service.ChinaCityService;
 import com.quasar.sika.design.server.business.chinacity.pojo.dto.ChinaCityDTO;
 import com.quasar.sika.design.server.business.chinacity.pojo.query.ChinaCityQuery;
+import com.quasar.sika.design.server.business.chinacity.service.ChinaCityService;
+import com.sika.code.result.Result;
+import com.sika.code.standard.base.controller.BaseStandardController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 /**
  * <p>
  * 参数配置表 前端控制器
@@ -40,17 +41,17 @@ public class ChinaCityController extends BaseStandardController {
         return super.success(chinaCityService.updateById(chinaCityDto));
     }
 
-    @RequestMapping(value = "page")
+    @RequestMapping(value = "page/anon")
     public Result page(@RequestBody ChinaCityQuery chinaCityQuery) {
         return super.success(chinaCityService.page(chinaCityQuery));
     }
 
-    @RequestMapping(value = "find")
+    @RequestMapping(value = "find/anon")
     public Result find(@RequestBody ChinaCityQuery chinaCityQuery) {
         return super.success(chinaCityService.find(chinaCityQuery));
     }
 
-    @RequestMapping(value = "list")
+    @RequestMapping(value = "list/anon")
     public Result list(@RequestBody ChinaCityQuery chinaCityQuery) {
         return super.success(chinaCityService.list(chinaCityQuery));
     }

@@ -237,8 +237,8 @@ export default {
       loginTypes,
       loginType: loginTypes.usernameLogin,
       loginData: {
-        username: null,
-        password: null,
+        username: 'sika',
+        password: '123456',
         phone: null,
         rememberMe: true,
         phonePassword: null

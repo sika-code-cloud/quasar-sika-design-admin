@@ -55,6 +55,18 @@ public class UserQuery extends BaseStandardQuery implements Serializable {
      */
     protected String avatar;
     /**
+     * 省份编码
+     */
+    private String provinceCode;
+    /**
+     * 城市编码
+     */
+    private String cityCode;
+    /**
+     * 乡编码
+     */
+    private String countyCode;
+    /**
      * token
      */
     protected String token;

@@ -378,6 +378,7 @@
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
 import { getLoginData } from '@/utils/localStorage'
 import { toOauthLogin } from '@/api/user'
+import { listForProvince, listForCity, listForCounty } from '@/api/chinaCity'
 
 const userBasicData = {
   email: null,
@@ -399,7 +400,10 @@ export default {
       settingsTab: 'basicSettings',
       userBasicData,
       safeData,
-      loginUser: {}
+      loginUser: {},
+      provinces: [],
+      cities: [],
+      counties: []
     }
   },
   methods: {
@@ -417,6 +421,20 @@ export default {
       userBasicData.nickname = loginUser.nickname
       userBasicData.remark = loginUser.remark
       userBasicData.phone = loginUser.phone
+    },
+    buildAreaData() {
+      listForProvince().then(response => {
+        this.provinces = []
+        this.provinces.push(response)
+      })
+      listForCity(this.loginUser.provinceCode).then(response => {
+        this.cities = []
+        this.cities.push(response)
+      })
+      listForCounty(this.loginUser.cityCode).then(response => {
+        this.counties = []
+        this.counties.push(response)
+      })
     }
   },
   created() {
@@ -425,6 +443,7 @@ export default {
   mounted() {
     this.buildUserBasicData()
     this.buildSafeData()
+    this.buildAreaData()
   }
 }
 </script>
