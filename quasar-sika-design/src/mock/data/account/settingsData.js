@@ -1,13 +1,23 @@
 const basicSetting = {
-  email: 'antdesign@alipay.com',
-  nickName: '于美丽',
-  personDesc: '世界没有难写的代码',
+  email: null,
+  nickname: null,
+  remark: null,
   country: '中国',
-  province: '广东省',
-  city: '深圳市',
-  address: '宝安中心十一路',
+  provinceData: {
+    value: null,
+    label: null
+  },
+  cityData: {
+    value: null,
+    label: null
+  },
+  countyData: {
+    value: null,
+    label: null
+  },
+  address: null,
   phonePrefix: '+86',
-  phone: '18787659045'
+  phone: null
 }
 const safeData = {
   password: '123456',

@@ -94,42 +94,40 @@
                   dense
                   square
                   behavior="menu"
-                  label="国家\地区"
+                  label="所在省份"
                   options-dense
-                  :options="['中国', '韩国']"
-                  v-model="accountSettingsData.basicSetting.country"
+                  :options="provinces"
+                  v-model="userBasicData.provinceData"
+                  @input="changeProvince"
                 />
-                <span class="row q-gutter-x-sm">
-                  <q-select
-                    class="col"
-                    outlined
-                    dense
-                    square
-                    behavior="menu"
-                    label="所在省份"
-                    options-dense
-                    :options="['湖北省', '广东省']"
-                    v-model="accountSettingsData.basicSetting.province"
-                  />
-                  <q-select
-                    class="col"
-                    outlined
-                    dense
-                    square
-                    behavior="menu"
-                    label="所在城市"
-                    options-dense
-                    :options="['深圳市', '佛山市']"
-                    v-model="accountSettingsData.basicSetting.city"
-                  />
-                </span>
+                <q-select
+                  outlined
+                  dense
+                  square
+                  behavior="menu"
+                  label="所在城市"
+                  options-dense
+                  :options="cities"
+                  v-model="userBasicData.cityData"
+                  @input="changeCity"
+                />
+                <q-select
+                  outlined
+                  dense
+                  square
+                  behavior="menu"
+                  label="所在县区"
+                  options-dense
+                  :options="counties"
+                  v-model="userBasicData.countyData"
+                  v-if="counties && counties.length"
+                />
                 <q-input
-                  type="text"
                   outlined
                   dense
                   square
                   label="详细地址"
-                  v-model="accountSettingsData.basicSetting.address"
+                  v-model="userBasicData.address"
                 />
                 <span class="row q-gutter-x-sm">
                   <q-select
@@ -140,8 +138,8 @@
                     behavior="menu"
                     label="前缀"
                     options-dense
-                    :options="['+86', '+87']"
-                    v-model="accountSettingsData.basicSetting.phonePrefix"
+                    :options="['+86']"
+                    v-model="userBasicData.phonePrefix"
                   />
                   <q-input
                     class="col"
@@ -378,14 +376,8 @@
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
 import { getLoginData } from '@/utils/localStorage'
 import { toOauthLogin } from '@/api/user'
-import { listForProvince, listForCity, listForCounty } from '@/api/chinaCity'
-
-const userBasicData = {
-  email: null,
-  nickname: null,
-  remark: null,
-  phone: null
-}
+import { listForCity, listForCounty, listForProvince } from '@/api/chinaCity'
+import commonUtil from 'src/utils/commonUtil'
 
 const safeData = {
   phone: null,
@@ -398,7 +390,7 @@ export default {
     return {
       accountSettingsData: ACCOUNT_SETTINGS_DATA,
       settingsTab: 'basicSettings',
-      userBasicData,
+      userBasicData: ACCOUNT_SETTINGS_DATA.basicSetting,
       safeData,
       loginUser: {},
       provinces: [],
@@ -417,24 +409,53 @@ export default {
     },
     buildUserBasicData() {
       const loginUser = this.loginUser
+      const userBasicData = this.userBasicData
+
       userBasicData.email = loginUser.email
       userBasicData.nickname = loginUser.nickname
       userBasicData.remark = loginUser.remark
       userBasicData.phone = loginUser.phone
+      userBasicData.provinceData.value = loginUser.provinceCode
+      userBasicData.cityData.value = loginUser.cityCode
+      userBasicData.countyData.value = loginUser.countyCode
     },
     buildAreaData() {
-      listForProvince().then(response => {
-        this.provinces = []
-        this.provinces.push(response)
+      this.listForProvince()
+      this.listForCity(this.loginUser.provinceCode)
+      this.listForCounty(this.loginUser.cityCode)
+    },
+    listForProvince() {
+      listForProvince().then(datas => {
+        this.initAreaData(this.provinces, datas)
       })
-      listForCity(this.loginUser.provinceCode).then(response => {
-        this.cities = []
-        this.cities.push(response)
+    },
+    listForCity(provinceCode) {
+      listForCity(provinceCode).then(datas => {
+        this.initAreaData(this.cities, datas)
       })
-      listForCounty(this.loginUser.cityCode).then(response => {
-        this.counties = []
-        this.counties.push(response)
+    },
+    listForCounty(cityCode) {
+      listForCounty(cityCode).then(datas => {
+        this.initAreaData(this.counties, datas)
       })
+    },
+    initAreaData(datasClient, datasServer) {
+      datasClient.splice(0, datasClient.length)
+      for (let i = 0; i < datasServer.length; ++i) {
+        const data = datasServer[i]
+        datasClient.push({ label: data.cityName, value: data.code })
+      }
+    },
+    changeProvince() {
+      this.listForCity(this.userBasicData.provinceData.value)
+      commonUtil.resetObj(this.userBasicData.cityData)
+      commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    changeCity() {
+      this.listForCounty(this.userBasicData.cityData.value)
+      commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    changeCounty() {
     }
   },
   created() {
