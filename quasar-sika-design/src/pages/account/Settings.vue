@@ -127,6 +127,7 @@
                   dense
                   square
                   label="详细地址"
+                  type="textarea"
                   v-model="userBasicData.address"
                 />
                 <span class="row q-gutter-x-sm">
