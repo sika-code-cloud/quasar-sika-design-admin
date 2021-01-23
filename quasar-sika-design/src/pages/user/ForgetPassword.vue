@@ -239,8 +239,8 @@ export default {
     },
     onReset() {
       this.usernameForShow = this.forgetPasswordData.username
-      commonUtil.resetObj(this.forgetPasswordData)
-      commonUtil.resetObj(this.forgetPasswordHintData)
+      this.forgetPasswordData = commonUtil.resetObj(this.forgetPasswordData)
+      this.forgetPasswordHintData = commonUtil.resetObj(this.forgetPasswordHintData)
     },
     checkCaptchaVerifyCode(val) {
       return new Promise((resolve, reject) => {

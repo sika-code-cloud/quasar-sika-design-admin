@@ -342,8 +342,8 @@ export default {
     },
     onReset() {
       this.usernameForShow = this.registerData.username
-      commonUtil.resetObj(this.registerData)
-      commonUtil.resetObj(this.registerHintData)
+      this.registerData = commonUtil.resetObj(this.registerData)
+      this.registerHintData = commonUtil.resetObj(this.registerHintData)
     },
     onItemClick(value) {
       this.phonePrefix = value

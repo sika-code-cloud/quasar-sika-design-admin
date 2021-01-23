@@ -95,6 +95,10 @@
                   square
                   behavior="menu"
                   label="所在省份"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterProvinces"
+                  v-on:keydown.delete="deleteProvince"
                   options-dense
                   :options="provinces"
                   v-model="userBasicData.provinceData"
@@ -106,6 +110,10 @@
                   square
                   behavior="menu"
                   label="所在城市"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCities"
+                  v-on:keydown.delete="deleteCity"
                   options-dense
                   :options="cities"
                   v-model="userBasicData.cityData"
@@ -117,10 +125,14 @@
                   square
                   behavior="menu"
                   label="所在县区"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCounties"
+                  v-on:keydown.delete="deleteCounty"
                   options-dense
                   :options="counties"
                   v-model="userBasicData.countyData"
-                  v-if="counties && counties.length"
+                  v-if="countiesCache && countiesCache.length"
                 />
                 <q-input
                   outlined
@@ -396,7 +408,10 @@ export default {
       loginUser: {},
       provinces: [],
       cities: [],
-      counties: []
+      counties: [],
+      provincesCache: [],
+      citiesCache: [],
+      countiesCache: []
     }
   },
   methods: {
@@ -428,35 +443,98 @@ export default {
     listForProvince() {
       listForProvince().then(datas => {
         this.initAreaData(this.provinces, datas)
+        this.initAreaData(this.provincesCache, datas)
       })
     },
     listForCity(provinceCode) {
       listForCity(provinceCode).then(datas => {
         this.initAreaData(this.cities, datas)
+        this.initAreaData(this.citiesCache, datas)
       })
     },
     listForCounty(cityCode) {
       listForCounty(cityCode).then(datas => {
         this.initAreaData(this.counties, datas)
+        this.initAreaData(this.countiesCache, datas)
       })
     },
     initAreaData(datasClient, datasServer) {
       datasClient.splice(0, datasClient.length)
       for (let i = 0; i < datasServer.length; ++i) {
         const data = datasServer[i]
-        datasClient.push({ label: data.cityName, value: data.code })
+        datasClient.push({
+          label: data.cityName,
+          value: data.code
+        })
       }
+    },
+    deleteProvince() {
+      this.userBasicData.provinceData = commonUtil.resetObj(this.userBasicData.provinceData)
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.cities = commonUtil.resetArray(this.cities)
+      this.citiesCache = commonUtil.resetArray(this.cities)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    deleteCity() {
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    deleteCounty() {
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
     },
     changeProvince() {
       this.listForCity(this.userBasicData.provinceData.value)
-      commonUtil.resetObj(this.userBasicData.cityData)
-      commonUtil.resetObj(this.userBasicData.countyData)
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
     },
     changeCity() {
       this.listForCounty(this.userBasicData.cityData.value)
-      commonUtil.resetObj(this.userBasicData.countyData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
     },
     changeCounty() {
+    },
+    filterProvinces(val, update) {
+      console.log(val)
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.provinces = this.provincesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.provinces = this.provincesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterCities(val, update) {
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.cities = this.citiesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.cities = this.citiesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterCounties(val, update) {
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.counties = this.countiesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.counties = this.countiesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
     }
   },
   created() {

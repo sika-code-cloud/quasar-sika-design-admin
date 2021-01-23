@@ -2,7 +2,7 @@ const basicSetting = {
   email: null,
   nickname: null,
   remark: null,
-  country: '中国',
+  country: null,
   provinceData: {
     value: null,
     label: null
