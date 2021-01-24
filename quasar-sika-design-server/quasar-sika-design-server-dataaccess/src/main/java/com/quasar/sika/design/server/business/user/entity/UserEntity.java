@@ -85,6 +85,8 @@ public class UserEntity extends BaseStandardEntity implements Serializable {
      * 用户类型：1：游客，2：系统用户
      */
     private Integer type;
-
-
+    /**
+     * 地址
+     */
+    private String address;
 }

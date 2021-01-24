@@ -2,6 +2,13 @@ import { buildFullUrl, post, postForImage, showNotifyFalse, getQueryString } fro
 import commonUtil from '@/utils/commonUtil'
 import { removeToken, setLoginData } from '@/utils/localStorage'
 
+/** 更新用户信息 */
+export function updateUser(data) {
+  return post('/user/update_by_id', data).then(response => {
+    currentUser()
+  })
+}
+
 // -----------------登录模块:开始----------------------------
 // 登录 --- 绑定用户
 export function bindOauthUser(data) {
@@ -120,6 +127,7 @@ export function findBackPassword(param) {
   }
   return post('/auth/find_back_password/anon', data)
 }
+
 // 注册方法
 export function register(param) {
   let bindOauthUser = false

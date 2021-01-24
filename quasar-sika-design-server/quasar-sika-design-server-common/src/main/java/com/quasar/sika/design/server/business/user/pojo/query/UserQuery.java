@@ -79,5 +79,9 @@ public class UserQuery extends BaseStandardQuery implements Serializable {
      */
     protected Set<Long> ids;
 
+    /**
+     * 地址
+     */
+    private String address;
 }
 

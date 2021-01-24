@@ -27,9 +27,9 @@ const safeData = {
   mfaEquipment: null
 }
 const accountBindData = {
-  bindTaoBaoNo: '123442',
-  bindZfbNo: '18938278653',
-  bindWechatNo: '12344'
+  bindGithubNo: null,
+  bindGiteeNo: null,
+  bindBaiduNo: null
 }
 const newMsgData = {
   passwordMsg: true,
