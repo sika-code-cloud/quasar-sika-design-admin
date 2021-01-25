@@ -84,7 +84,7 @@
                 transition-hide="jump-up"
                 :content-class="menuContentClass"
               >
-                <q-list dense>
+                <q-list style="width: 120px" dense>
                   <q-item clickable v-close-popup to="/account/center">
                     <q-item-section
                       avatar
@@ -126,7 +126,7 @@
               transition-hide="jump-up"
               :offset="[0, 24]"
             >
-              <q-list style="min-width: 120px" dense>
+              <q-list style="width: 140px" dense>
                 <q-item
                   clickable
                   v-close-popup

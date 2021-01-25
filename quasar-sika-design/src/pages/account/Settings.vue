@@ -95,6 +95,10 @@
                   square
                   behavior="menu"
                   label="所在省份"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterProvinces"
+                  v-on:keydown.delete="deleteProvince"
                   options-dense
                   :options="provinces"
                   v-model="userBasicData.provinceData"
@@ -106,6 +110,10 @@
                   square
                   behavior="menu"
                   label="所在城市"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCities"
+                  v-on:keydown.delete="deleteCity"
                   options-dense
                   :options="cities"
                   v-model="userBasicData.cityData"
@@ -117,10 +125,14 @@
                   square
                   behavior="menu"
                   label="所在县区"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCounties"
+                  v-on:keydown.delete="deleteCounty"
                   options-dense
                   :options="counties"
                   v-model="userBasicData.countyData"
-                  v-if="counties && counties.length"
+                  v-if="countiesCache && countiesCache.length"
                 />
                 <q-input
                   outlined
@@ -129,19 +141,9 @@
                   label="详细地址"
                   type="textarea"
                   v-model="userBasicData.address"
+                  maxlength="255"
                 />
                 <span class="row q-gutter-x-sm">
-                  <q-select
-                    class="col-3"
-                    outlined
-                    dense
-                    square
-                    behavior="menu"
-                    label="前缀"
-                    options-dense
-                    :options="['+86']"
-                    v-model="userBasicData.phonePrefix"
-                  />
                   <q-input
                     class="col"
                     outlined
@@ -151,7 +153,12 @@
                     v-model="userBasicData.phone"
                   />
                 </span>
-                <q-btn label="更新基本信息" color="primary" unelevated />
+                <q-btn label="更新基本信息" color="primary" unelevated @click="updateUserBaseInfo" :loading="basicLoading">
+                  <template v-slot:loading>
+                    <q-spinner-ios class="on-left" />
+                    更新
+                  </template>
+                </q-btn>
               </div>
               <div class="gt-xs col-md-8 col-sm-7">
                 <span class="text-center block">
@@ -260,7 +267,7 @@
                   <q-item-section>
                     <q-item-label>绑定Github</q-item-label>
                     <q-item-label class="text-grey-6"
-                    >{{ accountSettingsData.accountBindData.bindTaoBaoNo }}
+                    >{{ userBindData.bindGithubNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -280,7 +287,7 @@
                   <q-item-section>
                     <q-item-label>绑定Gitee</q-item-label>
                     <q-item-label class="text-grey-6">
-                      {{ accountSettingsData.accountBindData.bindZfbNo }}
+                      {{ userBindData.bindGiteeNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -300,7 +307,7 @@
                   <q-item-section>
                     <q-item-label>绑定百度</q-item-label>
                     <q-item-label class="text-grey-6"
-                    >{{ accountSettingsData.accountBindData.bindWechatNo }}
+                    >{{ userBindData.bindBaiduNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -375,10 +382,11 @@
 
 <script>
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
-import { getLoginData } from '@/utils/localStorage'
-import { toOauthLogin } from '@/api/user'
+// import { getLoginData } from '@/utils/localStorage'
+import { toOauthLogin, updateUser, currentUser } from '@/api/user'
 import { listForCity, listForCounty, listForProvince } from '@/api/chinaCity'
-import commonUtil from 'src/utils/commonUtil'
+import { listThirdOauthUser } from '@/api/thirdOauthUser'
+import commonUtil from '@/utils/commonUtil'
 
 const safeData = {
   phone: null,
@@ -392,11 +400,16 @@ export default {
       accountSettingsData: ACCOUNT_SETTINGS_DATA,
       settingsTab: 'basicSettings',
       userBasicData: ACCOUNT_SETTINGS_DATA.basicSetting,
+      userBindData: ACCOUNT_SETTINGS_DATA.accountBindData,
       safeData,
       loginUser: {},
       provinces: [],
       cities: [],
-      counties: []
+      counties: [],
+      provincesCache: [],
+      citiesCache: [],
+      countiesCache: [],
+      basicLoading: false
     }
   },
   methods: {
@@ -419,6 +432,25 @@ export default {
       userBasicData.provinceData.value = loginUser.provinceCode
       userBasicData.cityData.value = loginUser.cityCode
       userBasicData.countyData.value = loginUser.countyCode
+      userBasicData.address = loginUser.address
+    },
+    buildThirdOauthUserData() {
+      const data = {
+        userId: this.loginUser.id
+      }
+      listThirdOauthUser(data).then(response => {
+        for (let i = 0; i < response.length; ++i) {
+          const res = response[i]
+          const source = _.lowerCase(res.source)
+          if (source === 'github') {
+            this.userBindData.bindGithubNo = res.username
+          } else if (source === 'gitee') {
+            this.userBindData.bindGiteeNo = res.username
+          } else if (source === 'baidu') {
+            this.userBindData.bindBaiduNo = res.username
+          }
+        }
+      })
     },
     buildAreaData() {
       this.listForProvince()
@@ -428,44 +460,138 @@ export default {
     listForProvince() {
       listForProvince().then(datas => {
         this.initAreaData(this.provinces, datas)
+        this.initAreaData(this.provincesCache, datas)
+        this.initUserBaseArea(this.userBasicData.provinceData, datas)
       })
     },
     listForCity(provinceCode) {
       listForCity(provinceCode).then(datas => {
         this.initAreaData(this.cities, datas)
+        this.initAreaData(this.citiesCache, datas)
+        this.initUserBaseArea(this.userBasicData.cityData, datas)
       })
     },
     listForCounty(cityCode) {
       listForCounty(cityCode).then(datas => {
         this.initAreaData(this.counties, datas)
+        this.initAreaData(this.countiesCache, datas)
+        this.initUserBaseArea(this.userBasicData.countyData, datas)
       })
+    },
+    initUserBaseArea(areaData, datasServer) {
+      for (let i = 0; i < datasServer.length; ++i) {
+        if (areaData.value === datasServer[i].code) {
+          areaData.label = datasServer[i].cityName
+        }
+      }
     },
     initAreaData(datasClient, datasServer) {
       datasClient.splice(0, datasClient.length)
       for (let i = 0; i < datasServer.length; ++i) {
         const data = datasServer[i]
-        datasClient.push({ label: data.cityName, value: data.code })
+        datasClient.push({
+          label: data.cityName,
+          value: data.code
+        })
       }
+    },
+    deleteProvince() {
+      this.userBasicData.provinceData = commonUtil.resetObj(this.userBasicData.provinceData)
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.cities = commonUtil.resetArray(this.cities)
+      this.citiesCache = commonUtil.resetArray(this.cities)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    deleteCity() {
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    deleteCounty() {
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
     },
     changeProvince() {
       this.listForCity(this.userBasicData.provinceData.value)
-      commonUtil.resetObj(this.userBasicData.cityData)
-      commonUtil.resetObj(this.userBasicData.countyData)
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
     },
     changeCity() {
       this.listForCounty(this.userBasicData.cityData.value)
-      commonUtil.resetObj(this.userBasicData.countyData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
     },
     changeCounty() {
+    },
+    filterProvinces(val, update) {
+      console.log(val)
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.provinces = this.provincesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.provinces = this.provincesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterCities(val, update) {
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.cities = this.citiesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.cities = this.citiesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterCounties(val, update) {
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.counties = this.countiesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.counties = this.countiesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    updateUserBaseInfo() {
+      const userData = {
+        email: this.userBasicData.email,
+        nickname: this.userBasicData.nickname,
+        remark: this.userBasicData.remark,
+        provinceCode: this.userBasicData.provinceData.value,
+        cityCode: this.userBasicData.cityData.value,
+        countyCode: this.userBasicData.countyData.value,
+        address: this.userBasicData.address,
+        phone: this.userBasicData.phone,
+        id: this.loginUser.id
+      }
+      this.basicLoading = true
+      updateUser(userData).then(data => {
+        commonUtil.notifySuccess('更新成功')
+        this.basicLoading = false
+      })
     }
   },
   created() {
-    this.loginUser = getLoginData().user
+    currentUser().then(data => {
+      this.loginUser = data.user
+      this.buildUserBasicData()
+      this.buildSafeData()
+      this.buildThirdOauthUserData()
+      this.buildAreaData()
+    })
   },
   mounted() {
-    this.buildUserBasicData()
-    this.buildSafeData()
-    this.buildAreaData()
   }
 }
 </script>

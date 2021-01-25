@@ -124,7 +124,7 @@ export default {
       })
     },
     onReset() {
-      commonUtil.resetObj(this.loginData)
+      this.loginData = commonUtil.resetObj(this.loginData)
     }
   },
   computed: {
