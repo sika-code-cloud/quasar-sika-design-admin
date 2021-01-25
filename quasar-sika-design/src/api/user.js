@@ -12,6 +12,11 @@ export function loginUsername(data) {
   return post('/auth/login_username/anon', data)
 }
 
+// 用户 --- 修改用户基础信息
+export function updateUserBaseData(data) {
+  return post('/user/update_by_id', data)
+}
+
 // 登录 --- 手机号密码登录
 export function loginPhone(param) {
   const data = {
