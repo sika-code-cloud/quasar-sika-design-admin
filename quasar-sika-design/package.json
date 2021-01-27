@@ -16,6 +16,7 @@
     "animate.css": "^4.1.1",
     "animejs": "^3.2.1",
     "axios": "^0.20.0",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.5",
     "echarts": "^5.0.0",
     "ionicons": "5.2.3",
@@ -32,6 +33,8 @@
     "to": "^0.2.9",
     "update": "^0.7.4",
     "velocity-animate": "^1.5.2",
+    "vue-core-image-upload": "^2.4.13",
+    "vue-image-crop-upload": "^2.5.0",
     "vue-numeral-filter": "^1.4.0",
     "vuenime": "^1.0.3",
     "wangeditor": "^4.5.2"

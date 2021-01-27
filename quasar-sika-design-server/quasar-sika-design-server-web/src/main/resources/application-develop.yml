@@ -1,5 +1,5 @@
 server:
-  port: 8102
+  port: 8101
   tomcat:
     accept-count: 1024
     max-threads: 1024
@@ -13,7 +13,7 @@ sika:
       sender:
         log-fire: true
         ack: true
-    ## ==========================凌雄restTemplate配置begin=====================================
+    ## ==========================restTemplate配置begin=====================================
     rest:
       template:
         maxTotal: 1500
@@ -22,7 +22,7 @@ sika:
         readTimeout: 90000
         connectionRequestTimeout: 200
         bufferRequestBody: false
-    ## ==========================凌雄restTemplate配置end=====================================
+    ## ==========================restTemplate配置end=====================================
     auth:
       # jwt秘钥
       jwt-secret: ETZZN3KX194HXI82
@@ -148,6 +148,7 @@ logging:
 me:
   zhyd:
     oauth:
+      timeout: 15000
       oauthConfig:
         gitee:
           requestClassName: me.zhyd.oauth.request.AuthGiteeRequest
@@ -190,9 +191,10 @@ me:
           redirectUri:
           alipayPublicKey:
         qq:
-          clientId:
-          clientSecret:
-          redirectUri:
+          requestClassName: me.zhyd.oauth.request.AuthQqRequest
+          clientId: 101931120
+          clientSecret: d73650b6f64203a45bd3c503a4afa644
+          redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/qq/anon
         wechat:
           clientId:
           clientSecret:

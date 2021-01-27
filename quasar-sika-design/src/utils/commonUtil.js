@@ -1,4 +1,5 @@
 import { Notify, Dialog } from 'quasar'
+import _ from 'lodash'
 
 function getRandomData(datas) {
   return datas[Math.floor(Math.random() * datas.length)]
@@ -17,9 +18,20 @@ function getRandomCeilInt(maxValue) {
 }
 
 function resetObj(obj) {
-  Object.keys(obj).forEach((key) => {
-    obj[key] = null
+  const objClone = _.clone(obj)
+  Object.keys(objClone).forEach((key) => {
+    objClone[key] = null
   })
+  return objClone
+}
+
+function resetArray(array) {
+  if (array && array instanceof Array) {
+    const arrayClone = _.clone(array)
+    arrayClone.splice(0, arrayClone.length)
+    return arrayClone
+  }
+  return array
 }
 
 /* notify - begin */
@@ -88,7 +100,9 @@ function confirm(message, title) {
     persistent: true
   })
 }
+
 /* alert - end */
+
 /* confirm - begin */
 function alert(message, title) {
   if (!title) {
@@ -101,6 +115,7 @@ function alert(message, title) {
     persistent: true
   })
 }
+
 /* alert - end */
 
 function getUrlRootPath() {
@@ -120,5 +135,6 @@ export default {
   notifyError,
   confirm,
   alert,
-  resetObj
+  resetObj,
+  resetArray
 }

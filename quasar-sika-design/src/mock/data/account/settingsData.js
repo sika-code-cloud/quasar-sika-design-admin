@@ -1,13 +1,23 @@
 const basicSetting = {
-  email: 'antdesign@alipay.com',
-  nickName: '于美丽',
-  personDesc: '世界没有难写的代码',
-  country: '中国',
-  province: '广东省',
-  city: '深圳市',
-  address: '宝安中心十一路',
+  email: null,
+  nickname: null,
+  remark: null,
+  country: null,
+  provinceData: {
+    value: null,
+    label: null
+  },
+  cityData: {
+    value: null,
+    label: null
+  },
+  countyData: {
+    value: null,
+    label: null
+  },
+  address: null,
   phonePrefix: '+86',
-  phone: '18787659045'
+  phone: null
 }
 const safeData = {
   password: '123456',
@@ -17,9 +27,9 @@ const safeData = {
   mfaEquipment: null
 }
 const accountBindData = {
-  bindTaoBaoNo: '123442',
-  bindZfbNo: '18938278653',
-  bindWechatNo: '12344'
+  bindGithubNo: null,
+  bindGiteeNo: null,
+  bindBaiduNo: null
 }
 const newMsgData = {
   passwordMsg: true,

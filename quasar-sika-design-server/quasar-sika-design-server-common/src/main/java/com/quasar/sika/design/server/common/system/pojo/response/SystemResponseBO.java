@@ -8,6 +8,7 @@ import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
+import com.google.common.collect.Lists;
 import com.sika.code.common.number.util.NumberUtil;
 import com.sun.management.OperatingSystemMXBean;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.lang.management.MemoryMXBean;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author daiqi
@@ -34,7 +36,7 @@ public class SystemResponseBO {
     private Memory memory;
     private Server server;
     private Jvm jvm;
-    private Disk disk;
+    private List<Disk> disks;
 
 
     public SystemResponseBO build() {
@@ -42,7 +44,7 @@ public class SystemResponseBO {
         this.memory = new Memory().build();
         this.server = new Server().build();
         this.jvm = new Jvm().build();
-        this.disk = new Disk().build();
+        this.disks = Disk.build();
         return this;
     }
 
@@ -229,22 +231,22 @@ public class SystemResponseBO {
         private String used;
         private String usedRate;
 
-        private Disk build() {
+        private static List<Disk> build() {
+            List<Disk> disks = Lists.newArrayList();
+            Disk disk = new Disk();
             // 磁盘使用情况
             File[] files = File.listRoots();
-            long totalTemp = 0L;
-            long freeTemp = 0L;
             for (File file : files) {
-                totalTemp += file.getTotalSpace();
-                freeTemp += file.getFreeSpace();
+                long total = file.getTotalSpace();
+                long free = file.getFreeSpace();
+                long used = total -  free;
+                disk.setTotal(convertFileSize(total));
+                disk.setFree(convertFileSize(free));
+                disk.setUsed(convertFileSize(used));
+                disk.setUsedRate(computeRate(used, total));
+                disks.add(disk);
             }
-            long usedTemp = totalTemp - freeTemp;
-
-            this.total = convertFileSize(totalTemp);
-            this.free = convertFileSize(freeTemp);
-            this.used = convertFileSize(usedTemp);
-            this.usedRate = computeRate(usedTemp, totalTemp);
-            return this;
+            return disks;
         }
     }
 

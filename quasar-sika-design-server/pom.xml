@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
+        <module>sika-code-core</module>
         <module>quasar-sika-design-server-core</module>
         <module>quasar-sika-design-server-common</module>
         <module>quasar-sika-design-server-dataaccess</module>

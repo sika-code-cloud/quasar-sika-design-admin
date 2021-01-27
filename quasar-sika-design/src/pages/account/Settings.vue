@@ -72,14 +72,14 @@
                   dense
                   square
                   label="邮箱"
-                  v-model="accountSettingsData.basicSetting.email"
+                  v-model="userBasicData.email"
                 />
                 <q-input
                   outlined
                   dense
                   square
                   label="昵称"
-                  v-model="accountSettingsData.basicSetting.nickName"
+                  v-model="userBasicData.nickname"
                 />
                 <q-input
                   type="textarea"
@@ -87,72 +87,78 @@
                   dense
                   square
                   label="个人简介"
-                  v-model="accountSettingsData.basicSetting.personDesc"
+                  v-model="userBasicData.remark"
                 />
                 <q-select
                   outlined
                   dense
                   square
                   behavior="menu"
-                  label="国家\地区"
+                  label="所在省份"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterProvinces"
+                  v-on:keydown.delete="deleteProvince"
                   options-dense
-                  :options="['中国', '韩国']"
-                  v-model="accountSettingsData.basicSetting.country"
+                  :options="provinces"
+                  v-model="userBasicData.provinceData"
+                  @input="changeProvince"
                 />
-                <span class="row q-gutter-x-sm">
-                  <q-select
-                    class="col"
-                    outlined
-                    dense
-                    square
-                    behavior="menu"
-                    label="所在省份"
-                    options-dense
-                    :options="['湖北省', '广东省']"
-                    v-model="accountSettingsData.basicSetting.province"
-                  />
-                  <q-select
-                    class="col"
-                    outlined
-                    dense
-                    square
-                    behavior="menu"
-                    label="所在城市"
-                    options-dense
-                    :options="['深圳市', '佛山市']"
-                    v-model="accountSettingsData.basicSetting.city"
-                  />
-                </span>
+                <q-select
+                  outlined
+                  dense
+                  square
+                  behavior="menu"
+                  label="所在城市"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCities"
+                  v-on:keydown.delete="deleteCity"
+                  options-dense
+                  :options="cities"
+                  v-model="userBasicData.cityData"
+                  @input="changeCity"
+                />
+                <q-select
+                  outlined
+                  dense
+                  square
+                  behavior="menu"
+                  label="所在县区"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCounties"
+                  v-on:keydown.delete="deleteCounty"
+                  options-dense
+                  :options="counties"
+                  v-model="userBasicData.countyData"
+                  v-if="countiesCache && countiesCache.length"
+                />
                 <q-input
-                  type="text"
                   outlined
                   dense
                   square
                   label="详细地址"
-                  v-model="accountSettingsData.basicSetting.address"
+                  type="textarea"
+                  v-model="userBasicData.address"
+                  maxlength="255"
                 />
                 <span class="row q-gutter-x-sm">
-                  <q-select
-                    class="col-3"
-                    outlined
-                    dense
-                    square
-                    behavior="menu"
-                    label="前缀"
-                    options-dense
-                    :options="['+86', '+87']"
-                    v-model="accountSettingsData.basicSetting.phonePrefix"
-                  />
                   <q-input
                     class="col"
                     outlined
                     dense
                     square
                     label="联系电话"
-                    v-model="accountSettingsData.basicSetting.phone"
+                    v-model="userBasicData.phone"
                   />
                 </span>
-                <q-btn label="更新基本信息" color="primary" unelevated />
+                <q-btn label="更新基本信息" color="primary" unelevated @click="updateUserBaseInfo" :loading="basicLoading">
+                  <template v-slot:loading>
+                    <q-spinner-ios class="on-left" />
+                    更新
+                  </template>
+                </q-btn>
               </div>
               <div class="gt-xs col-md-8 col-sm-7">
                 <span class="text-center block">
@@ -179,7 +185,7 @@
                   <q-item-section>
                     <q-item-label>账户密码</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >当前密码强度：强
+                    >当前密码强度：强
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -191,7 +197,7 @@
                   <q-item-section>
                     <q-item-label>密保手机</q-item-label>
                     <q-item-label class="text-grey-6">
-                      已绑定手机：{{ accountSettingsData.safeData.phone }}
+                      已绑定手机：{{ safeData.phone }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -203,7 +209,7 @@
                   <q-item-section>
                     <q-item-label>密保问题</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >{{ accountSettingsData.safeData.passwordQuestion }}
+                    >{{ accountSettingsData.safeData.passwordQuestion }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -221,9 +227,10 @@
                         square
                         class="bg-green-1"
                         size="sm"
-                        >已绑定</q-chip
+                      >已绑定
+                      </q-chip
                       >
-                      {{ accountSettingsData.safeData.slaveEmail }}
+                      {{ safeData.email }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -235,7 +242,7 @@
                   <q-item-section>
                     <q-item-label><strong>MFA 设备</strong></q-item-label>
                     <q-item-label class="text-grey-6"
-                      >未绑定 MFA 设备，绑定后，可以进行二次确认
+                    >未绑定 MFA 设备，绑定后，可以进行二次确认
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -254,17 +261,17 @@
                       size="xl"
                       color="orange"
                       style="cursor: pointer"
-                      class="iconfont icontaobao q-ml-sm"
+                      class="iconfont iconhuaban88 q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定淘宝</q-item-label>
+                    <q-item-label>绑定Github</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >{{ accountSettingsData.accountBindData.bindTaoBaoNo }}
+                    >{{ userBindData.bindGithubNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" />
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('github')" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -274,17 +281,17 @@
                       size="xl"
                       color="primary"
                       style="cursor: pointer"
-                      class="iconfont iconzhifubao q-ml-sm"
+                      class="iconfont icongitee q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定支付宝</q-item-label>
+                    <q-item-label>绑定Gitee</q-item-label>
                     <q-item-label class="text-grey-6">
-                      {{ accountSettingsData.accountBindData.bindZfbNo }}
+                      {{ userBindData.bindGiteeNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" />
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('gitee')" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -294,17 +301,17 @@
                       size="xl"
                       color="info"
                       style="cursor: pointer"
-                      class="iconfont iconweixin q-ml-sm"
+                      class="iconfont iconbaidu q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定微信</q-item-label>
+                    <q-item-label>绑定百度</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >{{ accountSettingsData.accountBindData.bindWechatNo }}
+                    >{{ userBindData.bindBaiduNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" />
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('baidu')" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -317,7 +324,7 @@
                   <q-item-section>
                     <q-item-label>账户密码</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >其他用户的消息将以站内信的形式通知
+                    >其他用户的消息将以站内信的形式通知
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -351,7 +358,7 @@
                   <q-item-section>
                     <q-item-label>待办任务</q-item-label>
                     <q-item-label class="text-grey-6"
-                      >待办任务将以站内信的形式通知
+                    >待办任务将以站内信的形式通知
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
@@ -375,18 +382,220 @@
 
 <script>
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
+// import { getLoginData } from '@/utils/localStorage'
+import { toOauthLogin, updateUser, currentUser } from '@/api/user'
+import { listForCity, listForCounty, listForProvince } from '@/api/chinaCity'
+import { listThirdOauthUser } from '@/api/thirdOauthUser'
+import commonUtil from '@/utils/commonUtil'
+
+const safeData = {
+  phone: null,
+  email: null
+}
 
 export default {
   name: 'Settings',
   data() {
     return {
       accountSettingsData: ACCOUNT_SETTINGS_DATA,
-      settingsTab: 'basicSettings'
+      settingsTab: 'basicSettings',
+      userBasicData: ACCOUNT_SETTINGS_DATA.basicSetting,
+      userBindData: ACCOUNT_SETTINGS_DATA.accountBindData,
+      safeData,
+      loginUser: {},
+      provinces: [],
+      cities: [],
+      counties: [],
+      provincesCache: [],
+      citiesCache: [],
+      countiesCache: [],
+      basicLoading: false
     }
+  },
+  methods: {
+    thirdLogin(iconKey, event) {
+      window.open(toOauthLogin(iconKey, '/account/settings'), '_self')
+    },
+    buildSafeData() {
+      const loginUser = this.loginUser
+      safeData.email = loginUser.email
+      safeData.phone = loginUser.phone
+    },
+    buildUserBasicData() {
+      const loginUser = this.loginUser
+      const userBasicData = this.userBasicData
+
+      userBasicData.email = loginUser.email
+      userBasicData.nickname = loginUser.nickname
+      userBasicData.remark = loginUser.remark
+      userBasicData.phone = loginUser.phone
+      userBasicData.provinceData.value = loginUser.provinceCode
+      userBasicData.cityData.value = loginUser.cityCode
+      userBasicData.countyData.value = loginUser.countyCode
+      userBasicData.address = loginUser.address
+    },
+    buildThirdOauthUserData() {
+      const data = {
+        userId: this.loginUser.id
+      }
+      listThirdOauthUser(data).then(response => {
+        for (let i = 0; i < response.length; ++i) {
+          const res = response[i]
+          const source = _.lowerCase(res.source)
+          if (source === 'github') {
+            this.userBindData.bindGithubNo = res.username
+          } else if (source === 'gitee') {
+            this.userBindData.bindGiteeNo = res.username
+          } else if (source === 'baidu') {
+            this.userBindData.bindBaiduNo = res.username
+          }
+        }
+      })
+    },
+    buildAreaData() {
+      this.listForProvince()
+      this.listForCity(this.loginUser.provinceCode)
+      this.listForCounty(this.loginUser.cityCode)
+    },
+    listForProvince() {
+      listForProvince().then(datas => {
+        this.initAreaData(this.provinces, datas)
+        this.initAreaData(this.provincesCache, datas)
+        this.initUserBaseArea(this.userBasicData.provinceData, datas)
+      })
+    },
+    listForCity(provinceCode) {
+      listForCity(provinceCode).then(datas => {
+        this.initAreaData(this.cities, datas)
+        this.initAreaData(this.citiesCache, datas)
+        this.initUserBaseArea(this.userBasicData.cityData, datas)
+      })
+    },
+    listForCounty(cityCode) {
+      listForCounty(cityCode).then(datas => {
+        this.initAreaData(this.counties, datas)
+        this.initAreaData(this.countiesCache, datas)
+        this.initUserBaseArea(this.userBasicData.countyData, datas)
+      })
+    },
+    initUserBaseArea(areaData, datasServer) {
+      for (let i = 0; i < datasServer.length; ++i) {
+        if (areaData.value === datasServer[i].code) {
+          areaData.label = datasServer[i].cityName
+        }
+      }
+    },
+    initAreaData(datasClient, datasServer) {
+      datasClient.splice(0, datasClient.length)
+      for (let i = 0; i < datasServer.length; ++i) {
+        const data = datasServer[i]
+        datasClient.push({
+          label: data.cityName,
+          value: data.code
+        })
+      }
+    },
+    deleteProvince() {
+      this.userBasicData.provinceData = commonUtil.resetObj(this.userBasicData.provinceData)
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.cities = commonUtil.resetArray(this.cities)
+      this.citiesCache = commonUtil.resetArray(this.cities)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    deleteCity() {
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    deleteCounty() {
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    changeProvince() {
+      this.listForCity(this.userBasicData.provinceData.value)
+      this.countiesCache = commonUtil.resetArray(this.countiesCache)
+      this.counties = commonUtil.resetArray(this.counties)
+      this.userBasicData.cityData = commonUtil.resetObj(this.userBasicData.cityData)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    changeCity() {
+      this.listForCounty(this.userBasicData.cityData.value)
+      this.userBasicData.countyData = commonUtil.resetObj(this.userBasicData.countyData)
+    },
+    changeCounty() {
+    },
+    filterProvinces(val, update) {
+      console.log(val)
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.provinces = this.provincesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.provinces = this.provincesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterCities(val, update) {
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.cities = this.citiesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.cities = this.citiesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filterCounties(val, update) {
+      if (val === '' || val === undefined) {
+        update(() => {
+          this.counties = this.countiesCache
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.counties = this.countiesCache.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    updateUserBaseInfo() {
+      const userData = {
+        email: this.userBasicData.email,
+        nickname: this.userBasicData.nickname,
+        remark: this.userBasicData.remark,
+        provinceCode: this.userBasicData.provinceData.value,
+        cityCode: this.userBasicData.cityData.value,
+        countyCode: this.userBasicData.countyData.value,
+        address: this.userBasicData.address,
+        phone: this.userBasicData.phone,
+        id: this.loginUser.id
+      }
+      this.basicLoading = true
+      updateUser(userData).then(data => {
+        commonUtil.notifySuccess('更新成功')
+        this.basicLoading = false
+      })
+    }
+  },
+  created() {
+    currentUser().then(data => {
+      this.loginUser = data.user
+      this.buildUserBasicData()
+      this.buildSafeData()
+      this.buildThirdOauthUserData()
+      this.buildAreaData()
+    })
+  },
+  mounted() {
   }
 }
 </script>
 
 <style scoped>
-@import 'http://at.alicdn.com/t/font_2136554_1fgggi4y4wt.css';
+@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
 </style>

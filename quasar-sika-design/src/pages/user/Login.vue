@@ -215,6 +215,11 @@ const iconObject = {
     class: { iconName: 'iconbaidu', color: 'text-grey' },
     size: '23px',
     type: 'link'
+  },
+  qq: {
+    class: { iconName: 'iconqq', color: 'text-grey' },
+    size: '23px',
+    type: 'link'
   }
 }
 const loginTypes = {
@@ -232,8 +237,8 @@ export default {
       loginTypes,
       loginType: loginTypes.usernameLogin,
       loginData: {
-        username: null,
-        password: null,
+        username: 'sika',
+        password: '123456',
         phone: null,
         rememberMe: true,
         phonePassword: null
@@ -281,7 +286,7 @@ export default {
       })
     },
     onReset() {
-      commonUtil.resetObj(this.loginData)
+      this.loginData = commonUtil.resetObj(this.loginData)
     },
     mouseOver(iconKey, event) {
       this.activeForLoginType(iconKey, 'text-primary')
@@ -304,9 +309,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 /*@import '~assets/icons/iconfont.sass';*/
-@import 'http://at.alicdn.com/t/font_2136554_eo99fwwjrkv.css';
+@import 'http://at.alicdn.com/t/font_2136554_95kmewdgocg.css';
 
 .q-tab-panel {
 }

@@ -63,6 +63,18 @@ public class UserEntity extends BaseStandardEntity implements Serializable {
      * 头像
      */
     private String avatar;
+    /**
+     * 省份编码
+     */
+    private String provinceCode;
+    /**
+     * 城市编码
+     */
+    private String cityCode;
+    /**
+     * 乡编码
+     */
+    private String countyCode;
 
     /**
      * token
@@ -73,6 +85,8 @@ public class UserEntity extends BaseStandardEntity implements Serializable {
      * 用户类型：1：游客，2：系统用户
      */
     private Integer type;
-
-
+    /**
+     * 地址
+     */
+    private String address;
 }

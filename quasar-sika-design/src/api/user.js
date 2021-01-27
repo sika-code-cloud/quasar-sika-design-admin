@@ -1,6 +1,13 @@
 import { buildFullUrl, post, postForImage, showNotifyFalse, getQueryString } from 'utils/request'
 import commonUtil from '@/utils/commonUtil'
-import { removeToken } from '@/utils/localStorage'
+import { removeToken, setLoginData } from '@/utils/localStorage'
+
+/** 更新用户信息 */
+export function updateUser(data) {
+  return post('/user/update_by_id', data).then(response => {
+    currentUser()
+  })
+}
 
 // -----------------登录模块:开始----------------------------
 // 登录 --- 绑定用户
@@ -25,7 +32,7 @@ export function loginPhone(param) {
 // 去授权登录
 export function toOauthLogin(source, path) {
   let clientUrl
-  if (path) {
+  if (path === '/') {
     clientUrl = commonUtil.getUrlRootPath() + path
   } else {
     clientUrl = window.location.href
@@ -120,6 +127,7 @@ export function findBackPassword(param) {
   }
   return post('/auth/find_back_password/anon', data)
 }
+
 // 注册方法
 export function register(param) {
   let bindOauthUser = false
@@ -136,7 +144,10 @@ export function register(param) {
 }
 
 export function currentUser() {
-  return post('/auth/current_user')
+  return post('/auth/current_user').then(response => {
+    setLoginData(response)
+    return response
+  })
 }
 
 function buildRegisterRequest(registerData) {

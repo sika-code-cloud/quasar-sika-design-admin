@@ -23,10 +23,6 @@ public class UserQuery extends BaseStandardQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     * 数据表id
-     */
-    protected Long userId;
-    /**
      * 用户名
      */
     protected String username;
@@ -59,6 +55,18 @@ public class UserQuery extends BaseStandardQuery implements Serializable {
      */
     protected String avatar;
     /**
+     * 省份编码
+     */
+    private String provinceCode;
+    /**
+     * 城市编码
+     */
+    private String cityCode;
+    /**
+     * 乡编码
+     */
+    private String countyCode;
+    /**
      * token
      */
     protected String token;
@@ -71,5 +79,9 @@ public class UserQuery extends BaseStandardQuery implements Serializable {
      */
     protected Set<Long> ids;
 
+    /**
+     * 地址
+     */
+    private String address;
 }
 

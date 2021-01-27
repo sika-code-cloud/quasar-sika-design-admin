@@ -12,7 +12,7 @@
                 v-model="loginData.loginName"
                 dense
                 debounce="1000"
-                placeholder="用户名|手机号|邮箱"
+                placeholder="用户名"
                 square
                 :rules="[
                       (val) => (val && val.length > 0) || '请输入登录名'
@@ -93,8 +93,8 @@ export default {
   data() {
     return {
       loginData: {
-        loginName: null,
-        password: null,
+        loginName: 'sika',
+        password: '123456',
         rememberMe: true
       },
       isPwd: true,
@@ -124,7 +124,7 @@ export default {
       })
     },
     onReset() {
-      commonUtil.resetObj(this.loginData)
+      this.loginData = commonUtil.resetObj(this.loginData)
     }
   },
   computed: {

@@ -13,7 +13,7 @@ sika:
       sender:
         log-fire: true
         ack: true
-    ## ==========================凌雄restTemplate配置begin=====================================
+    ## ==========================restTemplate配置begin=====================================
     rest:
       template:
         maxTotal: 1500
@@ -22,7 +22,7 @@ sika:
         readTimeout: 90000
         connectionRequestTimeout: 200
         bufferRequestBody: false
-    ## ==========================凌雄restTemplate配置end=====================================
+    ## ==========================restTemplate配置end=====================================
     auth:
       # jwt秘钥
       jwt-secret: ETZZN3KX194HXI82
@@ -148,6 +148,7 @@ logging:
 me:
   zhyd:
     oauth:
+      timeout: 15000
       oauthConfig:
         gitee:
           requestClassName: me.zhyd.oauth.request.AuthGiteeRequest
@@ -171,8 +172,8 @@ me:
           redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/weibo/anon
         qq:
           requestClassName: me.zhyd.oauth.request.AuthQqRequest
-          clientId: 101930496
-          clientSecret: 6cb64c801e65e50dfb8d2d26194c3533
+          clientId: 101931120
+          clientSecret: d73650b6f64203a45bd3c503a4afa644
           redirectUri: http://quasar.admin.sikacode.com/api/auth/callback/qq/anon
         dingtalk:
           requestClassName:

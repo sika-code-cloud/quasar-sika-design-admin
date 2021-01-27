@@ -24,10 +24,6 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 数据表id
-     */
-    private Long userId;
-    /**
      * 用户名
      */
     private String username;
@@ -60,6 +56,18 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
      */
     private String avatar;
     /**
+     * 省份编码
+     */
+    private String provinceCode;
+    /**
+     * 城市编码
+     */
+    private String cityCode;
+    /**
+     * 乡编码
+     */
+    private String countyCode;
+    /**
      * token
      */
     private String token;
@@ -67,6 +75,11 @@ public class UserDTO extends BaseStandardDTO implements Serializable {
      * 用户类型：1：游客，2：系统用户
      */
     private Integer type;
+    /**
+     * 地址
+     */
+    private String address;
+
     private ThirdOauthUserDTO oauthUser;
 
     public String getShowUsername() {

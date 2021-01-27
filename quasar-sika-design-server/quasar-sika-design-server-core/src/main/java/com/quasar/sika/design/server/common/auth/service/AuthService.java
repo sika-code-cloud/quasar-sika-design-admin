@@ -7,6 +7,16 @@ import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
 import me.zhyd.oauth.model.AuthCallback;
 
 public interface AuthService {
+    /**
+     * <p>
+     * 获取当前用户
+     * </p>
+     *
+     * @return com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse
+     * @author daiqi
+     * @date 2021/1/18 23:46
+     */
+    AuthResponse currentUser();
 
     /**
      * 登录
@@ -76,9 +86,10 @@ public interface AuthService {
 
     /**
      * 校验忘记密码的邮箱
-     * @author : sikadai
+     *
      * @param request
      * @return
+     * @author : sikadai
      */
     boolean checkForgetPasswordEmail(AuthForgetPasswordRequest request);
 

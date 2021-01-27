@@ -1,9 +1,6 @@
 import axios from 'axios'
 import commonUtil from './commonUtil'
 import { getToken, setToken, localStorageKey } from './localStorage'
-import {
-  LoadingBar
-} from 'quasar'
 
 const BASE_URL = process.env.VUE_APP_BASE_API
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
@@ -99,12 +96,6 @@ function bizError(result, config) {
     return Promise.reject(message)
   }
 }
-
-LoadingBar.setDefaults({
-  color: 'light-blue-4',
-  size: '4px',
-  position: 'top'
-})
 
 // 展示错误响应false
 export function showNotifyFalse() {

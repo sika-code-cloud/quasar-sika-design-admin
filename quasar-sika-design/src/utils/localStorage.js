@@ -1,16 +1,16 @@
-import { Cookies, LocalStorage } from 'quasar'
+import { Cookies, LocalStorage, SessionStorage } from 'quasar'
 
 export const localStorageKey = {
-  loginUser: 'user',
+  loginData: 'loginData',
   token: 'authorization'
 }
 
-export function setLoginUser(val) {
-  set(localStorageKey.loginUser, val)
+export function setLoginData(val) {
+  SessionStorage.set(localStorageKey.loginData, val)
 }
 
-export function getLoginUser(val) {
-  return getItem(localStorageKey.loginUser)
+export function getLoginData() {
+  return SessionStorage.getItem(localStorageKey.loginData)
 }
 
 export function removeToken() {
