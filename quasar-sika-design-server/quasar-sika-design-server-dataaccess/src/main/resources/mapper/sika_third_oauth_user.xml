@@ -42,6 +42,7 @@
             is_deleted = 0
             <include refid="query_sql" />
         </where>
+        order by update_date desc
     </select>
 
     <!-- 根据查询条件获取Id列表信息 -->
@@ -52,6 +53,7 @@
             is_deleted = 0
             <include refid="query_sql" />
         </where>
+        order by update_date desc
     </select>
 
     <!-- 根据查询条件获取实体信息 -->
@@ -62,6 +64,7 @@
             is_deleted = 0
             <include refid="query_sql" />
         </where>
+        order by update_date desc
         LIMIT 1
     </select>
 
@@ -73,6 +76,7 @@
             is_deleted = 0
             <include refid="query_sql" />
         </where>
+        order by update_date desc
         LIMIT 1
     </select>
 
@@ -139,7 +143,7 @@
                 id
             </when>
             <otherwise>
-                id
+                update_date
             </otherwise>
         </choose>
     </sql>
@@ -147,11 +151,11 @@
     <!-- 排序类型的sql -->
     <sql id="order_by_type_sql">
         <choose>
-            <when test="query.sortType == 'DESC'">
-                DESC
+            <when test="query.sortType == 'ASC'">
+                ASC
             </when>
             <otherwise>
-                ASC
+                DESC
             </otherwise>
         </choose>
     </sql>

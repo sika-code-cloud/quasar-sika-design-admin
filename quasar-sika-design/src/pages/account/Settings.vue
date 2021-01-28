@@ -169,11 +169,13 @@
                   />
                 </span>
                 <span class="text-center block">
+                  <input type="file" style="display: none" id="headFile">
                   <q-btn
                     unelevated
                     color="primary"
                     label="更换头像"
                     icon="unarchive"
+                    @click="popFileUpload"
                   />
                 </span>
               </div>
@@ -259,19 +261,27 @@
                   <q-item-section avatar>
                     <q-icon
                       size="xl"
-                      color="orange"
+                      color="black"
                       style="cursor: pointer"
                       class="iconfont iconhuaban88 q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定Github</q-item-label>
-                    <q-item-label class="text-grey-6"
+                    <q-item-label>
+                      <q-chip square dense color="positive" text-color="white" v-if="userBindData.bindGithubNo">
+                        已绑定
+                      </q-chip>
+                      <q-chip square dense color="grey" text-color="white" v-else>
+                        绑定Github
+                      </q-chip>
+                    </q-item-label>
+                    <q-item-label class="text-grey-6 q-pl-xs"
                     >{{ userBindData.bindGithubNo }}
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('github')" />
+                    <q-btn flat unelevated color="negative" label="解绑" @click="thirdLogin('github')"  v-if="userBindData.bindGithubNo"/>
+                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('github')" v-else/>
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -279,14 +289,21 @@
                   <q-item-section avatar>
                     <q-icon
                       size="xl"
-                      color="primary"
+                      color="red"
                       style="cursor: pointer"
                       class="iconfont icongitee q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定Gitee</q-item-label>
-                    <q-item-label class="text-grey-6">
+                    <q-item-label>
+                      <q-chip square dense color="positive" text-color="white" v-if="userBindData.bindGiteeNo">
+                        已绑定
+                      </q-chip>
+                      <q-chip square dense color="grey" text-color="white" v-else>
+                        绑定Gitee
+                      </q-chip>
+                    </q-item-label>
+                    <q-item-label class="text-grey-6 q-pl-xs">
                       {{ userBindData.bindGiteeNo }}
                     </q-item-label>
                   </q-item-section>
@@ -299,14 +316,21 @@
                   <q-item-section avatar>
                     <q-icon
                       size="xl"
-                      color="info"
+                      color="blue"
                       style="cursor: pointer"
                       class="iconfont iconbaidu q-ml-sm"
                     />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>绑定百度</q-item-label>
-                    <q-item-label class="text-grey-6"
+                    <q-item-label>
+                      <q-chip square dense color="positive" text-color="white" v-if="userBindData.bindGiteeNo">
+                        已绑定
+                      </q-chip>
+                      <q-chip square dense color="grey" text-color="white" v-else>
+                        绑定百度
+                      </q-chip>
+                    </q-item-label>
+                    <q-item-label class="text-grey-6 q-pl-xs"
                     >{{ userBindData.bindBaiduNo }}
                     </q-item-label>
                   </q-item-section>
@@ -413,6 +437,9 @@ export default {
     }
   },
   methods: {
+    popFileUpload() {
+      document.getElementById('headFile').click()
+    },
     thirdLogin(iconKey, event) {
       window.open(toOauthLogin(iconKey, '/account/settings'), '_self')
     },
@@ -442,11 +469,11 @@ export default {
         for (let i = 0; i < response.length; ++i) {
           const res = response[i]
           const source = _.lowerCase(res.source)
-          if (source === 'github') {
+          if (source === 'github' && !this.userBindData.bindGithubNo) {
             this.userBindData.bindGithubNo = res.username
-          } else if (source === 'gitee') {
+          } else if (source === 'gitee' && !this.userBindData.bindGiteeNo) {
             this.userBindData.bindGiteeNo = res.username
-          } else if (source === 'baidu') {
+          } else if (source === 'baidu' && !this.userBindData.bindBaiduNo) {
             this.userBindData.bindBaiduNo = res.username
           }
         }
