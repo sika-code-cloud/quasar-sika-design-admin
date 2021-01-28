@@ -169,11 +169,13 @@
                   />
                 </span>
                 <span class="text-center block">
+                  <input type="file" style="display: none" id="headFile">
                   <q-btn
                     unelevated
                     color="primary"
                     label="更换头像"
                     icon="unarchive"
+                    @click="popFileUpload"
                   />
                 </span>
               </div>
@@ -413,6 +415,9 @@ export default {
     }
   },
   methods: {
+    popFileUpload() {
+      document.getElementById('headFile').click()
+    },
     thirdLogin(iconKey, event) {
       window.open(toOauthLogin(iconKey, '/account/settings'), '_self')
     },
