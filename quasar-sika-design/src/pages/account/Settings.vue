@@ -47,20 +47,24 @@
           >
             <q-tab-panel name="basicSettings" class="row q-pt-sm">
               <div class="text-h5 col-12 q-mb-md">基本设置</div>
-              <div class="lt-sm col-xs-12 q-mb-md">
+              <div class="col-xs-12 q-mb-md" v-if="$q.screen.lt.sm">
                 <span class="text-center block">
                   <q-img
-                    src="~assets/head.png"
-                    width="180px"
+                    :src="userBasicData.avatar"
+                    width="160px"
                     :ratio="10 / 10"
+                    class="q-ma-md cursor-pointer"
+                    @click="popFileUpload"
                   />
                 </span>
                 <span class="text-center block">
+                  <input type="file" style="display: none" class="headFile" accept="image/*" @change="handleFile">
                   <q-btn
                     unelevated
                     color="primary"
                     label="更换头像"
                     icon="unarchive"
+                    @click="popFileUpload"
                   />
                 </span>
               </div>
@@ -160,16 +164,18 @@
                   </template>
                 </q-btn>
               </div>
-              <div class="gt-xs col-md-8 col-sm-7">
+              <div class="col-md-8 col-sm-7" v-if="$q.screen.gt.xs">
                 <span class="text-center block">
                   <q-img
-                    src="~assets/head.png"
-                    width="180px"
+                    :src="userBasicData.avatar"
+                    width="160px"
                     :ratio="10 / 10"
+                    class="q-ma-md cursor-pointer"
+                    @click="popFileUpload"
                   />
                 </span>
                 <span class="text-center block">
-                  <input type="file" style="display: none" id="headFile">
+                  <input type="file" style="display: none" class="headFile" accept="image/*" @change="handleFile">
                   <q-btn
                     unelevated
                     color="primary"
@@ -257,88 +263,37 @@
             <q-tab-panel name="accountBind" class="q-pt-sm">
               <div class="text-h5 col-12 q-mb-md">账号绑定</div>
               <q-list class="text-body2">
-                <q-item>
-                  <q-item-section avatar>
-                    <q-icon
-                      size="xl"
-                      color="black"
-                      style="cursor: pointer"
-                      class="iconfont iconhuaban88 q-ml-sm"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip square dense color="positive" text-color="white" v-if="userBindData.bindGithubNo">
-                        已绑定
-                      </q-chip>
-                      <q-chip square dense color="grey" text-color="white" v-else>
-                        绑定Github
-                      </q-chip>
-                    </q-item-label>
-                    <q-item-label class="text-grey-6 q-pl-xs"
-                    >{{ userBindData.bindGithubNo }}
-                    </q-item-label>
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <q-btn flat unelevated color="negative" label="解绑" @click="thirdLogin('github')"  v-if="userBindData.bindGithubNo"/>
-                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('github')" v-else/>
-                  </q-item-section>
-                </q-item>
-                <q-separator inset="" spaced="10px" />
-                <q-item>
-                  <q-item-section avatar>
-                    <q-icon
-                      size="xl"
-                      color="red"
-                      style="cursor: pointer"
-                      class="iconfont icongitee q-ml-sm"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip square dense color="positive" text-color="white" v-if="userBindData.bindGiteeNo">
-                        已绑定
-                      </q-chip>
-                      <q-chip square dense color="grey" text-color="white" v-else>
-                        绑定Gitee
-                      </q-chip>
-                    </q-item-label>
-                    <q-item-label class="text-grey-6 q-pl-xs">
-                      {{ userBindData.bindGiteeNo }}
-                    </q-item-label>
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('gitee')" />
-                  </q-item-section>
-                </q-item>
-                <q-separator inset="" spaced="10px" />
-                <q-item>
-                  <q-item-section avatar>
-                    <q-icon
-                      size="xl"
-                      color="blue"
-                      style="cursor: pointer"
-                      class="iconfont iconbaidu q-ml-sm"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip square dense color="positive" text-color="white" v-if="userBindData.bindGiteeNo">
-                        已绑定
-                      </q-chip>
-                      <q-chip square dense color="grey" text-color="white" v-else>
-                        绑定百度
-                      </q-chip>
-                    </q-item-label>
-                    <q-item-label class="text-grey-6 q-pl-xs"
-                    >{{ userBindData.bindBaiduNo }}
-                    </q-item-label>
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin('baidu')" />
-                  </q-item-section>
-                </q-item>
-                <q-separator inset="" spaced="10px" />
+                <div v-for="(value, key) in userBindData" :key="key">
+                  <q-item v-if="value">
+                    <q-item-section avatar>
+                      <q-icon
+                        size="xl"
+                        :color="value.iconColor"
+                        style="cursor: pointer"
+                        class="iconfont q-ml-sm"
+                        :class="value.iconClass"
+                      />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>
+                        <q-chip square dense color="positive" text-color="white" v-if="value.id">
+                          已绑定
+                        </q-chip>
+                        <q-chip square dense color="grey" text-color="white" v-else>
+                          {{ value.desc }}
+                        </q-chip>
+                      </q-item-label>
+                      <q-item-label class="text-grey-6 q-pl-xs"
+                      >{{ value.username }}
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section avatar>
+                      <q-btn flat unelevated color="negative" label="解绑" @click="unThirdBind(value)" v-if="value.id" />
+                      <q-btn flat unelevated color="primary" label="绑定" @click="thirdLogin(key)" v-else />
+                    </q-item-section>
+                  </q-item>
+                  <q-separator inset="" spaced="10px" />
+                </div>
               </q-list>
             </q-tab-panel>
             <q-tab-panel name="newMsg">
@@ -409,7 +364,7 @@ import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
 // import { getLoginData } from '@/utils/localStorage'
 import { toOauthLogin, updateUser, currentUser } from '@/api/user'
 import { listForCity, listForCounty, listForProvince } from '@/api/chinaCity'
-import { listThirdOauthUser } from '@/api/thirdOauthUser'
+import { listThirdOauthUser, updateThirdOauthUser } from '@/api/thirdOauthUser'
 import commonUtil from '@/utils/commonUtil'
 
 const safeData = {
@@ -438,7 +393,29 @@ export default {
   },
   methods: {
     popFileUpload() {
-      document.getElementById('headFile').click()
+      document.getElementsByClassName('headFile')[0].click()
+    },
+    // 将头像显示
+    handleFile: function(e) {
+      const $target = e.target
+      const file = $target.files[0]
+      const reader = new FileReader()
+      reader.onload = (data) => {
+        const res = data.target
+        this.userBasicData.avatar = res.result
+      }
+      reader.readAsDataURL(file)
+    },
+    // 解除第三方绑定
+    unThirdBind(thirdData) {
+      const data = {
+        id: thirdData.id,
+        userId: 0
+      }
+      updateThirdOauthUser(data).then(response => {
+        commonUtil.notifySuccess('解绑成功')
+        this.buildThirdOauthUserData()
+      })
     },
     thirdLogin(iconKey, event) {
       window.open(toOauthLogin(iconKey, '/account/settings'), '_self')
@@ -460,21 +437,26 @@ export default {
       userBasicData.cityData.value = loginUser.cityCode
       userBasicData.countyData.value = loginUser.countyCode
       userBasicData.address = loginUser.address
+      userBasicData.avatar = loginUser.avatar
+      if (!userBasicData.avatar || userBasicData.avatar === '') {
+        userBasicData.avatar = 'imgs/head.png'
+      }
     },
     buildThirdOauthUserData() {
       const data = {
         userId: this.loginUser.id
       }
+      Object.keys(this.userBindData).forEach((key) => {
+        this.userBindData[key].id = null
+        this.userBindData[key].username = null
+      })
       listThirdOauthUser(data).then(response => {
         for (let i = 0; i < response.length; ++i) {
           const res = response[i]
           const source = _.lowerCase(res.source)
-          if (source === 'github' && !this.userBindData.bindGithubNo) {
-            this.userBindData.bindGithubNo = res.username
-          } else if (source === 'gitee' && !this.userBindData.bindGiteeNo) {
-            this.userBindData.bindGiteeNo = res.username
-          } else if (source === 'baidu' && !this.userBindData.bindBaiduNo) {
-            this.userBindData.bindBaiduNo = res.username
+          if (this.userBindData[source] && !this.userBindData[source].id) {
+            this.userBindData[source].username = res.username
+            this.userBindData[source].id = res.id
           }
         }
       })
@@ -600,6 +582,7 @@ export default {
         countyCode: this.userBasicData.countyData.value,
         address: this.userBasicData.address,
         phone: this.userBasicData.phone,
+        avatar: this.userBasicData.avatar,
         id: this.loginUser.id
       }
       this.basicLoading = true
@@ -610,6 +593,8 @@ export default {
     }
   },
   created() {
+  },
+  mounted() {
     currentUser().then(data => {
       this.loginUser = data.user
       this.buildUserBasicData()
@@ -617,8 +602,6 @@ export default {
       this.buildThirdOauthUserData()
       this.buildAreaData()
     })
-  },
-  mounted() {
   }
 }
 </script>
