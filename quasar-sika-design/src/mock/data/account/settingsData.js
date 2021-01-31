@@ -3,6 +3,7 @@ const basicSetting = {
   nickname: null,
   remark: null,
   country: null,
+  avatar: null,
   provinceData: {
     value: null,
     label: null
@@ -27,9 +28,30 @@ const safeData = {
   mfaEquipment: null
 }
 const accountBindData = {
-  bindGithubNo: null,
-  bindGiteeNo: null,
-  bindBaiduNo: null
+  github: {
+    id: null,
+    username: null,
+    iconClass: 'iconhuaban88',
+    iconColor: 'black',
+    desc: 'Github',
+    code: 'github'
+  },
+  gitee: {
+    id: null,
+    username: null,
+    iconClass: 'icongitee',
+    iconColor: 'red',
+    desc: 'Gitee',
+    code: 'gitee'
+  },
+  baidu: {
+    id: null,
+    username: null,
+    iconClass: 'iconbaidu',
+    iconColor: 'blue',
+    desc: '百度',
+    code: 'baidu'
+  }
 }
 const newMsgData = {
   passwordMsg: true,

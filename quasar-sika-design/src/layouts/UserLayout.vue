@@ -11,9 +11,11 @@
         <div class="q-mb-lg">
           <div class="text-center q-mb-sm">
             <span class="inline-block">Sika Design Pro</span>
-            <q-btn type="a" target="_blank" unelevated size="12px" dense
-                   href="https://github.com/dq-open-cloud/quasar-sika-design">
-              <q-icon name="ti-github q-mx-md" />
+            <q-btn type="a" target="_blank" unelevated size="12px" dense round
+                   href="https://github.com/dq-open-cloud/quasar-sika-design-admin">
+              <q-avatar size="sm">
+                <q-icon class="iconfont iconhuaban88 text-primary" />
+              </q-avatar>
             </q-btn>
             <span class="inline-block">Sika Design</span>
           </div>
@@ -59,3 +61,6 @@ export default {
   }
 }
 </script>
+<style>
+@import 'http://at.alicdn.com/t/font_2136554_95kmewdgocg.css';
+</style>
