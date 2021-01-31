@@ -1,6 +1,10 @@
-import { buildFullUrl, post, postForImage, showNotifyFalse, getQueryString } from 'utils/request'
+import { buildFullUrl, post, postUpload, postForImage, showNotifyFalse, getQueryString } from 'utils/request'
 import commonUtil from '@/utils/commonUtil'
 import { removeToken, setLoginData } from '@/utils/localStorage'
+
+export function uploadHeadImg(data) {
+  return postUpload('/user/upload_head', data)
+}
 
 /** 更新用户信息 */
 export function updateUser(data) {

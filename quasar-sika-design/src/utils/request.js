@@ -118,6 +118,21 @@ export function post(url, param, config) {
   })
 }
 
+// post-upload请求
+export function postUpload(url, param, config) {
+  // 这里要把content-type设置为multipard/form-data，同时还要设置boundary
+  const cfg = Object.assign(showNotifyTrue(), config)
+  return service({
+    url: url,
+    method: 'post',
+    ...cfg,
+    data: param,
+    headers: {
+      'Content-Type': 'multipart/form-data; boundary = ' + new Date().getTime()
+    }
+  })
+}
+
 // post请求图片流
 export function postForImage(url, param, config) {
   const cfg = Object.assign(showNotifyTrue, config)

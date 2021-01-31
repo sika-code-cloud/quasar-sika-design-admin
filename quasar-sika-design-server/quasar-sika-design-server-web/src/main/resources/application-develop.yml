@@ -4,6 +4,7 @@ server:
     accept-count: 1024
     max-threads: 1024
 debug: false
+headImagePath: E:\project\sika-design\quasar-sika-design-admin\quasar-sika-design\public\imgs\head\
 sika:
   code:
     workspace:
