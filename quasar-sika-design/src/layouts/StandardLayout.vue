@@ -20,27 +20,24 @@
           <q-img src="imgs/logo/sika-logo-1.png" style="width: 100px" />
         </q-btn>
         <q-space />
-        <q-input
-          square
-          class="GNL__toolbar-input"
-          outlined
-          dense
-          v-model="search"
-          color="bg-grey-7"
-          placeholder="Search for topics, locations & sources"
-        >
-          <template v-slot:prepend>
-            <q-icon v-if="search === ''" name="search" />
-            <q-icon
-              v-else
-              name="clear"
-              class="cursor-pointer"
-              @click="search = ''"
-            />
-          </template>
-        </q-input>
-        <q-space />
         <div class="q-gutter-xs q-ml-sm row items-center no-wrap">
+          <q-btn type="a" target="_blank" unelevated size="sm" dense round
+                 href="https://github.com/dq-open-cloud/quasar-sika-design">
+            <q-avatar size="sm" text-color="primary">
+              <q-icon class="iconhuaban88 iconfont text-primary" />
+              <q-tooltip v-if="$q.screen.gt.sm">
+                Github地址
+              </q-tooltip>
+            </q-avatar>
+          </q-btn>
+          <q-btn unelevated size="sm" dense round @click="copyQQ('327424532')">
+            <q-avatar size="sm">
+              <q-icon class="iconfont iconqq text-primary" />
+              <q-tooltip v-if="$q.screen.gt.sm">
+                点击复制QQ群：327424532，交流反馈
+              </q-tooltip>
+            </q-avatar>
+          </q-btn>
           <q-btn round dense flat size="sm" color="grey-7" icon="help_outline">
             <q-tooltip>帮助文档</q-tooltip>
           </q-btn>
@@ -75,7 +72,7 @@
                   overflow: hidden;
                 "
               >
-                <span v-if="userInfo">{{  userInfo.showUsername }}</span>
+                <span v-if="userInfo">{{ userInfo.showUsername }}</span>
                 <q-tooltip v-if="userInfo">{{ userInfo.showUsername }} </q-tooltip>
               </div>
               <q-menu
@@ -368,9 +365,11 @@
       <div class="q-my-lg">
         <div class="text-center q-mb-sm">
           <span class="inline-block">Sika Design Pro</span>
-          <q-btn type="a" target="_blank" unelevated size="12px" dense
+          <q-btn type="a" target="_blank" unelevated size="12px" dense round
                  href="https://github.com/dq-open-cloud/quasar-sika-design">
-            <q-icon name="ti-github q-mx-md" />
+            <q-avatar size="sm">
+              <q-icon class="iconfont iconhuaban88 text-primary" />
+            </q-avatar>
           </q-btn>
           <span class="inline-block">Sika Design</span>
         </div>
@@ -777,16 +776,21 @@
           </q-toolbar>
         </q-page-sticky>
         <transition mode="out-in">
-          <router-view :key="activeDate"/>
+          <router-view :key="activeDate" />
         </transition>
         <q-page-sticky
           position="top-right"
           style="z-index: 3000"
           :offset="rightOffsetGithub"
         >
-          <q-btn type="a" target="_blank" color="primary" style="width: 40px;height: 40px" unelevated dense round
+          <q-btn type="a" target="_blank" unelevated dense round
                  href="https://github.com/dq-open-cloud/quasar-sika-design">
-            <q-icon name="ti-github" />
+            <q-avatar style="width: 40px; height: 40px">
+              <q-icon class="iconfont iconhuaban88 text-primary"/>
+              <q-tooltip v-if="$q.screen.gt.sm">
+                Github 地址
+              </q-tooltip>
+            </q-avatar>
           </q-btn>
         </q-page-sticky>
         <q-page-sticky
@@ -975,6 +979,21 @@ export default {
         tweenToOpacity: 0.4
       })
     },
+    copyQQ(qq) {
+      copyToClipboard(qq)
+        .then(() => {
+          this.$q.notify({
+            color: 'white',
+            textColor: 'positive',
+            icon: 'check_circle',
+            position: 'top',
+            message: '成功复制QQ群号：' + qq
+          })
+        })
+        .catch(() => {
+          // 失败
+        })
+    },
     copy() {
       copyToClipboard(JSON.stringify(this.styleSettingsData))
         .then(() => {
@@ -1045,7 +1064,9 @@ export default {
   }
 }
 </script>
-
+<style>
+@import 'http://at.alicdn.com/t/font_2136554_95kmewdgocg.css';
+</style>
 <style lang="sass">
 .leftMenuHeader
   height: calc(100% - 55px)
