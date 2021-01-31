@@ -69,7 +69,7 @@ public class ControllerLogAspect {
                 } else if (o instanceof ServletRequest) {
                     log.info("ServletRequest ParameterMap  ---------   " + JSON.toJSONString(((ServletRequest) o).getParameterMap()));
                 } else if (!(o instanceof BindingResult)) {
-                    log.info(JSON.toJSONString(o));
+                    log.info(String.valueOf(o));
                 }
             }
             log.info("\r\n");

@@ -48,14 +48,15 @@
             <q-tab-panel name="basicSettings" class="row q-pt-sm">
               <div class="text-h5 col-12 q-mb-md">基本设置</div>
               <div class="col-xs-12 q-mb-md" v-if="$q.screen.lt.sm">
-                <span class="text-center block">
-                  <q-img
-                    :src="userBasicData.avatar"
-                    width="160px"
-                    :ratio="10 / 10"
-                    class="q-ma-md cursor-pointer"
-                    @click="popFileUpload"
-                  />
+                <span class="text-center block q-mb-md">
+                 <q-avatar size="140px">
+                   <img
+                     alt=""
+                     :src="userBasicData.avatar"
+                     class="cursor-pointer"
+                     @click="popFileUpload"
+                   />
+                 </q-avatar>
                 </span>
                 <span class="text-center block">
                   <input type="file" style="display: none" class="headFile" accept="image/*" @change="handleFile">
@@ -165,14 +166,15 @@
                 </q-btn>
               </div>
               <div class="col-md-8 col-sm-7" v-if="$q.screen.gt.xs">
-                <span class="text-center block">
-                  <q-img
-                    :src="userBasicData.avatar"
-                    width="160px"
-                    :ratio="10 / 10"
-                    class="q-ma-md cursor-pointer"
-                    @click="popFileUpload"
-                  />
+                <span class="text-center block q-mb-md">
+                 <q-avatar size="140px">
+                   <img
+                     alt=""
+                     :src="userBasicData.avatar"
+                     class="cursor-pointer"
+                     @click="popFileUpload"
+                   />
+                 </q-avatar>
                 </span>
                 <span class="text-center block">
                   <input type="file" style="display: none" class="headFile" accept="image/*" @change="handleFile">
@@ -362,7 +364,7 @@
 <script>
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
 // import { getLoginData } from '@/utils/localStorage'
-import { toOauthLogin, updateUser, currentUser } from '@/api/user'
+import { toOauthLogin, updateUser, currentUser, uploadHeadImg } from '@/api/user'
 import { listForCity, listForCounty, listForProvince } from '@/api/chinaCity'
 import { listThirdOauthUser, updateThirdOauthUser } from '@/api/thirdOauthUser'
 import commonUtil from '@/utils/commonUtil'
@@ -388,7 +390,8 @@ export default {
       provincesCache: [],
       citiesCache: [],
       countiesCache: [],
-      basicLoading: false
+      basicLoading: false,
+      headFile: null
     }
   },
   methods: {
@@ -405,6 +408,7 @@ export default {
         this.userBasicData.avatar = res.result
       }
       reader.readAsDataURL(file)
+      this.headFile = file
     },
     // 解除第三方绑定
     unThirdBind(thirdData) {
@@ -441,6 +445,7 @@ export default {
       if (!userBasicData.avatar || userBasicData.avatar === '') {
         userBasicData.avatar = 'imgs/head.png'
       }
+      console.log(userBasicData)
     },
     buildThirdOauthUserData() {
       const data = {
@@ -582,13 +587,29 @@ export default {
         countyCode: this.userBasicData.countyData.value,
         address: this.userBasicData.address,
         phone: this.userBasicData.phone,
-        avatar: this.userBasicData.avatar,
         id: this.loginUser.id
       }
       this.basicLoading = true
-      updateUser(userData).then(data => {
-        commonUtil.notifySuccess('更新成功')
-        this.basicLoading = false
+      if (this.headFile) {
+        this.preUploadFileAndUpdate(userData)
+      } else {
+        updateUser(userData).then(data => {
+          commonUtil.notifySuccess('更新成功')
+          this.basicLoading = false
+        })
+      }
+    },
+    preUploadFileAndUpdate(userData) {
+      // 请求接口前需要传的参数
+      const formData = new FormData()
+      formData.append('file', this.headFile)
+      // 先上传头像 --获取上传的url
+      uploadHeadImg(formData).then(result => {
+        userData.avatar = result
+        updateUser(userData).then(data => {
+          commonUtil.notifySuccess('更新成功')
+          this.basicLoading = false
+        })
       })
     }
   },
