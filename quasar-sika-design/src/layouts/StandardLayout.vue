@@ -22,7 +22,7 @@
         <q-space />
         <div class="q-gutter-xs q-ml-sm row items-center no-wrap">
           <q-btn type="a" target="_blank" unelevated size="sm" dense round
-                 href="https://github.com/dq-open-cloud/quasar-sika-design">
+                 href="https://github.com/dq-open-cloud/quasar-sika-design-admin">
             <q-avatar size="sm" text-color="primary">
               <q-icon class="iconhuaban88 iconfont text-primary" />
               <q-tooltip v-if="$q.screen.gt.sm">
@@ -366,7 +366,7 @@
         <div class="text-center q-mb-sm">
           <span class="inline-block">Sika Design Pro</span>
           <q-btn type="a" target="_blank" unelevated size="12px" dense round
-                 href="https://github.com/dq-open-cloud/quasar-sika-design">
+                 href="https://github.com/dq-open-cloud/quasar-sika-design-admin">
             <q-avatar size="sm">
               <q-icon class="iconfont iconhuaban88 text-primary" />
             </q-avatar>

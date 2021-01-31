@@ -12,7 +12,7 @@
           <div class="text-center q-mb-sm">
             <span class="inline-block">Sika Design Pro</span>
             <q-btn type="a" target="_blank" unelevated size="12px" dense round
-                   href="https://github.com/dq-open-cloud/quasar-sika-design">
+                   href="https://github.com/dq-open-cloud/quasar-sika-design-admin">
               <q-avatar size="sm">
                 <q-icon class="iconfont iconhuaban88 text-primary" />
               </q-avatar>
