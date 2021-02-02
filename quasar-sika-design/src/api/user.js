@@ -6,6 +6,11 @@ export function uploadHeadImg(data) {
   return postUpload('/user/upload_head', data)
 }
 
+/** 修改用户密码 */
+export function updateCurrentPassword(data) {
+  return post('/auth/update_current_password', data)
+}
+
 /** 更新用户信息 */
 export function updateUser(data) {
   return post('/user/update_by_id', data).then(response => {

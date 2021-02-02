@@ -9,4 +9,6 @@ public class AuthUpdatePasswordRequest {
     private Long userId;
     private String username;
     private String password;
+    private String oldPassword;
+    private String newPassword;
 }

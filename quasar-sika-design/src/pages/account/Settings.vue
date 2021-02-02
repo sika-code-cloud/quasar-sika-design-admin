@@ -199,7 +199,7 @@
                     </q-item-label>
                   </q-item-section>
                   <q-item-section avatar>
-                    <q-btn flat unelevated color="primary" label="修改" />
+                    <q-btn flat unelevated color="primary" label="修改" @click="popUpdatePasswordDialog" />
                   </q-item-section>
                 </q-item>
                 <q-separator inset="" spaced="10px" />
@@ -358,13 +358,110 @@
         </div>
       </q-card-section>
     </q-card>
+    <q-dialog v-model="userUpdatePasswordData.config.updatePasswordDialog" persistent @before-hide="beforeHidePasswordDialog">
+      <q-card class="q-px-md q-pb-md q-pt-sm sc-design" style="width: 500px; max-width: 80vw;">
+        <q-card-section>
+          <div class="text-h6">修改密码</div>
+        </q-card-section>
+        <q-form @submit="updatePassword" @reset="onResetUpdatePassword" ref="registerForm">
+          <q-item-label class="q-gutter-y-sm q-px-md">
+
+            <q-input
+              outlined
+              clearable
+              clear-icon="cancel"
+              :type="userUpdatePasswordData.config.isOldPassword ? 'password' : 'text'"
+              v-model="userUpdatePasswordData.data.oldPassword"
+              dense
+              debounce="1000"
+              placeholder="原密码"
+              maxlength="32"
+              square
+              :rules="[
+                  (val) => (val && val.length > 0) || '请输入密码',
+                  (val) => (val && val.length >= 6) || '密码长度必须大于等于6位'
+                ]"
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  :name="userUpdatePasswordData.config.isOldPassword ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="userUpdatePasswordData.config.isOldPassword = !userUpdatePasswordData.config.isOldPassword"
+                />
+              </template>
+            </q-input>
+            <q-input
+              outlined
+              clearable
+              clear-icon="cancel"
+              :type="userUpdatePasswordData.config.isNewPassword ? 'password' : 'text'"
+              v-model="userUpdatePasswordData.data.newPassword"
+              dense
+              debounce="1000"
+              placeholder="新密码"
+              maxlength="32"
+              square
+              :rules="[
+                  (val) => (val && val.length > 0) || '请输入密码',
+                  (val) => (val && val.length >= 6) || '密码长度必须大于等于6位'
+                ]"
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  :name="userUpdatePasswordData.config.isNewPassword ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="userUpdatePasswordData.config.isNewPassword = !userUpdatePasswordData.config.isNewPassword"
+                />
+              </template>
+            </q-input>
+            <q-input
+              outlined
+              clearable
+              clear-icon="cancel"
+              :type="userUpdatePasswordData.config.isNewConfirmPassword ? 'password' : 'text'"
+              v-model="userUpdatePasswordData.data.newConfirmPassword"
+              dense
+              debounce="1000"
+              placeholder="新确认密码"
+              maxlength="32"
+              square
+              :rules="[
+                  (val) => (val && val.length > 0) || '请输入确认密码',
+                  (val) => (passwordValida) || '两次密码不一致'
+                ]"
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+              <template v-slot:append>
+                <q-icon
+                  :name="userUpdatePasswordData.config.isNewConfirmPassword ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="userUpdatePasswordData.config.isNewConfirmPassword = !userUpdatePasswordData.config.isNewConfirmPassword"
+                />
+              </template>
+            </q-input>
+          </q-item-label>
+        </q-form>
+        <q-card-actions align="right" class="q-mb-sm q-mr-sm">
+          <q-btn label="确认" unelevated color="primary" @click="updatePassword" />
+          <q-btn label="取消" unelevated color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import ACCOUNT_SETTINGS_DATA from '@/mock/data/account/settingsData'
 // import { getLoginData } from '@/utils/localStorage'
-import { toOauthLogin, updateUser, currentUser, uploadHeadImg } from '@/api/user'
+import { toOauthLogin, updateUser, currentUser, uploadHeadImg, updateCurrentPassword } from '@/api/user'
 import { listForCity, listForCounty, listForProvince } from '@/api/chinaCity'
 import { listThirdOauthUser, updateThirdOauthUser } from '@/api/thirdOauthUser'
 import commonUtil from '@/utils/commonUtil'
@@ -382,6 +479,7 @@ export default {
       settingsTab: 'basicSettings',
       userBasicData: ACCOUNT_SETTINGS_DATA.basicSetting,
       userBindData: ACCOUNT_SETTINGS_DATA.accountBindData,
+      userUpdatePasswordData: ACCOUNT_SETTINGS_DATA.userUpdatePasswordData,
       safeData,
       loginUser: {},
       provinces: [],
@@ -395,6 +493,22 @@ export default {
     }
   },
   methods: {
+    onResetUpdatePassword() {
+      this.userUpdatePasswordData.data = commonUtil.resetObj(this.userUpdatePasswordData.data)
+    },
+    beforeHidePasswordDialog() {
+      this.onResetUpdatePassword()
+    },
+    popUpdatePasswordDialog() {
+      this.userUpdatePasswordData.config.updatePasswordDialog = true
+    },
+    updatePassword() {
+      updateCurrentPassword(this.userUpdatePasswordData.data).then(result => {
+        console.log(result)
+        this.userUpdatePasswordData.config.updatePasswordDialog = false
+        commonUtil.notifySuccess('修改成功')
+      })
+    },
     popFileUpload() {
       document.getElementsByClassName('headFile')[0].click()
     },
@@ -623,6 +737,11 @@ export default {
       this.buildThirdOauthUserData()
       this.buildAreaData()
     })
+  },
+  computed: {
+    passwordValida: function() {
+      return this.userUpdatePasswordData.data.newPassword === this.userUpdatePasswordData.data.newConfirmPassword
+    }
   }
 }
 </script>
