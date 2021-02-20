@@ -1,5 +1,111 @@
 const routeDatas = [
   {
+    name: '首页',
+    icon: 'dashboard',
+    group: '/home',
+    groupName: 'first',
+    to: '/home'
+  },
+  {
+    name: '系统管理',
+    icon: 'dashboard',
+    group: '/system-manage',
+    groupName: 'first',
+    children: [
+      {
+        name: '用户管理',
+        group: '/system-manage',
+        icon: 'dashboard',
+        to: '/system-manage/user'
+      },
+      {
+        name: '角色管理',
+        group: '/system-manage',
+        to: '/system-manage/role'
+      },
+      {
+        name: '菜单管理',
+        group: '/system-manage',
+        to: '/system-manage/menu'
+      },
+      {
+        name: '部门管理',
+        group: '/system-manage',
+        to: '/system-manage/department'
+      },
+      {
+        name: '岗位管理',
+        group: '/system-manage',
+        to: '/system-manage/post'
+      },
+      {
+        name: '字典管理',
+        group: '/system-manage',
+        to: '/system-manage/dict'
+      },
+      {
+        name: '参数管理',
+        group: '/system-manage',
+        to: '/system-manage/parameter'
+      },
+      {
+        name: '通知公告',
+        group: '/system-manage',
+        to: '/system-manage/notice'
+      },
+      {
+        name: '日志管理',
+        icon: 'dashboard',
+        group: '/system-manage/log',
+        children: [
+          {
+            name: '操作日志',
+            group: '/system-manage/log',
+            to: '/system-manage/log/operate'
+          },
+          {
+            name: '登录日志',
+            group: '/system-manage/log',
+            to: '/system-manage/log/login'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    name: '系统监控',
+    icon: 'dashboard',
+    group: '/system-monitor',
+    groupName: 'first',
+    children: [
+      {
+        name: '在线用户',
+        group: '/system-monitor',
+        to: '/system-monitor/online-user'
+      },
+      {
+        name: '定时任务',
+        group: '/system-monitor',
+        to: '/system-monitor/time-task'
+      },
+      {
+        name: '数据监控',
+        group: '/system-monitor',
+        to: '/system-monitor/data-monitor'
+      },
+      {
+        name: '服务监控',
+        group: '/system-monitor',
+        to: '/system-monitor/service-monitor'
+      },
+      {
+        name: '缓存监控',
+        group: '/system-monitor',
+        to: '/system-monitor/cache-monitor'
+      }
+    ]
+  },
+  {
     name: '仪表盘',
     icon: 'dashboard',
     group: '/dashboard',

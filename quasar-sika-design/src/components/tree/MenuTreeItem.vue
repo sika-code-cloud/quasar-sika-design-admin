@@ -1,44 +1,51 @@
 <template>
-  <q-expansion-item
-    v-model="open"
-    :group="data.groupName"
-    :content-inset-level="0.5"
-    :label="data.name"
-    :icon="data.icon"
-    :header-style="headerStyleActive"
-    v-if="hasChild"
-  >
-    <menu-tree-item
-      v-for="(item, index) in data.children"
-      :data="item"
-      :key="index"
-    ></menu-tree-item>
-  </q-expansion-item>
-  <q-item
-    v-else-if="!hasChild && data.top"
-    clickable
-    v-ripple
-    :style="itemStyleActive"
-    :key="data.name"
-    @click="onclick(data)"
-    :to="data.to"
-  >
-    <q-item-section avatar>
-      <q-icon :name="data.icon" />
-    </q-item-section>
-    <q-item-section>{{ data.name }}</q-item-section>
-  </q-item>
-  <q-item
-    clickable
-    v-ripple
-    :key="data.name"
-    :style="itemStyleActive"
-    @click="onclick(data)"
-    :to="data.to"
-    v-else
-  >
-    <q-item-section>{{ data.name }}</q-item-section>
-  </q-item>
+  <div class="tree-item">
+    <q-expansion-item
+      v-model="open"
+      :group="data.groupName"
+      :content-inset-level="0.5"
+      :label="data.name"
+      :icon="data.icon"
+      :header-style="headerStyleActive"
+      v-if="hasChild"
+    >
+      <menu-tree-item
+        v-for="(item, index) in data.children"
+        :data="item"
+        :key="index"
+      ></menu-tree-item>
+    </q-expansion-item>
+    <q-item
+      v-else-if="!hasChild && data.top"
+      clickable
+      v-ripple
+      :style="itemStyleActive"
+      :key="data.name"
+      @click="onclick(data)"
+      :to="data.to"
+    >
+      <q-item-section avatar>
+        <q-icon :name="data.icon" />
+      </q-item-section>
+      <q-item-section>{{ data.name }}</q-item-section>
+    </q-item>
+    <q-item
+      clickable
+      v-ripple
+      :key="data.name"
+      :style="itemStyleActive"
+      @click="onclick(data)"
+      :to="data.to"
+      v-else
+    >
+      <q-item-section>
+        <div>
+          <q-icon :name="data.icon" size="sm" class="q-mr-md" />
+          {{ data.name }}
+        </div>
+      </q-item-section>
+    </q-item>
+  </div>
 </template>
 
 <script>
@@ -125,7 +132,10 @@ export default {
         path = '/dashboard/analysis'
       }
       const group = path.substr(0, path.lastIndexOf('/'))
-      return { to: path, group: group }
+      return {
+        to: path,
+        group: group
+      }
     }
   },
   mounted() {
@@ -140,7 +150,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function (val, oldVal) {
+      handler: function(val, oldVal) {
         this.onclick(this.buildActiveItem(val.path))
       },
       // 深度观察监听
@@ -151,6 +161,10 @@ export default {
 </script>
 
 <style lang="sass">
+.tree-item .q-item__section--avatar
+  min-width: auto
+.tree-item .q-item__section--side
+  padding-right: 16px
 .active-item-class
   color: #1890ff
   background-color: #e6f7ff

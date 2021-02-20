@@ -1,5 +1,181 @@
 const routes = [
   {
+    path: '/home',
+    name: '/home',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/dashboard/Analysis')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/user',
+    name: '/system-manage/user',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/User')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/role',
+    name: '/system-manage/role',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Role')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/menu',
+    name: '/system-manage/menu',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Menu')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/department',
+    name: '/system-manage/department',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Department')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/post',
+    name: '/system-manage/post',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Post')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/dict',
+    name: '/system-manage/dict',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Dict')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/parameter',
+    name: '/system-manage/parameter',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Parameter')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/notice',
+    name: '/system-manage/notice',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/Notice')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/log/operate',
+    name: '/system-manage/log/operate',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/log/OperateLog')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/log/login',
+    name: '/system-manage/log/login',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/log/LoginLog')
+      }
+    ]
+  },
+  {
+    path: '/system-monitor/online-user',
+    name: '/system-monitor/online-user',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-monitor/OnlineUser')
+      }
+    ]
+  },
+  {
+    path: '/system-monitor/time-task',
+    name: '/system-monitor/time-task',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-monitor/TimeTask')
+      }
+    ]
+  },
+  {
+    path: '/system-monitor/data-monitor',
+    name: '/system-monitor/data-monitor',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-monitor/DataMonitor')
+      }
+    ]
+  },
+  {
+    path: '/system-monitor/service-monitor',
+    name: '/system-monitor/service-monitor',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-monitor/ServiceMonitor')
+      }
+    ]
+  },
+  {
+    path: '/system-monitor/cache-monitor',
+    name: '/system-monitor/cache-monitor',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-monitor/CacheMonitor')
+      }
+    ]
+  },
+  {
     path: '/dashboard/analysis',
     name: '/dashboard/analysis',
     component: () => import('layouts/MainLayout.vue'),
