@@ -143,8 +143,17 @@ public class AuthServiceImpl implements AuthService, BaseStandardDomain {
         UserDTO currentUser = ShiroUtils.getUserInfo();
         Assert.verifyObjNullMsg(currentUser, "当前用户信息异常");
         String username = currentUser.getUsername();
-        String password = request.getPassword();
-        updatePasswordCore(username, password);
+        String newPassword = request.getNewPassword();
+        String oldPassword = request.getOldPassword();
+
+        Assert.verifyObjNullMsg(oldPassword, "原密码不能为空");
+        Assert.verifyObjNullMsg(newPassword, "新密码不能为空");
+        UserDTO userFromDb = userService.findByUsername(username);
+        Assert.verifyDataNotExistent(userFromDb, "用户不存在");
+        if (!StrUtil.equals(SHA256Util.sha256(oldPassword, username), userFromDb.getPassword())) {
+            throw new BusinessException("原密码错误");
+        }
+        updatePasswordCore(username, newPassword);
         return AuthResponse.success();
     }
 

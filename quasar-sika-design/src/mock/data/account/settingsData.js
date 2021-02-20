@@ -58,9 +58,23 @@ const newMsgData = {
   systemMsg: false,
   waitTaskMsg: true
 }
+const userUpdatePasswordData = {
+  data: {
+    oldPassword: null,
+    newPassword: null,
+    newConfirmPassword: null
+  },
+  config: {
+    isOldPassword: true,
+    isNewPassword: true,
+    isNewConfirmPassword: true,
+    updatePasswordDialog: false
+  }
+}
 export default {
   basicSetting,
   safeData,
   accountBindData,
-  newMsgData
+  newMsgData,
+  userUpdatePasswordData
 }
