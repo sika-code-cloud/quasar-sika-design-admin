@@ -85,6 +85,7 @@
             <include refid="query_sql" />
         </where>
         <include refid="order_by_sql"/>
+        LIMIT #{query.start}, #{query.pageSize}
     </select>
 
     <!-- 根据查询条件获取总数量信息 -->
@@ -136,6 +137,12 @@
         <choose>
             <when test="query.sortColumn == 'userId'">
                 id
+            </when>
+            <when test="query.sortColumn == 'createDate'">
+                create_date
+            </when>
+            <when test="query.sortColumn == 'updateDate'">
+                update_date
             </when>
             <otherwise>
                 id

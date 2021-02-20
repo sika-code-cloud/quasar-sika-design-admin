@@ -1,12 +1,7 @@
 import { date } from 'quasar'
-import commonUtil from 'src/utils/commonUtil'
-import dateUtil from 'src/utils/dateUtil'
 
-const ruleNameValue = ['配置收付款', '配置费用', '配置服务器', '配置权限']
-const stateValue = [true, false]
-const descValue = ['这条规则不错', '等待确认', '运行完美']
 const queryCondition = {
-  ruleName: null,
+  username: null,
   desc: null,
   callCount: null,
   state: null,
@@ -15,40 +10,75 @@ const queryCondition = {
 const tableListDatas = {
   columns: [{
     check: true,
-    name: 'ruleName',
+    name: 'id',
     required: true,
-    label: '用户名称',
+    label: '编号',
     align: 'left',
-    field: 'ruleName',
+    field: 'id',
+    sortable: true,
     format: (val) => `${val}`
   }, {
     check: true,
-    name: 'state',
-    align: 'center',
-    label: '状态',
-    field: 'state'
+    name: 'username',
+    required: true,
+    label: '用户名称',
+    align: 'left',
+    field: 'username',
+    format: (val) => `${val}`
   }, {
     check: true,
-    name: 'callCount',
+    name: 'nickname',
     align: 'left',
-    label: '调用次数(万)',
-    field: 'callCount',
+    label: '用户昵称',
+    field: 'nickname'
+  }, {
+    check: true,
+    name: 'phone',
+    align: 'left',
+    label: '手机号',
+    field: 'phone',
     sortable: true,
     sort: (a, b) => a - b
   }, {
     check: true,
-    name: 'callNextTime',
-    label: '上次调用时间',
+    name: 'email',
+    label: '邮箱',
     align: 'left',
-    field: 'callNextTime',
-    sortable: true,
-    sort: (a, b) => date.extractDate(a, 'YYYY-MM-DD HH:mm:ss') - date.extractDate(b, 'YYYY-MM-DD HH:mm:ss')
+    field: 'email'
   }, {
     check: true,
-    name: 'desc',
+    name: 'avatar',
+    align: 'center',
+    label: '头像',
+    field: 'avatar'
+  }, {
+    check: true,
+    name: 'remark',
     align: 'left',
-    label: '描述',
-    field: 'desc'
+    label: '备注',
+    field: 'remark'
+  }, {
+    check: true,
+    name: 'availableBool',
+    align: 'center',
+    label: '状态',
+    field: 'availableBool'
+  }, {
+    check: true,
+    name: 'updateDate',
+    align: 'left',
+    label: '更新时间',
+    field: 'updateDate',
+    format: (val) => date.formatDate(val, 'YYYY-MM-DD HH:mm:ss'),
+    sortable: true
+  }, {
+    check: true,
+    name: 'createDate',
+    align: 'left',
+    label: '创建时间',
+    field: 'createDate',
+    format: (val) => date.formatDate(val, 'YYYY-MM-DD HH:mm:ss'),
+    sortable: true
   }, {
     check: true,
     name: 'operate',
@@ -58,19 +88,7 @@ const tableListDatas = {
   }],
   datas: []
 }
-for (let i = 0; i < 35; ++i) {
-  tableListDatas.datas.push({
-    id: i,
-    ruleName: commonUtil.getRandomData(ruleNameValue),
-    state: commonUtil.getRandomData(stateValue),
-    callCount: commonUtil.getRandomCeilInt(100),
-    callNextTime: date.formatDate(dateUtil.buildRandomDate(2020), 'YYYY-MM-DD HH:mm:ss'),
-    desc: commonUtil.getRandomData(descValue),
-    operate: null
-  })
-}
 export default {
   queryCondition,
-  stateValue,
   tableListDatas
 }
