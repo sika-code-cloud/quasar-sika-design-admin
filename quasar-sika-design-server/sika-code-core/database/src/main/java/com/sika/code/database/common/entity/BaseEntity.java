@@ -25,7 +25,6 @@ public class BaseEntity<PRIMARY extends Serializable, BY> {
     /**
      * 删除标志
      */
-    @TableLogic
     private Integer isDeleted;
     /**
      * 可用标志

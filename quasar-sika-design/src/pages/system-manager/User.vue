@@ -11,7 +11,7 @@
               <q-item-section class="col">
                 <q-input
                   outlined
-                  v-model="queryCondition.ruleName"
+                  v-model="queryCondition.username"
                   label="用户名称"
                   dense
                   square
@@ -162,7 +162,7 @@
                   unelevated
                   label="重置"
                   class="q-mr-sm"
-                  size="sm"
+                  size="12px"
                   style="padding: 4px 10px"
                   dense
                   color="secondary"
@@ -171,7 +171,7 @@
                 <q-btn
                   unelevated
                   label="查询"
-                  size="sm"
+                  size="12px"
                   style="padding: 4px 10px"
                   dense
                   color="primary"
@@ -186,7 +186,7 @@
                 <q-btn-dropdown
                   v-model="showQuery"
                   persistent
-                  size="sm"
+                  size="12px"
                   style="padding: 4px 10px"
                   dense
                   flat
@@ -219,6 +219,8 @@
               hide-selected-banner
               virtual-scroll
               :loading="loading"
+              @request="onRequest"
+              hide-pagination
             >
               <template v-slot:top="props">
                 <div class="col-12">
@@ -226,9 +228,9 @@
                     <div class="col-sm-8 col-xs-12 q-gutter-sm">
                       <q-btn
                         label="新增"
-                        color="primary"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        color="info"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="add"
                         unelevated
@@ -236,9 +238,9 @@
                       />
                       <q-btn
                         label="修改"
-                        color="info"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        color="primary"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="edit"
                         unelevated
@@ -247,8 +249,8 @@
                       <q-btn
                         label="删除"
                         color="warning"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="delete"
                         unelevated
@@ -257,8 +259,8 @@
                       <q-btn
                         label="导入"
                         color="positive"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="south"
                         unelevated
@@ -267,16 +269,16 @@
                       <q-btn
                         label="导出"
                         color="secondary"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="north"
                         unelevated
-                        @click="addRow"
+                        @click="exportTable"
                       />
                     </div>
                     <div class="col-sm-4 col-xs-12 text-right">
-                      <q-btn rounded flat dense size="md" icon="refresh">
+                      <q-btn rounded flat dense size="md" icon="refresh" @click="onRequest">
                         <q-tooltip>刷新</q-tooltip>
                       </q-btn>
                       <q-btn rounded flat dense size="md" icon="unfold_less">
@@ -317,19 +319,19 @@
                   <span>{{ props.col.label }}</span>
                 </q-th>
               </template>
-              <template v-slot:body-cell-operate="props">
+              <template v-slot:body-cell-avatar="props">
                 <q-td :props="props">
-                  <div class="col q-gutter-sm">
-                    <q-btn label="编辑" unelevated color="primary" icon="edit" dense size="sm" style="padding: 2px 6px" />
-                    <q-btn label="删除" unelevated color="warning" icon="delete" dense size="sm"
-                           style="padding: 2px 6px" />
-                  </div>
+                  <q-avatar>
+                    <img :src="props.row.avatar" :alt="props.row.avatar"
+                         v-if="props.row.avatar && props.row.avatar !== ''">
+                    <img src="imgs/head.png" alt="默认头像" v-else>
+                  </q-avatar>
                 </q-td>
               </template>
-              <template v-slot:body-cell-state="props">
+              <template v-slot:body-cell-availableBool="props">
                 <q-td :props="props">
                   <q-toggle
-                    v-model="props.row.state"
+                    v-model="props.row.availableBool"
                     checked-icon="check"
                     color="primary"
                     unchecked-icon="clear"
@@ -337,17 +339,35 @@
                   />
                 </q-td>
               </template>
-              <template v-slot:pagination="scope">
-                <div class="full-width">
+              <template v-slot:body-cell-operate="props">
+                <q-td :props="props" style="width: 160px">
+                  <div class="col-12 q-gutter-sm" style="width: 160px">
+                    <q-btn label="编辑" unelevated color="primary" icon="edit" dense size="12px"
+                           style="padding: 2px 6px" />
+                    <q-btn label="删除" unelevated color="warning" icon="delete" dense size="12px"
+                           style="padding: 2px 6px"
+                           @click="deleteData(props.row)" />
+                  </div>
+                </q-td>
+              </template>
+              <template v-slot:bottom="scope">
+                <div class="full-width text-right">
+                  <div class="inline-block">
+                    <span class="inline-block text-body2">
+                      每页数量：
+                    </span>
+                    <span class="inline-block"><q-select v-model="pagination.rowsPerPage" filled  dense :options="[5,10,20,30, 50]" /></span>
+                  </div>
                   <q-pagination
                     v-model="pagination.page"
                     color="primary"
                     :max="scope.pagesNumber"
-                    size="sm"
+                    size="13px"
                     :max-pages="4"
                     :boundary-numbers="false"
                     :boundary-links="true"
                     class="float-right"
+                    @input="onRequest"
                   />
                 </div>
               </template>
@@ -376,10 +396,10 @@
                     <span class="q-mr-xs text-red">*</span>规则名称
                   </q-item-label>
                   <q-input
-                    ref="ruleName"
+                    ref="username"
                     placeholder="请输入"
                     outlined
-                    v-model="ruleName"
+                    v-model="username"
                     dense
                     square
                     :rules="[
@@ -395,7 +415,7 @@
                     type="textarea"
                     outlined
                     placeholder="请输入"
-                    v-model="ruleName"
+                    v-model="username"
                     square
                   >
                   </q-input>
@@ -449,9 +469,32 @@
 </template>
 
 <script>
-import { date, QSpinnerIos } from 'quasar'
+import { date, QSpinnerIos, exportFile } from 'quasar'
 import TABLE_LIST_DATA from '@/mock/data/system-manager/userData'
 import commonUtil from 'src/utils/commonUtil'
+import { pageUser, updateUser } from 'src/api/user'
+
+function wrapCsvValue(val, formatFn) {
+  // eslint-disable-next-line no-void
+  let formatted = formatFn !== void 0
+    ? formatFn(val)
+    : val
+
+  // eslint-disable-next-line no-void
+  formatted = formatted === void 0 || formatted === null
+    ? ''
+    : String(formatted)
+
+  formatted = formatted.split('"').join('""')
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`
+}
 
 export default {
   name: 'ScQueryTable',
@@ -461,7 +504,7 @@ export default {
       filterListData: [],
       queryCondition: TABLE_LIST_DATA.queryCondition,
       queryLoad: false,
-      ruleName: null,
+      username: null,
       addData: false,
       queryDate: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm'),
       showQuery: true,
@@ -473,26 +516,115 @@ export default {
         // sortBy: 'calories',
         descending: false,
         page: 1,
-        rowsPerPage: 5
-        // rowsNumber: xx if getting data from a server
+        rowsPerPage: 10,
+        rowsNumber: 10
       },
       visibleColumns: [
-        'ruleName',
-        'state',
-        'callCount',
-        'callNextTime',
-        'desc',
+        'username',
+        'nickname',
+        'phone',
+        'email',
+        'avatar',
+        'remark',
+        'availableBool',
+        'updateDate',
+        'createDate',
         'operate'
       ]
     }
   },
   methods: {
-    toggle(value, evt) {
-      console.log(value)
-      commonUtil.confirm('确认要禁用', '警告').onCancel(() => {
-        value.state = !value.state
+    exportTable() {
+      // naive encoding to csv format
+      const content = [this.tableListData.tableListDatas.columns.map(col => wrapCsvValue(col.label))].concat(
+        this.filterListData.map(row => this.tableListData.tableListDatas.columns.map(col => wrapCsvValue(
+          typeof col.field === 'function'
+            ? col.field(row)
+            // eslint-disable-next-line no-void
+            : row[col.field === void 0 ? col.name : col.field],
+          col.format
+        )).join(','))
+      ).join('\r\n')
+
+      const status = exportFile(
+        'table-export.csv',
+        '\uFEFF' + content,
+        'text/csv'
+      )
+
+      if (status !== true) {
+        this.$q.notify({
+          message: 'Browser denied file download...',
+          color: 'negative',
+          icon: 'warning'
+        })
+      }
+    },
+    onRequest(page) {
+      console.log(page)
+      if (page && page.pagination) {
+        this.pagination = page.pagination
+      }
+      console.log(this.pagination)
+      this.queryLoad = true
+      const pageNum = this.pagination.page
+      const rowsPerPage = this.pagination.rowsPerPage
+      const sortColumn = this.pagination.sortBy
+      let sortType = null
+      if (this.pagination.descending === true) {
+        sortType = 'DESC'
+      } else if (this.pagination.descending === false) {
+        sortType = 'ASC'
+      }
+      console.log(rowsPerPage)
+      pageUser({
+        sortColumn: sortColumn,
+        sortType: sortType,
+        pageSize: rowsPerPage,
+        pageNum: pageNum
+      }).then(response => {
+        this.queryLoad = false
+        this.pagination.page = response.pageNum
+        this.pagination.rowsNumber = response.total
+        // 需要先赋值，否则更新数据不生效
+        response.list.forEach(function(o, i) {
+          o.availableBool = o.available === 1
+        })
+        this.filterListData.splice(0, this.filterListData.length, ...response.list)
+      }).catch(e => {
+        this.queryLoad = false
+      })
+    },
+    deleteData(data) {
+      commonUtil.confirm('确认删除').onOk(() => {
+        updateUser({
+          id: data.id,
+          isDeleted: 1
+        }).then(response => {
+          commonUtil.notifySuccess('删除成功')
+          this.onRequest()
+        })
+      })
+    },
+    toggle(data, evt) {
+      let availableBoolDesc = '禁用'
+      console.log(data)
+      if (data.availableBool) {
+        availableBoolDesc = '启用'
+      }
+      commonUtil.confirm('确认' + availableBoolDesc).onCancel(() => {
+        data.availableBool = !data.availableBool
       }).onOk(() => {
-        commonUtil.notifySuccess('修改成功')
+        let available = 0
+        if (data.availableBool) {
+          available = 1
+        }
+        updateUser({
+          id: data.id,
+          available: available
+        }).then(response => {
+          commonUtil.notifySuccess(availableBoolDesc + '成功')
+        })
       })
     },
     show(evt) {
@@ -557,7 +689,7 @@ export default {
       }
     },
     onSubmit() {
-      if (!this.$refs.ruleName.validate()) {
+      if (!this.$refs.username.validate()) {
         return
       }
       const spinner = QSpinnerIos
@@ -585,31 +717,27 @@ export default {
     },
 
     onReset() {
-      this.ruleName = null
+      this.username = null
     },
     resetQuery() {
       this.queryCondition = {}
     },
     doQuery() {
-      this.queryLoad = true
-      setTimeout(() => {
-        this.queryLoad = false
-        this.filterListData = []
-        const datas = this.tableListData.tableListDatas.datas
-        for (let i = 0; i < datas.length; ++i) {
-          const data = datas[i]
-          if (this.isMatchData(data)) {
-            this.filterListData.push(data)
-          }
+      this.queryLoad = false
+      this.filterListData = []
+      const datas = this.tableListData.tableListDatas.datas
+      for (let i = 0; i < datas.length; ++i) {
+        const data = datas[i]
+        if (this.isMatchData(data)) {
+          this.filterListData.push(data)
         }
-      }, 500)
+      }
     },
     isMatchData(data) {
       const listQueryData = this.queryCondition
-      let ruleNameFlag = false
-      console.log(ruleNameFlag)
-      if (!listQueryData.ruleName || data.ruleName.search(listQueryData.ruleName) !== -1) {
-        ruleNameFlag = true
+      let usernameFlag = false
+      if (!listQueryData.username || data.username.search(listQueryData.username) !== -1) {
+        usernameFlag = true
       }
       let descFlag = false
       if (!listQueryData.desc || data.desc.search(listQueryData.desc) !== -1) {
@@ -619,7 +747,7 @@ export default {
       if (!listQueryData.state || data.state === listQueryData.state) {
         stateFlag = true
       }
-      return ruleNameFlag && descFlag && stateFlag
+      return usernameFlag && descFlag && stateFlag
     },
     addRow() {
       this.addData = true
@@ -653,6 +781,8 @@ export default {
   mounted() {
     this.showQuery = this.$q.screen.gt.xs
     this.tableLabel = this.$q.screen.gt.xs ? '收起' : '展开'
+
+    this.onRequest()
   },
   watch: {
     selected(newSelected, oldSelected) {
@@ -660,7 +790,7 @@ export default {
     },
     tableListData: {
       handler(newValue, oldValue) {
-        this.doQuery()
+        // this.doQuery()
       },
       immediate: true,
       deep: true

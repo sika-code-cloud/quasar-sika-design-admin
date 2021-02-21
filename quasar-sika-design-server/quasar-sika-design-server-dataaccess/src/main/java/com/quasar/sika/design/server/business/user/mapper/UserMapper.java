@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
  * @since 2020-12-26 16:59:10
  */
 @Repository
-public interface UserMapper extends BaseStandardMapper<UserEntity> {
+public interface
+UserMapper extends BaseStandardMapper<UserEntity> {
 
 }

@@ -90,13 +90,21 @@ function notifyInfo(message) {
 /* confirm - begin */
 function confirm(message, title) {
   if (!title) {
-    title = '系统提示'
+    title = '提示'
   }
   return Dialog.create({
     title: title,
     message: message,
-    cancel: '取消',
-    ok: '确认',
+    cancel: {
+      label: '取消',
+      color: 'warning',
+      unelevated: true
+    },
+    ok: {
+      label: '确认',
+      color: 'primary',
+      unelevated: true
+    },
     persistent: true
   })
 }

@@ -84,6 +84,7 @@
             <include refid="query_sql" />
         </where>
         <include refid="order_by_sql"/>
+        LIMIT ${r"#{"}query.start}, ${r"#{"}query.pageSize}
     </select>
 
     <!-- 根据查询条件获取总数量信息 -->

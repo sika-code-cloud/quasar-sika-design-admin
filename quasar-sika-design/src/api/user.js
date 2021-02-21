@@ -2,6 +2,34 @@ import { buildFullUrl, post, postUpload, postForImage, showNotifyFalse, getQuery
 import commonUtil from '@/utils/commonUtil'
 import { removeToken, setLoginData } from '@/utils/localStorage'
 
+// -----------------用户模块:开始----------------------------
+// 列表
+export function listUser(data) {
+  return post('/user/list', data)
+}
+
+// 详情
+export function findUser(data) {
+  return post('/user/find', data)
+}
+
+// 分页信息
+export function pageUser(data) {
+  return post('/user/page', data)
+}
+
+// 保存
+export function saveUser(data) {
+  return post('/user/save', data)
+}
+
+// 更新
+export function updateUser(data) {
+  return post('/user/update_by_id', data).then(response => {
+    currentUser()
+  })
+}
+
 export function uploadHeadImg(data) {
   return postUpload('/user/upload_head', data)
 }
@@ -10,13 +38,7 @@ export function uploadHeadImg(data) {
 export function updateCurrentPassword(data) {
   return post('/auth/update_current_password', data)
 }
-
-/** 更新用户信息 */
-export function updateUser(data) {
-  return post('/user/update_by_id', data).then(response => {
-    currentUser()
-  })
-}
+// -----------------用户模块:结束----------------------------
 
 // -----------------登录模块:开始----------------------------
 // 登录 --- 绑定用户
