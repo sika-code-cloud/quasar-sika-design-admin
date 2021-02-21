@@ -162,7 +162,7 @@
                   unelevated
                   label="重置"
                   class="q-mr-sm"
-                  size="sm"
+                  size="12px"
                   style="padding: 4px 10px"
                   dense
                   color="secondary"
@@ -171,7 +171,7 @@
                 <q-btn
                   unelevated
                   label="查询"
-                  size="sm"
+                  size="12px"
                   style="padding: 4px 10px"
                   dense
                   color="primary"
@@ -186,7 +186,7 @@
                 <q-btn-dropdown
                   v-model="showQuery"
                   persistent
-                  size="sm"
+                  size="12px"
                   style="padding: 4px 10px"
                   dense
                   flat
@@ -220,6 +220,7 @@
               virtual-scroll
               :loading="loading"
               @request="onRequest"
+              hide-pagination
             >
               <template v-slot:top="props">
                 <div class="col-12">
@@ -228,8 +229,8 @@
                       <q-btn
                         label="新增"
                         color="info"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="add"
                         unelevated
@@ -238,8 +239,8 @@
                       <q-btn
                         label="修改"
                         color="primary"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="edit"
                         unelevated
@@ -248,8 +249,8 @@
                       <q-btn
                         label="删除"
                         color="warning"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="delete"
                         unelevated
@@ -258,8 +259,8 @@
                       <q-btn
                         label="导入"
                         color="positive"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="south"
                         unelevated
@@ -268,8 +269,8 @@
                       <q-btn
                         label="导出"
                         color="secondary"
-                        size="sm"
-                        style="padding: 3px 8px"
+                        size="12px"
+                        style="padding: 2px 6px;"
                         dense
                         icon="north"
                         unelevated
@@ -339,21 +340,29 @@
                 </q-td>
               </template>
               <template v-slot:body-cell-operate="props">
-                <q-td :props="props">
-                  <div class="col q-gutter-sm">
-                    <q-btn label="编辑" unelevated color="primary" icon="edit" dense size="sm" style="padding: 2px 6px" />
-                    <q-btn label="删除" unelevated color="warning" icon="delete" dense size="sm"
+                <q-td :props="props" style="width: 160px">
+                  <div class="col-12 q-gutter-sm" style="width: 160px">
+                    <q-btn label="编辑" unelevated color="primary" icon="edit" dense size="12px"
                            style="padding: 2px 6px" />
+                    <q-btn label="删除" unelevated color="warning" icon="delete" dense size="12px"
+                           style="padding: 2px 6px"
+                           @click="deleteData(props.row)" />
                   </div>
                 </q-td>
               </template>
-              <template v-slot:pagination="scope">
-                <div class="full-width">
+              <template v-slot:bottom="scope">
+                <div class="full-width text-right">
+                  <div class="inline-block">
+                    <span class="inline-block text-body2">
+                      每页数量：
+                    </span>
+                    <span class="inline-block"><q-select v-model="pagination.rowsPerPage" filled  dense :options="[5,10,20,30, 50]" /></span>
+                  </div>
                   <q-pagination
                     v-model="pagination.page"
                     color="primary"
                     :max="scope.pagesNumber"
-                    size="sm"
+                    size="13px"
                     :max-pages="4"
                     :boundary-numbers="false"
                     :boundary-links="true"
@@ -507,7 +516,7 @@ export default {
         // sortBy: 'calories',
         descending: false,
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 10,
         rowsNumber: 10
       },
       visibleColumns: [
@@ -586,13 +595,24 @@ export default {
         this.queryLoad = false
       })
     },
-    toggle(value, evt) {
+    deleteData(data) {
+      commonUtil.confirm('确认删除').onOk(() => {
+        updateUser({
+          id: data.id,
+          isDeleted: 1
+        }).then(response => {
+          commonUtil.notifySuccess('删除成功')
+          this.onRequest()
+        })
+      })
+    },
+    toggle(data, evt) {
       let availableBoolDesc = '禁用'
-      console.log(value)
-      if (value.availableBool) {
+      console.log(data)
+      if (data.availableBool) {
         availableBoolDesc = '启用'
       }
-      commonUtil.confirm('确认要' + availableBoolDesc, '警告').onCancel(() => {
+      commonUtil.confirm('确认' + availableBoolDesc).onCancel(() => {
         value.availableBool = !value.availableBool
       }).onOk(() => {
         let available = 0

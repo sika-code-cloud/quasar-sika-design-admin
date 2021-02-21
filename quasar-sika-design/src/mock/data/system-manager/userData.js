@@ -84,6 +84,7 @@ const tableListDatas = {
     name: 'operate',
     align: 'center',
     label: '操作',
+    style: 'width: 230px',
     field: 'operate'
   }],
   datas: []
