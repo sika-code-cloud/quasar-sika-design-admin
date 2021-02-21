@@ -613,14 +613,14 @@ export default {
         availableBoolDesc = '启用'
       }
       commonUtil.confirm('确认' + availableBoolDesc).onCancel(() => {
-        value.availableBool = !value.availableBool
+        data.availableBool = !data.availableBool
       }).onOk(() => {
         let available = 0
-        if (value.availableBool) {
+        if (data.availableBool) {
           available = 1
         }
         updateUser({
-          id: value.id,
+          id: data.id,
           available: available
         }).then(response => {
           commonUtil.notifySuccess(availableBoolDesc + '成功')
