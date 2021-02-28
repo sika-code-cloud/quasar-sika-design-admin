@@ -89,7 +89,26 @@ const tableListDatas = {
   }],
   datas: []
 }
+const dialogData = {
+  config: {
+    singleAddFlag: false,
+    singleUpdateFlag: false,
+    batchUpdateFlag: false,
+    selectBottomFlag: false
+  },
+  data: {
+    singleAdd: {},
+    singleUpdate: {},
+    batchUpdate: {},
+    selectBottom: {
+      selectedNum: 0,
+      availableNum: 0,
+      unAvailableNum: 0
+    }
+  }
+}
 export default {
   queryCondition,
-  tableListDatas
+  tableListDatas,
+  dialogData
 }
