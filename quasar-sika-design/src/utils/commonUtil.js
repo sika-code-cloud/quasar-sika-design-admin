@@ -1,4 +1,4 @@
-import { Notify, Dialog } from 'quasar'
+import { Notify, Dialog, QSpinnerIos, Loading, exportFile } from 'quasar'
 import _ from 'lodash'
 
 function getRandomData(datas) {
@@ -130,6 +130,62 @@ function getUrlRootPath() {
   return window.location.protocol + '//' + location.host
 }
 
+function showLoading(msg) {
+  if (!msg || msg === '') {
+    msg = '加载中'
+  }
+  const spinner = QSpinnerIos
+  Loading.show({
+    spinner,
+    spinnerSize: 40,
+    spinnerColor: 'blue',
+    backgroundColor: 'white',
+    message: msg,
+    messageColor: 'blue'
+  })
+}
+
+function hideLoading() {
+  Loading.hide()
+}
+
+function exportTable(columns, datas, separator) {
+  if (!separator || separator === '') {
+    separator = ','
+  }
+  // naive encoding to csv format
+  const content = [columns.map(col => wrapCsvValue(col.label))].concat(
+    datas.map(row => columns.map(col => wrapCsvValue(
+      typeof col.field === 'function'
+        ? col.field(row)
+        // eslint-disable-next-line no-void
+        : row[col.field === void 0 ? col.name : col.field],
+      col.format
+    )).join(separator))
+  ).join('\r\n')
+
+  const status = exportFile(
+    'table-export.csv',
+    '\uFEFF' + content,
+    'text/csv'
+  )
+  if (status !== true) {
+    notifyWaring('浏览器拒绝文件导出')
+  }
+}
+
+function wrapCsvValue(val, formatFn) {
+  // eslint-disable-next-line no-void
+  let formatted = formatFn !== void 0
+    ? formatFn(val)
+    : val
+  // eslint-disable-next-line no-void
+  formatted = formatted === void 0 || formatted === null
+    ? ''
+    : String(formatted)
+  formatted = formatted.split('"').join('""')
+  return `"${formatted}"`
+}
 export default {
   getRandomData,
   getRandomRangeInt,
@@ -144,5 +200,8 @@ export default {
   confirm,
   alert,
   resetObj,
-  resetArray
+  resetArray,
+  showLoading,
+  hideLoading,
+  exportTable
 }
