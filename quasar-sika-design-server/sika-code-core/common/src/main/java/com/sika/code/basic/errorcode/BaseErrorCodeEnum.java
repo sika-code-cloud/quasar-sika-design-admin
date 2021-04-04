@@ -67,7 +67,7 @@ public enum BaseErrorCodeEnum implements BaseErrorCode {
 	}
 
 	@Override
-	public String getMessage() {
+	public String getDesc() {
 		return this.message;
 	}
 }
