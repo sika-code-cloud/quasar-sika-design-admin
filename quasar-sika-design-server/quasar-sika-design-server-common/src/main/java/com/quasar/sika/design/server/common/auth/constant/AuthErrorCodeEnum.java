@@ -25,7 +25,7 @@ public enum AuthErrorCodeEnum implements BaseErrorCode {
     }
 
     @Override
-    public String getMessage() {
+    public String getDesc() {
         return this.message;
     }
 }

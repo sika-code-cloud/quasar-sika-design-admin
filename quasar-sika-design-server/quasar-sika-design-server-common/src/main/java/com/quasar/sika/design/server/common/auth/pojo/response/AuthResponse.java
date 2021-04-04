@@ -35,7 +35,7 @@ public class AuthResponse {
     public static AuthResponse error(AuthErrorCodeEnum errorCodeEnum) {
         return new AuthResponse()
                 .setErrorCode(errorCodeEnum.getCode())
-                .setMessage(errorCodeEnum.getMessage())
+                .setMessage(errorCodeEnum.getDesc())
                 .build();
     }
 }

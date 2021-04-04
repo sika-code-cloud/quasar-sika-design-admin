@@ -8,7 +8,6 @@ import com.sika.code.basic.pojo.dto.ServiceResult;
 import com.sika.code.basic.util.BaseUtil;
 import com.sika.code.common.array.ArrayUtil;
 import com.sika.code.common.json.util.JSONUtil;
-import com.sika.code.common.string.util.StringUtil;
 import com.sika.code.informer.BaseInformer;
 import com.google.common.collect.Lists;
 import lombok.Data;
@@ -62,7 +61,7 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(BaseErrorCode e) {
-        this(e.getCode(), e.getMessage());
+        this(e.getCode(), e.getDesc());
     }
 
     public BusinessException(BaseErrorCode baseErrorCode, String message) {

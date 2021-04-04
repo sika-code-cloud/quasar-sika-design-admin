@@ -11,7 +11,7 @@ import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckMailCod
 import com.quasar.sika.design.server.common.mail.pojo.request.CheckMailRequest;
 import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
 import com.sika.code.exception.BusinessException;
-import com.sika.code.standard.base.executor.DomainExecutor;
+import com.sika.code.standard.base.executor.StandardExecutorManager;
 import com.sika.code.standard.base.pojo.bo.request.BaseStandardRequestBO;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -39,7 +39,7 @@ public class AuthRegisterRequestBO extends BaseStandardRequestBO<AuthResponseBO>
         // 图片验证码校验
         captchaService().checkCaptchaVerifyCode(captchaCheckRequest);
         // 邮箱验证码校验
-        DomainExecutor.execute(checkMailCodeRequestBO);
+        StandardExecutorManager.execute(checkMailCodeRequestBO);
         // 校验用户名
         authService().checkRegisterUsername(registerRequest);
         // 校验邮箱

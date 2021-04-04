@@ -15,5 +15,5 @@ public enum MsgTypeEnum implements CodeEnumInf {
     MARKDOWN("markdown", "Markdown消息"),
     ;
     private String code;
-    private String message;
+    private String desc;
 }
