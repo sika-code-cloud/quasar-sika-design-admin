@@ -1,11 +1,15 @@
 package com.sika.code.standard.auth.constant;
 
 import com.sika.code.basic.errorcode.BaseErrorCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * @author daiqi
  * @create 2018-12-14 22:22
  */
+@AllArgsConstructor
+@Getter
 public enum AuthErrorCode implements BaseErrorCode {
     /** 登录信息失效 --- AUTH_000001 */
     LOGIN_INFO_INVALID("AUTH_000001", "%s"),
@@ -24,19 +28,4 @@ public enum AuthErrorCode implements BaseErrorCode {
     ;
     private String code;
     private String message;
-
-    AuthErrorCode(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    @Override
-    public String getCode() {
-        return this.code;
-    }
-
-    @Override
-    public String getDesc() {
-        return this.message;
-    }
 }

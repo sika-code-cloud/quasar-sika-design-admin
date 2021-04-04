@@ -19,5 +19,5 @@ public enum HttpErrorCodeEnum implements BaseErrorCode {
      */
     HTTP_CONTENT_FORMAT_WRONG("HTTP_000001", "内容格式有误");
     private String code;
-    private String desc;
+    private String message;
 }

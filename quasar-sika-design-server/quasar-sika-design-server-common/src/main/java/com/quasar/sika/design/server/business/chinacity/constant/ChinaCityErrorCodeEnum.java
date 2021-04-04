@@ -28,5 +28,5 @@ public enum ChinaCityErrorCodeEnum implements BaseErrorCode {
     /**
      * 错误信息
      */
-    private String desc;
+    private String message;
 }
