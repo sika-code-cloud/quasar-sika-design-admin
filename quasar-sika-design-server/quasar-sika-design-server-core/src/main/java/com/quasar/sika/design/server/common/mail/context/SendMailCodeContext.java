@@ -1,7 +1,8 @@
 package com.quasar.sika.design.server.common.mail.context;
 
+import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
 import com.quasar.sika.design.server.common.executor.enums.ExecutorEnum;
-import com.quasar.sika.design.server.common.mail.pojo.request.CheckMailRequest;
+import com.quasar.sika.design.server.common.mail.pojo.request.SendMailRequest;
 import com.sika.code.standard.base.pojo.context.BaseStandardContext;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -13,11 +14,13 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class CheckMailCodeContext extends BaseStandardContext {
-    protected CheckMailRequest request;
+public class SendMailCodeContext extends BaseStandardContext {
+    public static final Integer RANDOM_LENGTH = 6;
+    protected CaptchaCheckRequest captchaCheckRequest;
+    protected SendMailRequest request;
 
     @Override
     public String getExecutorKey() {
-        return ExecutorEnum.CHECK_MAIL.getCode();
+        return ExecutorEnum.SEND_MAIL.getCode();
     }
 }
