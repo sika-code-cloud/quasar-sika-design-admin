@@ -10,14 +10,13 @@ import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
-import com.quasar.sika.design.server.common.executor.manager.ExecutorManager;
+import com.quasar.sika.design.server.common.controller.BaseSikaDesignServerController;
 import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.sender.SendMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.context.CheckMailCodeContext;
+import com.quasar.sika.design.server.common.mail.context.SendMailCodeContext;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
-import com.sika.code.standard.base.controller.BaseStandardController;
 import com.sika.code.standard.base.executor.StandardExecutorManager;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
@@ -42,13 +41,11 @@ import java.io.IOException;
  */
 @RestController(value = "authController")
 @RequestMapping("auth")
-public class AuthController extends BaseStandardController {
+public class AuthController extends BaseSikaDesignServerController {
     @Autowired
     private AuthService authService;
     @Autowired
     private CaptchaService captchaService;
-    @Autowired
-    private ExecutorManager executorManager;
 
     /** 忘记密码-----begin */
     /**
@@ -116,7 +113,7 @@ public class AuthController extends BaseStandardController {
     @PostMapping("/check_mail_code/anon")
     @ResponseBody
     public Result checkMailCode(@RequestBody CheckMailCodeContext context) {
-        return success(executorManager.execute(context));
+        return success(execute(context));
     }
 
     /**
@@ -124,8 +121,8 @@ public class AuthController extends BaseStandardController {
      */
     @PostMapping("/send_mail_code/anon")
     @ResponseBody
-    public Result sendUserRegisterMailCode(@RequestBody SendMailCodeRequestBO requestBo) {
-        return success(StandardExecutorManager.execute(requestBo));
+    public Result sendUserRegisterMailCode(@RequestBody SendMailCodeContext context) {
+        return success(execute(context));
     }
 
     /**
