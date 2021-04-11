@@ -1,8 +1,8 @@
 package com.quasar.sika.design.server.common.auth;
 
 
-import com.quasar.sika.design.server.common.auth.bo.request.AuthFindBackPasswordRequestBO;
-import com.quasar.sika.design.server.common.auth.bo.request.AuthRegisterRequestBO;
+import com.quasar.sika.design.server.common.auth.context.AuthFindBackPasswordContext;
+import com.quasar.sika.design.server.common.auth.context.AuthRegisterContext;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
 import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
@@ -11,13 +11,11 @@ import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckReq
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
 import com.quasar.sika.design.server.common.controller.BaseSikaDesignServerController;
-import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckMailCodeRequestBO;
 import com.quasar.sika.design.server.common.mail.context.CheckMailCodeContext;
 import com.quasar.sika.design.server.common.mail.context.SendMailCodeContext;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
-import com.sika.code.standard.base.executor.StandardExecutorManager;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -62,8 +60,8 @@ public class AuthController extends BaseSikaDesignServerController {
      */
     @PostMapping("/find_back_password/anon")
     @ResponseBody
-    public Result findBackPassword(@RequestBody AuthFindBackPasswordRequestBO requestBO) {
-        return success(StandardExecutorManager.execute(requestBO));
+    public Result findBackPassword(@RequestBody AuthFindBackPasswordContext context) {
+        return execute(context);
     }
     /** 忘记密码-----end */
     /** 授权登录-----begin */
@@ -101,19 +99,10 @@ public class AuthController extends BaseSikaDesignServerController {
     /**
      * 用户注册 - 校验邮箱验证码
      */
-    @PostMapping("/check_mail_code_old/anon")
-    @ResponseBody
-    public Result checkMailCodeOld(@RequestBody CheckMailCodeRequestBO requestBo) {
-        return success(StandardExecutorManager.execute(requestBo));
-    }
-
-    /**
-     * 用户注册 - 校验邮箱验证码
-     */
     @PostMapping("/check_mail_code/anon")
     @ResponseBody
     public Result checkMailCode(@RequestBody CheckMailCodeContext context) {
-        return success(execute(context));
+        return execute(context);
     }
 
     /**
@@ -122,7 +111,7 @@ public class AuthController extends BaseSikaDesignServerController {
     @PostMapping("/send_mail_code/anon")
     @ResponseBody
     public Result sendUserRegisterMailCode(@RequestBody SendMailCodeContext context) {
-        return success(execute(context));
+        return execute(context);
     }
 
     /**
@@ -249,8 +238,8 @@ public class AuthController extends BaseSikaDesignServerController {
      * 授权登录-----end
      */
     @PostMapping("/register/anon")
-    public Result register(@RequestBody AuthRegisterRequestBO requestBO) {
-        return super.success(StandardExecutorManager.execute(requestBO).getResponse());
+    public Result register(@RequestBody AuthRegisterContext context) {
+        return super.execute(context);
     }
 
     @PostMapping("/update_current_password")

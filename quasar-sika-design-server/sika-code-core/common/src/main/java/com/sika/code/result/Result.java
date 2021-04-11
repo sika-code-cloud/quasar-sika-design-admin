@@ -4,6 +4,7 @@ package com.sika.code.result;
 import com.sika.code.basic.errorcode.BaseErrorCode;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.basic.pojo.dto.BaseMsgDTO;
+import com.sika.code.basic.pojo.dto.ServiceResult;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -32,6 +33,12 @@ public class Result extends BaseMsgDTO implements Serializable {
         this.message = message;
     }
 
+    private Result(String code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
 
     private Result(Object data) {
         super(data);
@@ -52,6 +59,14 @@ public class Result extends BaseMsgDTO implements Serializable {
      * @date 2019/5/9 20:39
      */
     public static Result newInstance(Object data) {
+        if (data instanceof ServiceResult) {
+            ServiceResult<?> result = (ServiceResult<?>) data;
+            if (result.getSuccess()) {
+                return new Result(result.getResult());
+            } else {
+                return new Result(result.getCode(), result.getMessage(), result.getResult());
+            }
+        }
         return new Result(data);
     }
 

@@ -3,6 +3,7 @@ package com.quasar.sika.design.server.common.auth.domain;
 import com.quasar.sika.design.server.business.user.service.UserService;
 import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
+import com.quasar.sika.design.server.common.executor.manager.ExecutorManager;
 import com.quasar.sika.design.server.common.mail.service.MailService;
 import com.sika.code.standard.base.pojo.domain.BaseStandardDomain;
 
@@ -25,5 +26,9 @@ public interface AuthDomain extends BaseStandardDomain {
 
     default CaptchaService captchaService() {
         return getBean(CaptchaService.class);
+    }
+
+    default ExecutorManager executorManager() {
+        return getBean(ExecutorManager.class);
     }
 }
