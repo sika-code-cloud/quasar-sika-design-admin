@@ -2,6 +2,7 @@ package com.quasar.sika.design.server.common.controller;
 
 import com.quasar.sika.design.server.common.executor.manager.ExecutorManager;
 import com.sika.code.basic.pojo.dto.ServiceResult;
+import com.sika.code.result.Result;
 import com.sika.code.standard.base.controller.BaseStandardController;
 import com.sika.code.standard.base.pojo.context.BaseStandardContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,11 @@ public class BaseSikaDesignServerController extends BaseStandardController {
     @Autowired
     protected ExecutorManager executorManager;
 
-    protected ServiceResult execute(BaseStandardContext context) {
+    protected Result execute(BaseStandardContext context) {
+        return success(doExecute(context));
+    }
+
+    private ServiceResult doExecute(BaseStandardContext context) {
         return executorManager.execute(context);
     }
 }

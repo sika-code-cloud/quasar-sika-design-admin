@@ -29,6 +29,7 @@ public abstract class BaseStandardExecutor<Context extends BaseStandardContext> 
             if (!needExecute()) {
                 return result;
             }
+            this.context.init();
             executeBefore();
             result = doExecute();
             executeAfter();

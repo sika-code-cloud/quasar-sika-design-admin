@@ -1,14 +1,14 @@
-package com.quasar.sika.design.server.business.thirdoauthuser.bo.request;
+package com.quasar.sika.design.server.business.thirdoauthuser.executor;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.quasar.sika.design.server.business.thirdoauthuser.bo.response.ThirdOauthUserModifyResponseBO;
+import com.quasar.sika.design.server.business.thirdoauthuser.context.ThirdOauthUserModifyContext;
 import com.quasar.sika.design.server.business.thirdoauthuser.pojo.dto.ThirdOauthUserDTO;
 import com.quasar.sika.design.server.business.thirdoauthuser.service.ThirdOauthUserService;
+import com.sika.code.basic.pojo.dto.ServiceResult;
 import com.sika.code.basic.util.Assert;
 import com.sika.code.basic.util.BaseUtil;
-import com.sika.code.common.factory.BeanFactory;
-import com.sika.code.standard.base.pojo.bo.request.BaseStandardRequestBO;
 import com.sika.code.standard.base.pojo.domain.BaseStandardDomain;
+import com.sika.code.standard.base.pojo.executor.BaseStandardExecutor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import me.zhyd.oauth.model.AuthUser;
@@ -18,17 +18,14 @@ import me.zhyd.oauth.model.AuthUser;
  */
 @Data
 @Accessors(chain = true)
-public class ThirdOauthUserModifyRequestBO extends BaseStandardRequestBO<ThirdOauthUserModifyResponseBO> implements BaseStandardDomain {
-    private AuthUser authUser;
-    private String state;
-
+public class ThirdOauthUserModifyExecutor extends BaseStandardExecutor<ThirdOauthUserModifyContext> implements BaseStandardDomain {
     @Override
-    protected void init() {
-
+    protected void executeBefore() {
+        verify();
     }
 
-    @Override
     protected void verify() {
+        AuthUser authUser = context.getAuthUser();
         // 断言校验
         Assert.verifyObjNull(authUser, "授权用户");
         // 断言校验uuid
@@ -38,7 +35,8 @@ public class ThirdOauthUserModifyRequestBO extends BaseStandardRequestBO<ThirdOa
     }
 
     @Override
-    protected ThirdOauthUserModifyResponseBO doExecute() {
+    protected ServiceResult doExecute() {
+        AuthUser authUser = context.getAuthUser();
         ThirdOauthUserDTO oauthUserDTO = BeanUtil.copyProperties(authUser, ThirdOauthUserDTO.class);
         // 从数据库中查询用户是否存在
         ThirdOauthUserDTO oauthUserFromDb = getThirdOauthUserService().findByUuidAndSource(authUser.getUuid(), authUser.getSource());
@@ -46,18 +44,13 @@ public class ThirdOauthUserModifyRequestBO extends BaseStandardRequestBO<ThirdOa
         if (BaseUtil.isNotNull(oauthUserFromDb)) {
             oauthUserDTO.setId(oauthUserFromDb.getId());
         }
-        oauthUserDTO.setState(this.state);
+        oauthUserDTO.setState(context.getState());
         ThirdOauthUserDTO oauthUserUpdated = getThirdOauthUserService().saveOrUpdateAndRet(oauthUserDTO);
-        return BeanFactory.newResponseBO(this, oauthUserUpdated);
+        return ServiceResult.newInstanceOfSucResult(oauthUserUpdated);
     }
 
     private ThirdOauthUserService getThirdOauthUserService() {
         return getBean(ThirdOauthUserService.class);
-    }
-
-    @Override
-    public Class<ThirdOauthUserModifyResponseBO> responseClass() {
-        return ThirdOauthUserModifyResponseBO.class;
     }
 
 }
