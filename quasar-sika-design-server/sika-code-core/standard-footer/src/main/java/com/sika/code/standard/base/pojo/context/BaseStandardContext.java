@@ -13,4 +13,9 @@ public abstract class BaseStandardContext implements BaseContext {
      * 获取执行者的key
      */
     public abstract String getExecutorKey();
+
+    @Override
+    public void clear() {
+
+    }
 }
