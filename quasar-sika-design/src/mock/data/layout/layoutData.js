@@ -14,9 +14,22 @@ const routeDatas = [
     children: [
       {
         name: '用户管理',
-        group: '/system-manage',
+        group: '/system-manage/user',
         icon: 'dashboard',
-        to: '/system-manage/user'
+        children: [
+          {
+            name: '用户基础信息',
+            group: '/system-manage/user/base',
+            icon: 'dashboard',
+            to: '/system-manage/user/base'
+          },
+          {
+            name: '用户授权信息',
+            group: '/system-manage/user/oauth',
+            icon: 'dashboard',
+            to: '/system-manage/user/oauth'
+          }
+        ]
       },
       {
         name: '角色管理',

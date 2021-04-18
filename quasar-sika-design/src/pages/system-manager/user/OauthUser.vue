@@ -208,7 +208,7 @@
                 class="my-sticky-header-table"
                 square
                 flat
-                title-class="text-body1"
+                title-class="text-body2"
                 color="primary"
                 :data="filterListData"
                 :columns="tableListData.tableListDatas.columns"
@@ -558,7 +558,7 @@
 import { date } from 'quasar'
 import USER_DATA from '@/mock/data/system-manager/userData'
 import commonUtil from 'src/utils/commonUtil'
-import { pageUser, updateUser } from 'src/api/user'
+import { pageOauthUser } from 'src/api/oauthUser'
 
 export default {
   name: 'ScQueryTable',
@@ -619,7 +619,7 @@ export default {
         sortType = 'ASC'
       }
       console.log(rowsPerPage)
-      pageUser({
+      pageOauthUser({
         sortColumn: sortColumn,
         sortType: sortType,
         pageSize: rowsPerPage,
