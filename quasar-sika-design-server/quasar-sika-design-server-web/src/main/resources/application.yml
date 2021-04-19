@@ -16,6 +16,9 @@ spring:
     parser:
       allow-unquoted-control-chars: true
       allow-single-quotes: true
+    default-property-inclusion: NON_NULL
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 ## ==========================jsckson配置=====================================
 
 ## =====================switch必须为true=============================
