@@ -68,7 +68,7 @@ public class BaseMsgDTO {
             success = true;
         }
         setCode(errorCode.getCode());
-        setMessage(errorCode.getMessage());
+        setMessage(errorCode.getDesc());
         setSuccess(success);
         setData(data);
     }

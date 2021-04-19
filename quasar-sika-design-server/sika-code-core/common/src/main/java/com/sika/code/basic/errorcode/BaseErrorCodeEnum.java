@@ -1,5 +1,8 @@
 package com.sika.code.basic.errorcode;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 
  * <p>
@@ -9,6 +12,8 @@ package com.sika.code.basic.errorcode;
  * @author daiqi
  * 创建时间    2018年2月2日 下午4:07:03
  */
+@Getter
+@AllArgsConstructor
 public enum BaseErrorCodeEnum implements BaseErrorCode {
 	/** 成功---BASE_000000 */
 	SUCCESS("BASE_000000", "成功"),
@@ -54,20 +59,4 @@ public enum BaseErrorCodeEnum implements BaseErrorCode {
 
 	private String code;
 	private String message;
-	
-	BaseErrorCodeEnum(String code, String message) {
-		this.code = code;
-		this.message = message;
-	}
-
-
-	@Override
-	public String getCode() {
-		return this.code;
-	}
-
-	@Override
-	public String getMessage() {
-		return this.message;
-	}
 }

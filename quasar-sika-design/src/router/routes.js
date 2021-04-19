@@ -11,13 +11,24 @@ const routes = [
     ]
   },
   {
-    path: '/system-manage/user',
-    name: '/system-manage/user',
+    path: '/system-manage/user/base',
+    name: '/system-manage/user/base',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('pages/system-manager/User')
+        component: () => import('pages/system-manager/user/BaseUser')
+      }
+    ]
+  },
+  {
+    path: '/system-manage/user/oauth',
+    name: '/system-manage/user/oauth',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/system-manager/user/OauthUser')
       }
     ]
   },

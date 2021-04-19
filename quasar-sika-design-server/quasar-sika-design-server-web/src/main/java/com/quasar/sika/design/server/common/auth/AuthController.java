@@ -1,8 +1,8 @@
 package com.quasar.sika.design.server.common.auth;
 
 
-import com.quasar.sika.design.server.common.auth.bo.request.AuthFindBackPasswordRequestBO;
-import com.quasar.sika.design.server.common.auth.bo.request.AuthRegisterRequestBO;
+import com.quasar.sika.design.server.common.auth.context.AuthFindBackPasswordContext;
+import com.quasar.sika.design.server.common.auth.context.AuthRegisterContext;
 import com.quasar.sika.design.server.common.auth.factory.AuthFactory;
 import com.quasar.sika.design.server.common.auth.pojo.request.*;
 import com.quasar.sika.design.server.common.auth.pojo.response.OauthResponse;
@@ -10,13 +10,12 @@ import com.quasar.sika.design.server.common.auth.service.AuthService;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
 import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaGenerateRequest;
 import com.quasar.sika.design.server.common.captcha.service.CaptchaService;
-import com.quasar.sika.design.server.common.mail.bo.request.checker.CheckMailCodeRequestBO;
-import com.quasar.sika.design.server.common.mail.bo.request.sender.SendMailCodeRequestBO;
+import com.quasar.sika.design.server.common.controller.BaseSikaDesignServerController;
+import com.quasar.sika.design.server.common.mail.context.CheckMailCodeContext;
+import com.quasar.sika.design.server.common.mail.context.SendMailCodeContext;
 import com.quasar.sika.design.server.common.shiro.util.ShiroUtils;
 import com.sika.code.basic.errorcode.BaseErrorCodeEnum;
 import com.sika.code.result.Result;
-import com.sika.code.standard.base.controller.BaseStandardController;
-import com.sika.code.standard.base.executor.DomainExecutor;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -40,7 +39,7 @@ import java.io.IOException;
  */
 @RestController(value = "authController")
 @RequestMapping("auth")
-public class AuthController extends BaseStandardController {
+public class AuthController extends BaseSikaDesignServerController {
     @Autowired
     private AuthService authService;
     @Autowired
@@ -61,8 +60,8 @@ public class AuthController extends BaseStandardController {
      */
     @PostMapping("/find_back_password/anon")
     @ResponseBody
-    public Result findBackPassword(@RequestBody AuthFindBackPasswordRequestBO requestBO) {
-        return success(DomainExecutor.execute(requestBO));
+    public Result findBackPassword(@RequestBody AuthFindBackPasswordContext context) {
+        return execute(context);
     }
     /** 忘记密码-----end */
     /** 授权登录-----begin */
@@ -98,12 +97,12 @@ public class AuthController extends BaseStandardController {
     }
 
     /**
-     * 用户注册 - 发送邮箱验证码
+     * 用户注册 - 校验邮箱验证码
      */
     @PostMapping("/check_mail_code/anon")
     @ResponseBody
-    public Result checkMailCode(@RequestBody CheckMailCodeRequestBO requestBo) {
-        return success(DomainExecutor.execute(requestBo));
+    public Result checkMailCode(@RequestBody CheckMailCodeContext context) {
+        return execute(context);
     }
 
     /**
@@ -111,8 +110,8 @@ public class AuthController extends BaseStandardController {
      */
     @PostMapping("/send_mail_code/anon")
     @ResponseBody
-    public Result sendUserRegisterMailCode(@RequestBody SendMailCodeRequestBO requestBo) {
-        return success(DomainExecutor.execute(requestBo));
+    public Result sendUserRegisterMailCode(@RequestBody SendMailCodeContext context) {
+        return execute(context);
     }
 
     /**
@@ -239,8 +238,8 @@ public class AuthController extends BaseStandardController {
      * 授权登录-----end
      */
     @PostMapping("/register/anon")
-    public Result register(@RequestBody AuthRegisterRequestBO requestBO) {
-        return super.success(DomainExecutor.execute(requestBO).getResponse());
+    public Result register(@RequestBody AuthRegisterContext context) {
+        return super.execute(context);
     }
 
     @PostMapping("/update_current_password")
@@ -271,7 +270,7 @@ public class AuthController extends BaseStandardController {
     @RequestMapping("/unLogin/anon")
     @ResponseBody
     public Result unLogin() {
-        return fail(BaseErrorCodeEnum.UN_AUTH, BaseErrorCodeEnum.UN_AUTH.getMessage());
+        return fail(BaseErrorCodeEnum.UN_AUTH, BaseErrorCodeEnum.UN_AUTH.getDesc());
     }
 
     /**

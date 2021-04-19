@@ -97,7 +97,7 @@ public class ServiceResult<Result> {
      * 创建时间    2018年2月2日 下午4:42:04
      */
     public static ServiceResult newInstanceOfErrorFormat(BaseErrorCode errorCode, Object... formatValues) {
-        String message = errorCode.getMessage();
+        String message = errorCode.getDesc();
         return newInstance(errorCode).buildMessage(String.format(message, formatValues));
     }
 
@@ -175,7 +175,7 @@ public class ServiceResult<Result> {
      */
     public ServiceResult buildCode(BaseErrorCode baseErrorCode) {
         this.baseErrorCode = baseErrorCode;
-        buildCodeAndMessage(baseErrorCode.getCode(), baseErrorCode.getMessage());
+        buildCodeAndMessage(baseErrorCode.getCode(), baseErrorCode.getDesc());
         return this;
     }
  /**
@@ -215,7 +215,7 @@ public class ServiceResult<Result> {
 
     public String getMessage() {
         if (StringUtil.isEmpty(this.message) && BaseUtil.isNotNull(baseErrorCode)) {
-            this.message = baseErrorCode.getMessage();
+            this.message = baseErrorCode.getDesc();
         }
         return message;
     }

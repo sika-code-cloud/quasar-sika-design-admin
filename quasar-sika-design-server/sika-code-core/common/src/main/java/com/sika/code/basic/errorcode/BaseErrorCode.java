@@ -9,5 +9,9 @@ import com.sika.code.basic.constant.CodeEnumInf;
  * @date 2018/3/21 21:17
  */
 public interface BaseErrorCode extends CodeEnumInf {
+    String getMessage();
 
+    default String getDesc() {
+        return getMessage();
+    }
 }

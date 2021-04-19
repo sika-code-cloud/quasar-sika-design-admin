@@ -129,7 +129,7 @@ public class ResultGenerator {
             result.setMessage(exception.getMessage());
         } else {
             result.setCode(BaseErrorCodeEnum.SYS_EXCEPTION.getCode());
-            result.setMessage(BaseErrorCodeEnum.SYS_EXCEPTION.getMessage());
+            result.setMessage(BaseErrorCodeEnum.SYS_EXCEPTION.getDesc());
         }
         result.setSuccess(false);
     }

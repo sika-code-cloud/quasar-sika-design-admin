@@ -14,5 +14,6 @@ public interface CodeEnumInf {
     /**
      * 信息
      */
-    String getMessage();
+    String getDesc();
+
 }
