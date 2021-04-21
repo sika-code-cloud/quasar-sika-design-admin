@@ -378,8 +378,7 @@
               maxlength="32"
               square
               :rules="[
-                  (val) => (val && val.length > 0) || '请输入密码',
-                  (val) => (val && val.length >= 6) || '密码长度必须大于等于6位'
+                  (val) => (val && val.length > 0) || '请输入密码'
                 ]"
             >
               <template v-slot:prepend>
@@ -405,7 +404,7 @@
               maxlength="32"
               square
               :rules="[
-                  (val) => (val && val.length > 0) || '请输入密码',
+                  (val) => (val && val.length > 0) || '请输入新密码',
                   (val) => (val && val.length >= 6) || '密码长度必须大于等于6位'
                 ]"
             >
@@ -432,7 +431,7 @@
               maxlength="32"
               square
               :rules="[
-                  (val) => (val && val.length > 0) || '请输入确认密码',
+                  (val) => (val && val.length > 0) || '请输入确认新密码',
                   (val) => (passwordValida) || '两次密码不一致'
                 ]"
             >
@@ -448,11 +447,11 @@
               </template>
             </q-input>
           </q-item-label>
+          <q-card-actions align="right" class="q-mb-sm q-mr-sm">
+            <q-btn label="确认" unelevated color="primary" type="submit" style="width: 64px"/>
+            <q-btn label="取消" unelevated color="primary" v-close-popup  style="width: 64px" />
+          </q-card-actions>
         </q-form>
-        <q-card-actions align="right" class="q-mb-sm q-mr-sm">
-          <q-btn label="确认" unelevated color="primary" @click="updatePassword" />
-          <q-btn label="取消" unelevated color="primary" v-close-popup />
-        </q-card-actions>
       </q-card>
     </q-dialog>
   </div>

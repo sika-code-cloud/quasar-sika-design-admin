@@ -74,7 +74,7 @@ spring:
         max-lifetime: 30000
         connection-timeout: 30000
         connection-test-query: SELECT 1
-        jdbc-url: jdbc:mysql://121.89.202.68:3306/sika-design-admin?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://121.89.202.68:3306/sika-design-admin?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
         username: root
         password: SikaDesignAdmin20201225
         driver-class-name:  com.mysql.cj.jdbc.Driver
