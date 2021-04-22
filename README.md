@@ -36,17 +36,23 @@ PC端示例
     <img src="http://quasar.sikacode.com/demo/pc/dashboard_workplace.png" width="49%" height="160px">
 </div>
 
+***
+
 <div style="float:left;border:solid 1px #000;margin:2px;">
     <img src="http://quasar.sikacode.com/demo/pc/dashboard_monitor.png" width="32%">
     <img src="http://quasar.sikacode.com/demo/pc/account_center.png" width="32%">
     <img src="http://quasar.sikacode.com/demo/pc/account_settings.png" width="32%">
 </div>
 
+***
+
 <div style="float:left;border:solid 1px #000;margin:2px;">
     <img src="http://quasar.sikacode.com/demo/pc/account_settings.png" width="32%">
     <img src="http://quasar.sikacode.com/demo/pc/form_advanced-form.png" width="32%">
     <img src="http://quasar.sikacode.com/demo/pc/list_goodsList.png" width="32%">
 </div>
+
+***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
     <img src="http://quasar.sikacode.com/demo/pc/list_goodsList.png" width="32%">
@@ -62,6 +68,8 @@ mobile端示例
     <img src="http://quasar.sikacode.com/demo/mobile/dashboard_analysis2.png" width="24%" >
     <img src="http://quasar.sikacode.com/demo/mobile/dashboard_monitor.png" width="24%"  >
 </div>
+
+***
 
 <div style="border:solid 1px #000;margin:2px; text-align: center">
     <img src="http://quasar.sikacode.com/demo/mobile/dashboard_workplace.png" width="24%">
