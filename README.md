@@ -31,48 +31,44 @@ Overview
 
 PC端示例
 ----
-![dashboard](http://quasar.sikacode.com/demo/pc/dashboard_analysis.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/dashboard_monitor.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/dashboard_workplace.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/account_center.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/account_settings.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/form_advanced-form.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/list_goodsList.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/profile_advanced.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/pc/right_lan.png)
+<div style="float:left;border:solid 1px #000;margin:2px;">
+    <img src="http://quasar.sikacode.com/demo/pc/dashboard_analysis.png" width="49%" height="160px">
+    <img src="http://quasar.sikacode.com/demo/pc/dashboard_workplace.png" width="49%" height="160px">
+</div>
+
+<div style="float:left;border:solid 1px #000;margin:2px;">
+    <img src="http://quasar.sikacode.com/demo/pc/dashboard_monitor.png" width="32%">
+    <img src="http://quasar.sikacode.com/demo/pc/account_center.png" width="32%">
+    <img src="http://quasar.sikacode.com/demo/pc/account_settings.png" width="32%">
+</div>
+
+<div style="float:left;border:solid 1px #000;margin:2px;">
+    <img src="http://quasar.sikacode.com/demo/pc/account_settings.png" width="32%">
+    <img src="http://quasar.sikacode.com/demo/pc/form_advanced-form.png" width="32%">
+    <img src="http://quasar.sikacode.com/demo/pc/list_goodsList.png" width="32%">
+</div>
+
+<div style="float:left;border:solid 1px #000;margin:2px;">
+    <img src="http://quasar.sikacode.com/demo/pc/list_goodsList.png" width="32%">
+    <img src="http://quasar.sikacode.com/demo/pc/profile_advanced.png" width="32%">
+    <img src="http://quasar.sikacode.com/demo/pc/right_lan.png" width="32%">
+</div>
 
 mobile端示例
 ----
+<div style="float:left;border:solid 1px #000;margin:2px;">
+    <img src="http://quasar.sikacode.com/demo/mobile/dashboard_analysis.png" width="24%">
+    <img src="http://quasar.sikacode.com/demo/mobile/dashboard_analysis1.png" width="24%">
+    <img src="http://quasar.sikacode.com/demo/mobile/dashboard_analysis2.png" width="24%" >
+    <img src="http://quasar.sikacode.com/demo/mobile/dashboard_monitor.png" width="24%"  >
+</div>
 
-![dashboard](http://quasar.sikacode.com/demo/mobile/dashboard_analysis.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/dashboard_analysis1.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/dashboard_analysis2.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/dashboard_monitor.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/dashboard_workplace.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/account_center.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/account_settings.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/list_goods-list.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/profile_advanced.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/user_login.png)
-***
-![dashboard](http://quasar.sikacode.com/demo/mobile/user_register.png)
+<div style="border:solid 1px #000;margin:2px; text-align: center">
+    <img src="http://quasar.sikacode.com/demo/mobile/dashboard_workplace.png" width="24%">
+    <img src="http://quasar.sikacode.com/demo/mobile/account_center.png" width="24%" >
+    <img src="http://quasar.sikacode.com/demo/mobile/account_settings.png" width="24%">
+    <img src="http://quasar.sikacode.com/demo/mobile/list_goods-list.png" width="24%">
+</div>
 
 前端环境和依赖
 ----
