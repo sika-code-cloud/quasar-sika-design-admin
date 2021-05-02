@@ -156,18 +156,18 @@ mobile端示例
 
 #### Controller&Service&Mapper&Xml 由代码生成器生成 
 
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/controller.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/service.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/mapper.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/dao_xml.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/controller.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/service.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/mapper.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/dao_xml.png">
 
 ***
 
 #### Context&Executor【按领域划分】
 
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/context.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/executor.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/executor1.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/context.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/executor.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/executor1.png">
 
 前端环境和依赖
 ----
