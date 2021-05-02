@@ -151,6 +151,27 @@ mobile端示例
     <img src="http://quasar.sikacode.com/demo/mobile/list_goods-list.png" width="24%">
 </div>
 
+服务端代码示例
+----
+
+#### Controller&Service&Mapper&Xml 由代码生成器生成 
+
+<div style="border:solid 1px #000;margin:2px; text-align: center">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/controller.png" width="24%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/service.png" width="24%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/mapper.png" width="24%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/dao_xml.png" width="24%">
+</div>
+
+#### Context&Executor【按领域划分】
+***
+
+<div style="border:solid 1px #000;margin:2px; text-align: center">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/context.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/executor.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design-admin/blob/main/quasar-sika-design-server/doc/demo/executor1.png" width="32%">
+</div>
+
 前端环境和依赖
 ----
 - node
