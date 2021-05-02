@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  * @since 2021-01-07 23:34:58
  */
 @Service(value = "logininforService")
-public class LogininforServiceImpl extends BaseStandardServiceImpl<LogininforMapper, LogininforEntity, LogininforDTO> implements LogininforService {
+public class   LogininforServiceImpl extends BaseStandardServiceImpl<LogininforMapper, LogininforEntity, LogininforDTO> implements LogininforService {
     @Autowired
     private LogininforMapper logininforMapper;
 
