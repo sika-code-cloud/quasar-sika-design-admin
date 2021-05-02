@@ -105,50 +105,49 @@ Overview
 PC端示例
 ----
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/dashboard_analysis.png" width="49%" height="160px">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/dashboard_workplace.png" width="49%" height="160px">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/dashboard_analysis.png" width="49%" height="160px">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/dashboard_workplace.png" width="49%" height="160px">
 </div>
 
 ***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/dashboard_monitor.png" width="32%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/account_center.png" width="32%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/account_settings.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/dashboard_monitor.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/account_center.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/account_settings.png" width="32%">
 </div>
 
 ***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/account_settings.png" width="32%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/form_advanced-form.png" width="32%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/list_goodsList.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/account_settings.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/form_advanced-form.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/list_goodsList.png" width="32%">
 </div>
 
 ***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/list_goodsList.png" width="32%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/profile_advanced.png" width="32%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/pc/right_lan.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/list_goodsList.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/profile_advanced.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/pc/right_lan.png" width="32%">
 </div>
 
 mobile端示例
 ----
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/dashboard_analysis.png" width="24%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/dashboard_analysis1.png" width="24%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/dashboard_analysis2.png" width="24%" >
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/dashboard_monitor.png" width="24%"  >
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/dashboard_analysis.png" width="24%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/dashboard_analysis1.png" width="24%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/dashboard_analysis2.png" width="24%" >
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/dashboard_monitor.png" width="24%"  >
 </div>
 
 ***
 
 <div style="border:solid 1px #000;margin:2px; text-align: center">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/dashboard_workplace.png" width="24%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/account_center.png" width="24%" >
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/account_settings.png" width="24%">
-    <img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design/main/public/demo/mobile/list_goods-list.png" width="24%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/dashboard_workplace.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/account_settings.png" width="32%">
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/list_goods-list.png" width="32%">
 </div>
 
 服务端代码示例
@@ -156,18 +155,18 @@ mobile端示例
 
 #### Controller&Service&Mapper&Xml 由代码生成器生成 
 
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/controller.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/service.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/mapper.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/dao_xml.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/controller.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/service.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/mapper.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/dao_xml.png">
 
 ***
 
 #### Context&Executor【按领域划分】
 
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/context.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/executor.png">
-<img src="https://raw.githubusercontent.com/dq-open-cloud/quasar-sika-design-admin/main/quasar-sika-design-server/doc/demo/executor1.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/context.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/executor.png">
+<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/executor1.png">
 
 前端环境和依赖
 ----
