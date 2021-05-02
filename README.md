@@ -146,7 +146,7 @@ mobile端示例
 
 <div style="border:solid 1px #000;margin:2px; text-align: center">
     <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/dashboard_workplace.png" width="24%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/account_center.png" width="24%" >
+    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/account_settings.png" width="24%" >
     <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/account_settings.png" width="24%">
     <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo/mobile/list_goods-list.png" width="24%">
 </div>
