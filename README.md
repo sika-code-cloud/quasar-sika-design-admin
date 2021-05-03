@@ -105,69 +105,462 @@ Overview
 PC端示例
 ----
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/dashboard_analysis.png" width="49%" height="160px">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/dashboard_workplace.png" width="49%" height="160px">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/dashboard_analysis.png" width="49%" height="160px">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/dashboard_workplace.png" width="49%" height="160px">
 </div>
 
 ***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/dashboard_monitor.png" width="32%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/account_center.png" width="32%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/account_settings.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/dashboard_monitor.png" width="32%" height="120px">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/dashboard_workplace.png" width="32%" height="120px">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/account_settings.png" width="32%" height="120px">
 </div>
 
 ***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/account_settings.png" width="32%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/form_advanced-form.png" width="32%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/list_goodsList.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/account_settings.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/form_advanced-form.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/list_goodsList.png" width="32%">
 </div>
 
 ***
 
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/list_goodsList.png" width="32%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/profile_advanced.png" width="32%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/pc/right_lan.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/list_goodsList.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/profile_advanced.png" width="32%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/pc/right_lan.png" width="32%">
 </div>
 
 mobile端示例
 ----
 <div style="float:left;border:solid 1px #000;margin:2px;">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/analysis.png" width="24%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/analysis1.png" width="24%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/analysis2.png" width="24%" >
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/monitor.png" width="24%"  >
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/center1.png" width="24%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/center2.png" width="24%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/monitor2.png" width="24%" >
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/center.png" width="24%"  >
 </div>
 
 ***
 
 <div style="border:solid 1px #000;margin:2px; text-align: center">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/dashboard_workplace.png" width="24%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/account_settings.png" width="24%" >
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/account_settings.png" width="24%">
-    <img src="https://gitee.com/sikadai/quasar-sika-design/raw/main/public/demo_new/mobile/list_goods-list.png" width="24%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/dashboard_workplace1.png" width="24%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/account_settings.png" width="24%" >
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/account_settings.png" width="24%">
+    <img src="https://gitee.com/sikadai/sika-material/raw/master/quasar-sika-design/case/imgs/mobile/list_goods-list.png" width="24%">
 </div>
 
 服务端代码示例
 ----
 
-#### Controller&Service&Mapper&Xml 由代码生成器生成 
+#### Controller 由代码生成器生成
 
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/controller.png">
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/service.png">
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/mapper.png">
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/dao_xml.png">
+```
+package com.quasar.sika.design.server.business.menu.controller;
+import java.util.List;
+import com.sika.code.result.Result;
+import com.sika.code.standard.base.controller.BaseStandardController;
+import com.quasar.sika.design.server.business.menu.service.MenuService;
+import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
+import com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+/**
+ * <p>
+ * 菜单权限表 前端控制器
+ * </p>
+ *
+ * @author daiqi
+ * @since 2021-01-07 23:35:13
+ */
+@RestController(value = "menuController")
+@RequestMapping("menu")
+public class MenuController extends BaseStandardController {
+    @Autowired
+    private MenuService menuService;
 
-***
+    @RequestMapping(value = "save")
+    public Result save(@RequestBody MenuDTO menuDto) {
+        return super.success(menuService.save(menuDto));
+    }
 
-#### Context&Executor【按领域划分】
+    @RequestMapping(value = "save_batch")
+    public Result saveBatch(@RequestBody List<MenuDTO> menuDtos) {
+        return super.success(menuService.saveForBatch(menuDtos));
+    }
 
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/context.png">
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/executor.png">
-<img src="https://gitee.com/sikadai/quasar-sika-design-admin/raw/main/quasar-sika-design-server/doc/demo/executor1.png">
+    @RequestMapping(value = "update_by_id")
+    public Result updateById(@RequestBody MenuDTO menuDto) {
+        return super.success(menuService.updateById(menuDto));
+    }
+
+    @RequestMapping(value = "page")
+    public Result page(@RequestBody MenuQuery menuQuery) {
+        return super.success(menuService.page(menuQuery));
+    }
+
+    @RequestMapping(value = "find")
+    public Result find(@RequestBody MenuQuery menuQuery) {
+        return super.success(menuService.find(menuQuery));
+    }
+
+    @RequestMapping(value = "list")
+    public Result list(@RequestBody MenuQuery menuQuery) {
+        return super.success(menuService.list(menuQuery));
+    }
+}
+
+```
+#### Service 由代码生成器生成
+```
+package com.quasar.sika.design.server.business.menu.service;
+import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
+import com.sika.code.standard.base.service.BaseStandardService;
+import java.util.List;
+/**
+ * <p>
+ * 菜单权限表 服务类
+ * </p>
+ *
+ * @author daiqi
+ * @since 2021-01-07 23:35:09
+ */
+public interface MenuService extends BaseStandardService<MenuDTO> {
+
+}
+
+```
+
+#### ServiceImpl 由代码生成器生成
+```
+package com.quasar.sika.design.server.business.menu.service.impl;
+import cn.hutool.core.collection.CollUtil;
+import com.google.common.collect.Lists;
+import com.quasar.sika.design.server.business.menu.convert.MenuConvert;
+import com.quasar.sika.design.server.business.menu.entity.MenuEntity;
+import com.quasar.sika.design.server.business.menu.mapper.MenuMapper;
+import com.quasar.sika.design.server.business.menu.pojo.dto.MenuDTO;
+import com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery;
+import com.quasar.sika.design.server.business.menu.service.MenuService;
+import com.quasar.sika.design.server.business.rolemenu.service.RoleMenuService;
+import com.sika.code.standard.base.convert.BaseConvert;
+import com.sika.code.standard.base.service.impl.BaseStandardServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * <p>
+ * 菜单权限表 服务实现类
+ * </p>
+ *
+ * @author daiqi
+ * @since 2021-01-07 23:35:10
+ */
+@Service(value = "menuService")
+public class MenuServiceImpl extends BaseStandardServiceImpl<MenuMapper, MenuEntity, MenuDTO> implements MenuService {
+    @Autowired
+    private MenuMapper menuMapper;
+
+    @Override
+    protected BaseConvert<MenuEntity, MenuDTO> convert() {
+        return MenuConvert.INSTANCE;
+    }
+}
+
+```
+
+#### Mapper 由代码生成器生成
+```
+package com.quasar.sika.design.server.business.menu.mapper;
+
+import com.quasar.sika.design.server.business.menu.entity.MenuEntity;
+import org.springframework.stereotype.Repository;
+import com.sika.code.standard.base.basemapper.BaseStandardMapper;
+
+/**
+ * <p>
+ * 菜单权限表 Mapper 接口
+ * </p>
+ *
+ * @author daiqi
+ * @since 2021-01-07 23:35:08
+ */
+@Repository
+public interface MenuMapper extends BaseStandardMapper<MenuEntity> {
+
+}
+
+```
+#### Xml 由代码生成器生成
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quasar.sika.design.server.business.menu.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="com.quasar.sika.design.server.business.menu.entity.MenuEntity">
+        <result column="id" property="id" />
+        <result column="create_by" property="createBy" />
+        <result column="update_by" property="updateBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="version" property="version" />
+        <result column="available" property="available" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="remark" property="remark" />
+        <result column="menu_name" property="menuName" />
+        <result column="parent_id" property="parentId" />
+        <result column="order_num" property="orderNum" />
+        <result column="url" property="url" />
+        <result column="target" property="target" />
+        <result column="menu_type" property="menuType" />
+        <result column="visible" property="visible" />
+        <result column="perms" property="perms" />
+        <result column="icon" property="icon" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="columnList">
+        id, create_by, update_by, create_date, update_date, version, available, is_deleted, remark, menu_name, parent_id, order_num, url, target, menu_type, visible, perms, icon
+    </sql>
+
+    <!-- 根据查询条件获取列表信息 -->
+    <select id="listByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_menu
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取Id列表信息 -->
+    <select id="listIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery" >
+        SELECT id
+        FROM sika_menu
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件获取实体信息 -->
+    <select id="findByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_menu
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取表id -->
+    <select id="findIdByQuery" resultType="java.lang.Long" parameterType="com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery" >
+        SELECT id
+        FROM sika_menu
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 根据查询条件获取分页信息 -->
+    <select id="pageByQuery" resultMap="ResultMap" parameterType="com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery" >
+        SELECT <include refid="columnList" />
+        FROM sika_menu
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+        <include refid="order_by_sql"/>
+    </select>
+
+    <!-- 根据查询条件获取总数量信息 -->
+    <select id="totalCountByQuery" resultType="Integer" parameterType="com.quasar.sika.design.server.business.menu.pojo.query.MenuQuery" >
+        SELECT count(*)
+        FROM sika_menu
+        <where>
+            is_deleted = 0
+            <include refid="query_sql" />
+        </where>
+    </select>
+
+    <!-- 根据查询条件SQL -->
+    <sql id="query_sql" >
+        <if test="query.id != null">AND id = #{query.id}</if>
+        <if test="query.menuId != null">AND id = #{query.menuId}</if>
+        <if test="query.menuName != null">AND menu_name = #{query.menuName}</if>
+        <if test="query.parentId != null">AND parent_id = #{query.parentId}</if>
+        <if test="query.orderNum != null">AND order_num = #{query.orderNum}</if>
+        <if test="query.url != null">AND url = #{query.url}</if>
+        <if test="query.target != null">AND target = #{query.target}</if>
+        <if test="query.menuType != null">AND menu_type = #{query.menuType}</if>
+        <if test="query.visible != null">AND visible = #{query.visible}</if>
+        <if test="query.perms != null">AND perms = #{query.perms}</if>
+        <if test="query.icon != null">AND icon = #{query.icon}</if>
+        <if test="query.ids != null and query.ids.size() > 0">
+            AND id in
+            <foreach item="item" collection="query.ids" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- 排序的sql -->
+    <sql id="order_by_sql">
+        <if test="query.sortColumn != null and query.sortType != null" >
+            ORDER BY
+            <include refid="order_by_column_sql"/>
+            <include refid="order_by_type_sql"/>
+        </if>
+    </sql>
+
+    <!-- 排序列名的sql -->
+    <sql id="order_by_column_sql">
+        <choose>
+            <when test="query.sortColumn == 'menuId'">
+                id
+            </when>
+            <otherwise>
+                id
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 排序类型的sql -->
+    <sql id="order_by_type_sql">
+        <choose>
+            <when test="query.sortType == 'DESC'">
+                DESC
+            </when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>
+
+```
+
+#### Context【领域上下文对象】
+```
+package com.quasar.sika.design.server.common.auth.context;
+
+import com.quasar.sika.design.server.common.auth.executor.AuthRegisterRequestExecutor;
+import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
+import com.quasar.sika.design.server.common.captcha.pojo.request.CaptchaCheckRequest;
+import com.quasar.sika.design.server.common.mail.context.CheckMailCodeContext;
+import com.quasar.sika.design.server.common.mail.pojo.request.CheckMailRequest;
+import com.quasar.sika.design.server.common.shiro.util.SHA256Util;
+import com.sika.code.standard.base.pojo.context.BaseStandardContext;
+import com.sika.code.standard.base.pojo.executor.BaseStandardExecutor;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+/**
+ * @author daiqi
+ * @create 2021-01-09 18:02
+ */
+@Data
+@Accessors(chain = true)
+public class AuthRegisterContext extends BaseStandardContext {
+    private AuthRegisterRequest registerRequest;
+    private CheckMailRequest checkMailRequest;
+    protected CaptchaCheckRequest captchaCheckRequest;
+    private CheckMailCodeContext checkMailCodeContext;
+    private Boolean bindOauthUser;
+
+    @Override
+    public void initCustomer() {
+        checkMailCodeContext = new CheckMailCodeContext().setRequest(checkMailRequest);
+        registerRequest.setPassword(SHA256Util.sha256(registerRequest));
+    }
+
+    @Override
+    protected Class<? extends BaseStandardExecutor> buildExecutorClass() {
+        return AuthRegisterRequestExecutor.class;
+    }
+}
+
+```
+#### Executor领域执行者对象【按领域划分】
+```
+package com.quasar.sika.design.server.common.auth.executor;
+
+import cn.hutool.core.util.BooleanUtil;
+import com.quasar.sika.design.server.common.auth.context.AuthRegisterContext;
+import com.quasar.sika.design.server.common.auth.domain.AuthDomain;
+import com.quasar.sika.design.server.common.auth.pojo.request.AuthLoginRequest;
+import com.quasar.sika.design.server.common.auth.pojo.request.AuthRegisterRequest;
+import com.quasar.sika.design.server.common.auth.pojo.response.AuthResponse;
+import com.sika.code.basic.pojo.dto.ServiceResult;
+import com.sika.code.exception.BusinessException;
+import com.sika.code.standard.base.pojo.executor.BaseStandardExecutor;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+/**
+ * @author daiqi
+ * @create 2021-01-09 18:02
+ */
+@Data
+@Accessors(chain = true)
+public class AuthRegisterRequestExecutor extends BaseStandardExecutor<AuthRegisterContext> implements AuthDomain {
+    @Override
+    protected void executeBefore() {
+        verify();
+    }
+
+    protected void verify() {
+        // 图片验证码校验
+        captchaService().checkCaptchaVerifyCode(context.getCaptchaCheckRequest());
+        // 邮箱验证码校验
+        executorManager().execute(context.getCheckMailCodeContext());
+        // 校验用户名
+        AuthRegisterRequest registerRequest = context.getRegisterRequest();
+        authService().checkRegisterUsername(registerRequest);
+        // 校验邮箱
+        authService().checkRegisterEmail(registerRequest);
+        // 校验手机号
+        authService().checkRegisterPhone(registerRequest);
+    }
+
+    @Override
+    protected ServiceResult doExecute() {
+        AuthRegisterRequest registerRequest = context.getRegisterRequest();
+        boolean saveSuccess = userService().save(registerRequest);
+        if (BooleanUtil.isFalse(saveSuccess)) {
+            throw new BusinessException("保存失败,请校验注册参数");
+        }
+        return ServiceResult.newInstanceOfSucResult(AuthResponse.success(registerRequest));
+    }
+
+    @Override
+    protected void executeAfter() {
+        // 自动登录
+        AuthRegisterRequest registerRequest = context.getRegisterRequest();
+        AuthLoginRequest request = new AuthLoginRequest(registerRequest.getUsername(), registerRequest.getPassword());
+        request.setEncryptedPassword(true);
+        if (BooleanUtil.isTrue(context.getBindOauthUser())) {
+            authService().bindOauthUser(request);
+        } else {
+            authService().login(request);
+        }
+        // 移除缓存
+        captchaService().removeCaptchaVerifyCode(context.getCaptchaCheckRequest());
+        mailService().removeMailCode(context.getCheckMailRequest());
+    }
+}
+
+```
 
 前端环境和依赖
 ----
