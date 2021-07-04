@@ -11,6 +11,12 @@ package com.sika.code.common.date.constant;
 public class DateConstant {
     /** 时间格式---精确到天---yyyyMMdd */
     public static final String FORMAT_SHORT = "yyyyMMdd";
+    /** 时间格式---精确到年---yyyy */
+    public static final String YEAR = "yyyy";
+    /** 时间格式---精确到月--- MMddMM */
+    public static final String MONTH = "MM";
+    /** 时间格式---精确到月天--- MMdd */
+    public static final String MONTH_DAY = "MMdd";
     /** 时间格式---精确到秒---yyyyMMddHHmmss */
     public static final String FORMAT_LONG = "yyyyMMddHHmmss";
     /** 时间格式---精确到毫秒---yyyyMMddHHmmssSSS */
