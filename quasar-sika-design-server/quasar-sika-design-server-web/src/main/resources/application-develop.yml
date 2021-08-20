@@ -61,11 +61,38 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    dynamic:
+    sharding:
       enable: true
     hikari:
       # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
       core:
+        minimum-idle: 10
+        maximum-pool-size: 20
+        auto-commit: true
+        idle-timeout: 600000
+        pool-name: DatebookHikariCP
+        max-lifetime: 30000
+        connection-timeout: 30000
+        connection-test-query: SELECT 1
+        jdbc-url: jdbc:mysql://121.89.202.68:3306/sika-design-admin?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: SikaDesignAdmin20201225
+        driver-class-name:  com.mysql.cj.jdbc.Driver
+        # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
+      master:
+        minimum-idle: 10
+        maximum-pool-size: 20
+        auto-commit: true
+        idle-timeout: 600000
+        pool-name: DatebookHikariCP
+        max-lifetime: 30000
+        connection-timeout: 30000
+        connection-test-query: SELECT 1
+        jdbc-url: jdbc:mysql://121.89.202.68:3306/sika-design-admin?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: SikaDesignAdmin20201225
+        driver-class-name:  com.mysql.cj.jdbc.Driver
+      single:
         minimum-idle: 10
         maximum-pool-size: 20
         auto-commit: true
@@ -106,7 +133,12 @@ spring:
     single:
       address: 121.89.202.68:6379
     password: SikaDesignAdmin20201225
-
+sharding:
+  jdbc:
+    config:
+      props:
+        sql:
+          show: true
 
 #设置最大超时时间
 ribbon:

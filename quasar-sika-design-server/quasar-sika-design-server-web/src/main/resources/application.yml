@@ -19,7 +19,26 @@ spring:
     default-property-inclusion: NON_NULL
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-## ==========================jsckson配置=====================================
+  ## ==========================jsckson配置=====================================
+  datasource:
+    sharding:
+      defaultShardingItem:
+        dataSourceName: sika-design-admin
+      shardingItemMap:
+        test_user:
+          dataSourceName: dataSourceMaster
+          dataBaseNameExpression: test_{}_db
+          tableNameExpression: test_user_{}
+          tableAlgorithmClassName: com.sika.code.standard.db.algorithm.table.HundredTenShardingAlgorithm
+          shardingColumn: user_id
+        test_order:
+          dataSourceName: dataSourceMaster
+          dataBaseNameExpression: test_{}_db
+          tableNameExpression: test_order_{}
+          tableAlgorithmClassName: com.sika.code.standard.db.algorithm.table.YearDayShardingAlgorithm
+          shardingColumn: order_date
+      properties:
+        sql.show: true
 
 ## =====================switch必须为true=============================
 ## jdbc开关key---sika.code.jdbc.switch
